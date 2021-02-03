@@ -3,7 +3,7 @@ import Guid from "utils/types/common/guid"
 import { Resource } from "utils/types/resources"
 
 export async function addResource(name: string, tagIds: Guid[]) {
-  await sqlToDB("INSERT INTO resources (resource_name) VALUES ($1)", [name])
+  return await sqlToDB("INSERT INTO resources (resource_name) VALUES ($1)", [name])
   // Insert Tags Too
 }
 export async function getResource(resourceId: Guid) {
@@ -17,7 +17,6 @@ export async function getResource(resourceId: Guid) {
 }
 export async function getResourcesByFilter(Filter?: any) {
   const result = await sqlToDB("SELECT * FROM resources")
-  // console.log("getBy", result);
   const i = result.rows.map(resource => ({
     id: resource.resource_id,
     name: resource.resource_name,

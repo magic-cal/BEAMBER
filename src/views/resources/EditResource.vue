@@ -1,27 +1,38 @@
 <template>
-  <v-container pa-0>
-    <v-row>
-      <v-col
-        ><h1>Edit Resource resouceId:</h1>
-        {{ resourceId }}
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
-        <v-text-field label="Name" v-model="currentResource.name"></v-text-field>
-      </v-col>
-      <v-col>
-        <v-select
-          multiple
-          label="Tags"
-          v-model="currentResource.tags"
-          :items="[
-            { text: 'DPV', value: 1 },
-            { text: 'Container', value: 2 }
-          ]"
-        ></v-select>
-      </v-col>
-    </v-row>
+  <v-container>
+    <v-card class="">
+      <v-container>
+        <v-row>
+          <v-col
+            ><h1>{{ resourceId ? "Edit Resource resouceId:" : "Create Resource" }}</h1>
+            {{ resourceId }}
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col :cols="12" :sm="6">
+            <v-text-field label="Name" v-model="currentResource.name"></v-text-field>
+          </v-col>
+          <v-col :cols="12" :sm="6">
+            <v-select
+              multiple
+              label="Tags"
+              v-model="currentResource.tags"
+              :items="[
+                { text: 'DPV', value: 1 },
+                { text: 'Container', value: 2 }
+              ]"
+            ></v-select>
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-footer
+        ><v-row>
+          <v-col align="right"
+            ><v-btn @click="save">{{ resourceId ? "Update" : "Create" }}</v-btn></v-col
+          ></v-row
+        ></v-footer
+      >
+    </v-card>
   </v-container>
 </template>
 
@@ -46,6 +57,10 @@ export default class ViewContainers extends Vue {
       console.log(this.currentResource)
       // @TODO: Add The Tags
     }
+  }
+
+  save() {
+    api.saveResource(this.currentResource)
   }
 }
 </script>

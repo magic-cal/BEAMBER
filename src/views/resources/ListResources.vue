@@ -3,14 +3,19 @@
     <v-row>
       <v-col class="mt-6">
         <v-data-table
+          disable-pagination
           @click:row="rowClicked"
           :headers="headers"
           :items="resources"
-          :items-per-page="5"
           class="elevation-1"
         ></v-data-table>
       </v-col>
     </v-row>
+    <v-footer fixed
+      ><v-row>
+        <v-col align="right"><v-btn @click="createNew">Create New</v-btn></v-col></v-row
+      ></v-footer
+    >
   </v-container>
 </template>
 
@@ -31,7 +36,7 @@ export default class ListResources extends Vue {
       value: "name"
     },
     {
-      text: "Resource Name",
+      text: "Resource Tags",
       align: "start",
       sortable: false,
       value: "tags"
@@ -42,6 +47,12 @@ export default class ListResources extends Vue {
     this.$router.push({
       name: "EditResource",
       params: { resourceId: rowItem.id }
+    })
+  }
+
+  createNew() {
+    this.$router.push({
+      name: "EditResource"
     })
   }
   async created() {
