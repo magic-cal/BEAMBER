@@ -9,7 +9,7 @@
 
     <v-row >
       <v-col align="center"> 
-        <v-btn>Hi</v-btn> 
+        <v-btn :to="{name:'ResourceList'}">ResourceList</v-btn> 
       </v-col>
       <v-col align="center">
         <v-btn>Hi</v-btn> 

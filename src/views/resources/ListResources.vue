@@ -1,11 +1,11 @@
 <template>
   <v-container pa-0>
     <v-row>
-      <v-col>
+      <v-col class="mt-6">
         <v-data-table
           @click:row="rowClicked"
           :headers="headers"
-          :items="containers"
+          :items="resources"
           :items-per-page="5"
           class="elevation-1"
         ></v-data-table>
@@ -15,35 +15,37 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import api from "@/api/api"
+import { Resource } from "utils/types/resources"
+import Vue from "vue"
+import { Component } from "vue-property-decorator"
 @Component
-export default class ViewContainers extends Vue {
-  containers: any[] = [
-    { id: "hh", name: "DPV1", tags: ["tag", "tag2", "taggs"] },
-  ];
+export default class ListResources extends Vue {
+  resources: Resource[] = []
+
   headers = [
     {
       text: "Resource Name",
       align: "start",
       sortable: true,
-      value: "name",
+      value: "name"
     },
     {
       text: "Resource Name",
       align: "start",
       sortable: false,
-      value: "tags",
-    },
-  ];
+      value: "tags"
+    }
+  ]
 
-  rowClicked(rowItem: any) {
-    //Pass in container
-    console.log(rowItem);
+  rowClicked(rowItem: Resource) {
     this.$router.push({
       name: "EditResource",
-      params: { resourceId: "Hi there" },
-    });
+      params: { resourceId: rowItem.id }
+    })
+  }
+  async created() {
+    this.resources = await api.getResources()
   }
 }
 </script>
