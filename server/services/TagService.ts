@@ -1,5 +1,5 @@
 import { sqlToDB } from "./../util/PgDatabase"
-import { Tag } from "../../utils/classes/resources"
+import { Tag, TagFilter } from "../../utils/classes/resources"
 import Guid from "../../utils/classes/common/guid"
 import { QueryResultRow } from "pg"
 
@@ -13,6 +13,9 @@ function dbToTag(tagResultRow: QueryResultRow) {
   tag.id = Guid.fromString(tagResultRow.tag_id)
   tag.name = tagResultRow.tag_name
   tag.description = tagResultRow.tag_description
+  console.log("tagResultRow", tagResultRow)
+  console.log("TAGGG", tag)
+
   return tag
 }
 
@@ -27,7 +30,7 @@ function tagToDb(tag: Tag) {
 
 export async function addTag(tag: Tag) {
   // const fieldParams = tagToDb(tag)
-  return await sqlToDB(`INSERT INTO tags (tag_name,tag_description) VALUES ($1, $2)`, [tag.name, tag.description])
+  return await sqlToDB(`INSERT INTO tags (tag_name ,tag_description) VALUES ($1, $2)`, [tag.name, tag.description])
 }
 
 export async function getTag(tagId: Guid) {
@@ -35,10 +38,18 @@ export async function getTag(tagId: Guid) {
   return result.rows.map(tagResult => dbToTag(tagResult))[0]
 }
 
-export async function getTagsByFilter(filter?: any) {
-  const result = await sqlToDB("SELECT * FROM tags")
+export async function getTagsByFilter(filter: TagFilter = new TagFilter()) {
+  let query =
+    "SELECT DISTINCT ON (tags.tag_id) tags.tag_id, tag_name, tag_description FROM tags LEFT JOIN resource_tags ON (tags.tag_id = resource_tags.tag_id)"
+  const queryClauses: string[] = []
+  if (filter.resourceIds?.length) {
+    queryClauses.push(`resource_tags.resource_id IN (${filter.resourceIds.map(ri => `'${ri.value}'`)})`)
+  }
+  query += queryClauses.length ? " WHERE " + queryClauses.join(" AND ") : ";"
+  const result = await sqlToDB(query)
   return result.rows.map(tagResult => dbToTag(tagResult))
 }
+
 export async function deleteTag(tagId: Guid) {
   const result = await sqlToDB("DELETE FROM tags WHERE tag_id = $1", [tagId.value])
   return !!result.rowCount

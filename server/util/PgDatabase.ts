@@ -29,7 +29,7 @@ pool.on("error", function(err: Error) {
  * @param data: the data to be stored
  * @return result
  */
-export const sqlToDB = async (sql: string, data?: any[]) => {
+export const sqlToDB = async (sql: string, data?: any[] | any[][]) => {
   console.debug(`sqlToDB() sql: ${sql} | data: ${data}`)
   let result: QueryResult
   try {

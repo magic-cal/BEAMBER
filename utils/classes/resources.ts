@@ -16,6 +16,7 @@ export class Resource {
     console.log("qr.resource_name", qr.resource_name)
     console.log("Guid.fromString(qr.resource_id)", Guid.fromString(qr.resource_id))
     this.id = Guid.fromString(qr.resource_id)
+
     this.name = qr.resource_name
     this.tags = [] //@TODO: IMPL Tags
   }
@@ -31,4 +32,9 @@ export class Tag {
     this.name = name
     this.description = description
   }
+}
+
+export class TagFilter {
+  resourceIds: Guid[] = []
+  includeDeleted = false
 }

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card class="">
+    <v-card>
       <v-container>
         <v-row>
           <v-col
@@ -61,8 +61,8 @@ export default class EditTags extends Vue {
   @WithLoading
   async update() {
     console.log("this.currentTag", this.currentTag)
-
     await api.updateOrCreateTag(this.currentTag)
+    this.back()
   }
 
   @WithLoading

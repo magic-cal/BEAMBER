@@ -41,7 +41,7 @@ export default class ListResources extends Vue {
       text: "Resource Tags",
       align: "start",
       sortable: false,
-      value: "tags"
+      value: "tags.map((tag)=>tag.name).join(',')"
     }
   ]
 

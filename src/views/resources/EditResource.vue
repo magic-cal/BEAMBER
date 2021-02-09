@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card class="">
+    <v-card>
       <v-container>
         <v-row>
           <v-col
@@ -16,10 +16,11 @@
               multiple
               label="Tags"
               v-model="currentResource.tags"
-              :items="[
-                { text: 'DPV', value: 1 },
-                { text: 'Container', value: 2 }
-              ]"
+              item-text="name"
+              item-value="id.value"
+              :items="allTags"
+              return-object
+              clearable
             ></v-select>
           </v-col>
         </v-row>
@@ -46,7 +47,7 @@ import api from "@/api/api"
 import Vue from "vue"
 import { Component, Prop } from "vue-property-decorator"
 import { WithLoading } from "@/store/modules/appStore"
-import { Resource } from "@/../utils/classes/resources"
+import { Resource, Tag } from "@/../utils/classes/resources"
 import Guid from "@/../utils/classes/common/guid"
 
 @Component
@@ -55,11 +56,12 @@ export default class EditResources extends Vue {
   private resourceId!: string | null
 
   currentResource: Resource = new Resource()
+  allTags: Tag[] = []
 
   @WithLoading
   async mounted() {
     console.log("mounted", this.resourceId)
-
+    this.allTags = await api.getTags()
     if (this.resourceId) {
       this.currentResource = await api.getResource(Guid.fromString(this.resourceId))
       console.log(this.currentResource)
@@ -70,8 +72,8 @@ export default class EditResources extends Vue {
   @WithLoading
   async update() {
     console.log("this.currentResource", this.currentResource)
-
     await api.updateOrCreateResource(this.currentResource)
+    this.back()
   }
 
   @WithLoading
