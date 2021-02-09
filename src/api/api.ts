@@ -1,36 +1,37 @@
 import axios from "axios"
-import { Resource } from "utils/types/resources"
-import Guid from "utils/types/common/guid"
+import { Resource } from "utils/classes/resources"
+import Guid from "utils/classes/common/guid"
+
+const baseUrl = "http://localhost:3000"
+const service = "/resources"
 
 export default {
-  async getEvents(): Promise<any> {
-    axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*"
-    const res = await axios.post("http://localhost:3000/events")
-    console.log("events", res)
-    console.log("eventsdata", res.data)
-    return res.data
-  },
   async getResource(id: Guid): Promise<Resource> {
-    //  console.log("id",id)
-    const res = await axios.post("http://localhost:3000/resources/get", {
-      id: id.toString()
+    const res = await axios.post(`${baseUrl}${service}/get`, {
+      id: id
     })
     console.log("getResource", res)
     return res.data as Resource
   },
 
   async getResources(): Promise<Resource[]> {
-    //  console.log("id",id)
-    const res = await axios.post("http://localhost:3000/resources/get-by")
+    const res = await axios.post(`${baseUrl}${service}/get-by`)
     console.log("getResources", res)
     return res.data
   },
 
-  async saveResource(resource: Resource): Promise<void> {
-    const res = await axios.post("http://localhost:3000/resources/add", {
+  async updateOrCreateResource(resource: Resource): Promise<void> {
+    const res = await axios.post(`${baseUrl}${service}/update`, {
       resource: resource
     })
-    console.log("saveResource", res)
+    console.log("updateOrCreateResource", res)
     return res.data
+  },
+
+  async deleteResource(id: Guid): Promise<void> {
+    const res = await axios.post(`${baseUrl}${service}/delete`, {
+      id: id
+    })
+    console.log("deleteResource", res)
   }
 }

@@ -2,7 +2,7 @@
   <div class="about">
     <h1>About Page</h1>
     <button @click="getResource">getResource</button>
-    <template v-for="resource in resources" >
+    <template v-for="resource in resources">
       <div :key="resource.id">
         {{ resource.name }} ||
         <div v-for="tag in resource.tags" :key="tag.id"></div>
@@ -14,8 +14,8 @@
 import Vue from "vue"
 import Component from "vue-class-component"
 import api from "@/api/api.ts"
-import Guid from "./../../utils/types/common/guid"
-import { Resource } from "utils/types/resources"
+import Guid from "utils/classes/common/guid"
+import { Resource } from "utils/classes/resources"
 
 // Define the component in class-style
 @Component

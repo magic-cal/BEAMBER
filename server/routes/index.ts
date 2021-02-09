@@ -2,7 +2,7 @@
 import express from "express"
 const router = express.Router()
 
-import resourceRouter from "./resources"
+import resourceRouter from "./resourceRoutes"
 
 // router.use("/", (req, res) => {
 //   console.log("h", req)

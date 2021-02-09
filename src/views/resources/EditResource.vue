@@ -4,8 +4,7 @@
       <v-container>
         <v-row>
           <v-col
-            ><h1>{{ resourceId ? "Edit Resource resouceId:" : "Create Resource" }}</h1>
-            {{ resourceId }}
+            ><h1>{{ resourceId ? "Edit Resource: " + currentResource.name : "Create Resource" }}</h1>
           </v-col>
         </v-row>
         <v-row>
@@ -27,28 +26,37 @@
       </v-container>
       <v-footer
         ><v-row>
+          <v-col> <v-btn @click="deleteResource" v-if="resourceId"> Delete </v-btn></v-col>
           <v-col align="right"
-            ><v-btn @click="save">{{ resourceId ? "Update" : "Create" }}</v-btn></v-col
+            ><v-btn @click="update">{{ resourceId ? "Update" : "Create" }}</v-btn></v-col
           ></v-row
         ></v-footer
       >
     </v-card>
+    <v-footer fixed outlined
+      ><v-row>
+        <v-col> <v-btn @click="back">Back</v-btn></v-col>
+      </v-row></v-footer
+    >
   </v-container>
 </template>
 
 <script lang="ts">
 import api from "@/api/api"
-import Guid from "@/../utils/types/common/guid"
-import { Resource } from "@/../utils/types/resources"
 import Vue from "vue"
 import { Component, Prop } from "vue-property-decorator"
+import { WithLoading } from "@/store/modules/appStore"
+import { Resource } from "@/../utils/classes/resources"
+import Guid from "@/../utils/classes/common/guid"
+
 @Component
 export default class ViewContainers extends Vue {
   @Prop({ type: String, required: false, default: () => null })
   private resourceId!: string | null
 
-  currentResource: Resource = {} as Resource
+  currentResource: Resource = new Resource()
 
+  @WithLoading
   async mounted() {
     console.log("mounted", this.resourceId)
 
@@ -59,8 +67,21 @@ export default class ViewContainers extends Vue {
     }
   }
 
-  save() {
-    api.saveResource(this.currentResource)
+  @WithLoading
+  async update() {
+    console.log("this.currentResource", this.currentResource)
+
+    await api.updateOrCreateResource(this.currentResource)
+  }
+
+  @WithLoading
+  async deleteResource() {
+    await api.deleteResource(this.currentResource.id)
+    this.back()
+  }
+
+  async back() {
+    this.$router.push({ name: "ResourceList" })
   }
 }
 </script>

@@ -7,6 +7,7 @@
           @click:row="rowClicked"
           :headers="headers"
           :items="resources"
+          item-key="id.toString()"
           class="elevation-1"
         ></v-data-table>
       </v-col>
@@ -21,7 +22,8 @@
 
 <script lang="ts">
 import api from "@/api/api"
-import { Resource } from "utils/types/resources"
+import { WithLoading } from "@/store/modules/appStore"
+import { Resource } from "utils/classes/resources"
 import Vue from "vue"
 import { Component } from "vue-property-decorator"
 @Component
@@ -46,7 +48,7 @@ export default class ListResources extends Vue {
   rowClicked(rowItem: Resource) {
     this.$router.push({
       name: "EditResource",
-      params: { resourceId: rowItem.id }
+      params: { resourceId: rowItem.id.value }
     })
   }
 
@@ -55,6 +57,8 @@ export default class ListResources extends Vue {
       name: "EditResource"
     })
   }
+
+  @WithLoading
   async created() {
     this.resources = await api.getResources()
   }
