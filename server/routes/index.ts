@@ -3,11 +3,13 @@ import express from "express"
 const router = express.Router()
 
 import resourceRouter from "./resourceRoutes"
+import tagRouter from "./tagRoutes"
 
 // router.use("/", (req, res) => {
 //   console.log("h", req)
 // })
 router.use("/resources", resourceRouter)
+router.use("/tags", tagRouter)
 // router.use("/resources", () => {
 //   console.log("res")
 // })

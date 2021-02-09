@@ -24,9 +24,11 @@ export class Resource {
 export class Tag {
   id: Guid
   name: string
+  description: string
 
-  constructor(id: Guid = Guid.createEmpty(), name = "") {
+  constructor(id: Guid = Guid.createEmpty(), name = "", description = "") {
     this.id = id
     this.name = name
+    this.description = description
   }
 }

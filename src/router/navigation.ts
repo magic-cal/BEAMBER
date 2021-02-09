@@ -1,8 +1,8 @@
 export interface NavigationItem {
-  id: string | null;
-  name: string;
-  icon: string | null;
-  pathName: string;
+  id: string | null
+  name: string
+  icon: string | null
+  pathName: string
 }
 
 export const navigationItems: NavigationItem[] = [
@@ -11,14 +11,24 @@ export const navigationItems: NavigationItem[] = [
     id: null,
     name: "Resources List",
     icon: "",
-    pathName: "ResourceList",
+    pathName: "ResourceList"
   },
   {
     id: null,
     name: "Resource Management",
     icon: "",
-    pathName: "ResourceManagement",
+    pathName: "ResourceManagement"
   },
-  { id: null, name: "Resource Types", icon: "", pathName: "ResourceTypes" },
-  { id: null, name: "Scheduling", icon: "", pathName: "Scheduling" },
-];
+  {
+    id: null,
+    name: "Tags List",
+    icon: "",
+    pathName: "TagList"
+  },
+  {
+    id: null,
+    name: "Tag Management",
+    icon: "",
+    pathName: "TagManagement"
+  }
+]

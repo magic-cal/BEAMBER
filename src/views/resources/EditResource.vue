@@ -50,7 +50,7 @@ import { Resource } from "@/../utils/classes/resources"
 import Guid from "@/../utils/classes/common/guid"
 
 @Component
-export default class ViewContainers extends Vue {
+export default class EditResources extends Vue {
   @Prop({ type: String, required: false, default: () => null })
   private resourceId!: string | null
 
