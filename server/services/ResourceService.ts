@@ -1,5 +1,5 @@
 import { sqlToDB } from "./../util/PgDatabase"
-import { Resource, Tag, TagFilter } from "../../utils/classes/resources"
+import { Resource, ResourceFilter, Tag, TagFilter } from "../../utils/classes/resources"
 import Guid from "../../utils/classes/common/guid"
 import { getTagsByFilter } from "./TagService"
 
@@ -31,14 +31,30 @@ export async function getResource(resourceId: Guid) {
   })[0]
 }
 
-export async function getResourcesByFilter(filter?: any) {
-  const result = await sqlToDB("SELECT * FROM resources")
+export async function getResourcesByFilter(filter?: ResourceFilter) {
+  // const result = await sqlToDB("SELECT * FROM resources")
+  // const resources = result.rows.map(resourceResult => {
+  //   const newResource = new Resource()
+  //   newResource.fromQueryResultRow(resourceResult)
+  //   return newResource
+  // })
+  //
+  let query =
+    "SELECT DISTINCT ON (resources.resource_id) resources.resource_id, resource_name FROM resources LEFT JOIN resource_tags ON (resources.resource_id = resource_tags.resource_id)"
+  const queryClauses: string[] = []
+  if (filter?.tagIds?.length) {
+    queryClauses.push(`resource_tags.tag_id IN (${filter?.tagIds.map(ri => `'${ri.value}'`)})`)
+  }
+  query += queryClauses.length ? " WHERE " + queryClauses.join(" AND ") : ";"
+  const result = await sqlToDB(query)
+
   const resources = result.rows.map(resourceResult => {
     const newResource = new Resource()
     newResource.fromQueryResultRow(resourceResult)
     return newResource
   })
 
+  // Get Associated Tags
   return await Promise.all(
     resources.map(async (res: Resource) => {
       const filter = new TagFilter()

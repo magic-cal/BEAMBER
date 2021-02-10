@@ -49,3 +49,8 @@ export class TagFilter {
   resourceIds: Guid[] = []
   includeDeleted = false
 }
+
+export class ResourceFilter {
+  tagIds: Guid[] = []
+  includeDeleted = false
+}

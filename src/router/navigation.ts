@@ -13,22 +13,22 @@ export const navigationItems: NavigationItem[] = [
     icon: "",
     pathName: "ResourceList"
   },
-  {
-    id: null,
-    name: "Resource Management",
-    icon: "",
-    pathName: "ResourceManagement"
-  },
+  // {
+  //   id: null,
+  //   name: "Resource Management",
+  //   icon: "",
+  //   pathName: "ResourceManagement"
+  // },
   {
     id: null,
     name: "Tags List",
     icon: "",
     pathName: "TagList"
-  },
-  {
-    id: null,
-    name: "Tag Management",
-    icon: "",
-    pathName: "TagManagement"
   }
+  // {
+  //   id: null,
+  //   name: "Tag Management",
+  //   icon: "",
+  //   pathName: "TagManagement"
+  // }
 ]
