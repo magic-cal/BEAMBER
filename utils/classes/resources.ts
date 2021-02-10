@@ -1,12 +1,23 @@
 import { QueryResultRow } from "pg"
 import Guid from "./common/guid"
 
+export class ResourceReadonly {
+  tagList: string
+  constructor() {
+    this.tagList = ""
+  }
+  fromTags(tagList: Tag[]) {
+    this.tagList = tagList.map(tag => tag.name).join(", ")
+  }
+}
+
 export class Resource {
   id: Guid
   name: string
   tags: Tag[]
+  readOnly: ResourceReadonly | null = null
 
-  constructor(id = Guid.createEmpty(), name = "", tags = []) {
+  constructor(id: Guid = Guid.createEmpty(), name = "", tags: Tag[] = []) {
     this.id = id
     this.name = name
     this.tags = tags
@@ -18,7 +29,7 @@ export class Resource {
     this.id = Guid.fromString(qr.resource_id)
 
     this.name = qr.resource_name
-    this.tags = [] //@TODO: IMPL Tags
+    this.tags = []
   }
 }
 

@@ -23,7 +23,7 @@
 <script lang="ts">
 import api from "@/api/api"
 import { WithLoading } from "@/store/modules/appStore"
-import { Resource } from "utils/classes/resources"
+import { Resource, ResourceReadonly } from "@/../utils/classes/resources"
 import Vue from "vue"
 import { Component } from "vue-property-decorator"
 @Component
@@ -41,7 +41,7 @@ export default class ListResources extends Vue {
       text: "Resource Tags",
       align: "start",
       sortable: false,
-      value: "tags.map((tag)=>tag.name).join(',')"
+      value: "readOnly.tagList"
     }
   ]
 
@@ -61,6 +61,10 @@ export default class ListResources extends Vue {
   @WithLoading
   async created() {
     this.resources = await api.getResources()
+    this.resources.forEach(resource => {
+      resource.readOnly = new ResourceReadonly()
+      resource.readOnly.fromTags(resource.tags)
+    })
   }
 }
 </script>
