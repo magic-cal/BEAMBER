@@ -4,11 +4,12 @@
       <span>{{ value.name }}</span>
     </v-card-title>
     <v-row>
-      <v-col :cols="4">
-        <v-img
+      <v-col :cols="4" class="ml-5">
+        <!-- <v-img
           class="ma-2"
           src="https://www.pngkit.com/png/detail/61-610226_holland-juice-glass-svg-glass-clipart.png"
-        />
+        /> -->
+        <container-preview />
       </v-col>
       <v-col>
         <div>Name: {{ value.name || "-" }}</div>
@@ -27,9 +28,10 @@
 <script lang="ts">
 import { Resource } from "@/../utils/classes/resources"
 import Guid from "utils/classes/common/guid"
+import ContainerPreview from "@/components/ContainerPreview.vue"
 import Vue from "vue"
 import { Component, Model, Prop } from "vue-property-decorator"
-@Component
+@Component({ components: { ContainerPreview } })
 export default class Container extends Vue {
   // @Model("input", {type: Boolean, required: true})
   // public drawer!: boolean;
@@ -42,5 +44,7 @@ export default class Container extends Vue {
       params: { resourceId: rowItem.id.value }
     })
   }
+
+  containerFillPercentage = 50
 }
 </script>
