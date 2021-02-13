@@ -1,36 +1,46 @@
-import Vue from "vue";
-import VueRouter, { RouteConfig } from "vue-router";
-import Home from "../views/Home.vue";
-import Admin from "@/views/Admin.vue";
-import EditResource from "@/views/resources/EditResource.vue";
-import ListResources from "@/views/resources/ListResources.vue";
+import Vue from "vue"
+import VueRouter, { RouteConfig } from "vue-router"
+import Home from "../views/Home.vue"
+import Admin from "@/views/Admin.vue"
+import EditResource from "@/views/resources/EditResource.vue"
+import ListResources from "@/views/resources/ListResources.vue"
+import EditTag from "@/views/tags/EditTag.vue"
+import ListTags from "@/views/tags/ListTags.vue"
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 export const routes: Array<RouteConfig> = [
   {
     path: "/",
     name: "Home",
-    component: Home,
+    component: Home
   },
   {
     path: "/list-resources",
     name: "ResourceList",
-    component: ListResources,
+    component: ListResources
   },
-  // {
-  //   path: "/resource-management",
-  //   name: "EditResource",
-  //   component: EditResource,
-  // },
   {
     path: "/resource-management/:resourceId",
     name: "EditResource",
     component: EditResource,
-    props: (route) => ({
-      resourceId: route.params["resourceId"],
-    }),
+    props: route => ({
+      resourceId: route.params["resourceId"]
+    })
   },
+  {
+    path: "/list-tags",
+    name: "TagList",
+    component: ListTags
+  },
+  {
+    path: "/tag-management/:tagId",
+    name: "EditTag",
+    component: EditTag,
+    props: route => ({
+      tagId: route.params["tagId"]
+    })
+  }
   // {
   //   path: "/breweries/:resourceId",
   //   name: "Brewery",
@@ -58,11 +68,11 @@ export const routes: Array<RouteConfig> = [
   //     breweryId: route.params["breweryId"],
   // }),
   // },
-];
+]
 
 const router = new VueRouter({
   mode: "history",
-  routes,
-});
+  routes
+})
 
-export default router;
+export default router

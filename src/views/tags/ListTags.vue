@@ -6,7 +6,7 @@
           disable-pagination
           @click:row="rowClicked"
           :headers="headers"
-          :items="resources"
+          :items="tags"
           item-key="id.toString()"
           class="elevation-1"
         ></v-data-table>
@@ -23,48 +23,44 @@
 <script lang="ts">
 import api from "@/api/api"
 import { WithLoading } from "@/store/modules/appStore"
-import { Resource, ResourceReadonly } from "@/../utils/classes/resources"
+import { Tag } from "utils/classes/resources"
 import Vue from "vue"
 import { Component } from "vue-property-decorator"
 @Component
-export default class ListResources extends Vue {
-  resources: Resource[] = []
+export default class ListTags extends Vue {
+  tags: Tag[] = []
 
   headers = [
     {
-      text: "Resource Name",
+      text: "Tag Name",
       align: "start",
       sortable: true,
       value: "name"
     },
     {
-      text: "Resource Tags",
+      text: "Tag Description",
       align: "start",
       sortable: false,
-      value: "readOnly.tagList"
+      value: "description"
     }
   ]
 
-  rowClicked(rowItem: Resource) {
+  rowClicked(rowItem: Tag) {
     this.$router.push({
-      name: "EditResource",
-      params: { resourceId: rowItem.id.value }
+      name: "EditTag",
+      params: { tagId: rowItem.id.value }
     })
   }
 
   createNew() {
     this.$router.push({
-      name: "EditResource"
+      name: "EditTag"
     })
   }
 
   @WithLoading
   async created() {
-    this.resources = await api.getResources()
-    this.resources.forEach(resource => {
-      resource.readOnly = new ResourceReadonly()
-      resource.readOnly.fromTags(resource.tags)
-    })
+    this.tags = await api.getTags()
   }
 }
 </script>

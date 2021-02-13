@@ -1,14 +1,9 @@
 <template>
-  <v-navigation-drawer
-    v-model="drawer"
-    absolute
-    temporary
-    @input="$emit('input', $event)"
-  >
+  <v-navigation-drawer v-model="drawer" absolute temporary @input="$emit('input', $event)">
     <v-list nav dense>
       <v-list-item-group>
         <template v-for="menuItem in navigationMenuItems">
-          <v-list-item :key="menuItem.name" :to="{ name: menuItem.pathName }">
+          <v-list-item :key="menuItem.name" :to="{ name: menuItem.pathName }" exact>
             <v-list-item-icon>
               <v-icon>{{ menuItem.icon }}</v-icon>
             </v-list-item-icon>
@@ -21,14 +16,14 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Model } from "vue-property-decorator";
-import { navigationItems } from "@/router/navigation.ts";
+import Vue from "vue"
+import { Component, Model } from "vue-property-decorator"
+import { navigationItems } from "@/router/navigation.ts"
 @Component
 export default class NavigationMenu extends Vue {
   @Model("input", { type: Boolean, required: true })
-  public drawer!: boolean;
+  public drawer!: boolean
 
-  navigationMenuItems = navigationItems;
+  navigationMenuItems = navigationItems
 }
 </script>
