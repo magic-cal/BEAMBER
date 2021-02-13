@@ -66,8 +66,8 @@ export async function getResourcesByFilter(filter?: ResourceFilter) {
 }
 
 export async function deleteResource(resourceId: Guid) {
-  const result = await sqlToDB("DELETE FROM resources WHERE resource_id = $1", [resourceId.value])
   await updateTagRelation([], resourceId) //Remove all tag relations
+  const result = await sqlToDB("DELETE FROM resources WHERE resource_id = $1", [resourceId.value])
   return !!result.rowCount
 }
 

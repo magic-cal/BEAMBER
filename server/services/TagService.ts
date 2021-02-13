@@ -1,5 +1,5 @@
 import { sqlToDB } from "./../util/PgDatabase"
-import { Tag, TagFilter } from "../../utils/classes/resources"
+import { Resource, Tag, TagFilter } from "../../utils/classes/resources"
 import Guid from "../../utils/classes/common/guid"
 import { QueryResultRow } from "pg"
 
@@ -28,6 +28,19 @@ function tagToDb(tag: Tag) {
   return fieldParams
 }
 
+export async function updateResourceRelation(resources: Resource[], tagId: Guid) {
+  // SIMILAR IMPL IN RESOURCE SERVICE
+  // const insertionValues = resources.map(resource => (resource.id.value, tagId.value))
+  const insertionValues: string[] = []
+
+  await sqlToDB("DELETE FROM resource_tags WHERE tag_id = $1", [tagId.value])
+  //@TODO: Update Inserts into resources NOT PRETTY
+  await resources.forEach(
+    async resource =>
+      await sqlToDB("INSERT INTO resource_tags (resource_id, tag_id) VALUES ($1,$2)", [resource.id.value, tagId.value])
+  )
+}
+
 export async function addTag(tag: Tag) {
   // const fieldParams = tagToDb(tag)
   return await sqlToDB(`INSERT INTO tags (tag_name ,tag_description) VALUES ($1, $2)`, [tag.name, tag.description])
@@ -51,6 +64,7 @@ export async function getTagsByFilter(filter: TagFilter = new TagFilter()) {
 }
 
 export async function deleteTag(tagId: Guid) {
+  await updateResourceRelation([], tagId)
   const result = await sqlToDB("DELETE FROM tags WHERE tag_id = $1", [tagId.value])
   return !!result.rowCount
 }
