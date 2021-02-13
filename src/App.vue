@@ -1,7 +1,7 @@
 <template>
   <v-app class="overflow-hidden">
     <div id="nav">
-      <v-app-bar color="primary accent-4" shrink-on-scroll dense prominent src="@/assets/beer.jpg">
+      <v-app-bar color="primary accent-4" src="@/assets/beer.jpg">
         <v-app-bar-nav-icon @click.stop="navigationDraw = !navigationDraw"></v-app-bar-nav-icon>
         <v-toolbar-title>Amber - Vessle Management</v-toolbar-title>
         <!-- <v-icon @click="viewContainers">md-plus</v-icon> -->
@@ -9,7 +9,7 @@
       </v-app-bar>
     </div>
     <navigation-menu v-model="navigationDraw"> </navigation-menu>
-    <transition name="bounce" mode="out-in">
+    <transition name="fade" mode="out-in">
       <router-view id="scrolling-techniques" />
     </transition>
     <loader v-model="loading" />
@@ -39,11 +39,11 @@ export default class App extends Vue {
 </script>
 
 <style lang="sass">
-// .fade-enter-active, .fade-leave-active
-//   transition: opacity .5s
+.fade-enter-active, .fade-leave-active
+  transition: opacity .3s
 
-// .fade-enter, .fade-leave-to
-//   opacity: 0
+.fade-enter, .fade-leave-to
+  opacity: 0
 
 
 .bounce-enter-active
