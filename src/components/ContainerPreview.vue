@@ -1,16 +1,20 @@
 <template>
-  <div class="vessel" :style="alterPostion"></div>
+  <div class="vessel" :class="{ 'requires-clean': requiresClean }" :style="alterPostion"></div>
 </template>
 <script lang="ts">
 import Vue from "vue"
-import { Component, Model, Prop } from "vue-property-decorator"
+import { Component, Prop } from "vue-property-decorator"
 
 @Component
 export default class ContainerPreview extends Vue {
   @Prop({ type: Number, required: false, default: () => Math.floor(Math.random() * 100) + 1 })
   public value!: number
 
+  @Prop({ type: Boolean, required: false, default: false })
+  public requiresClean!: boolean
+
   get alterPostion() {
+    //  TODO: Make a better mapping
     //   Mapping from -60 => +20
     const multiplier = 0.7
     const skew = -53
@@ -30,16 +34,19 @@ export default class ContainerPreview extends Vue {
     left: 40%
     box-shadow: 0 0 0 6px #fff
     border-radius: 0 0 30px 30px
-    background: url(./../assets/coffee.png)
+    background: url(./../assets/beerLevel.png)
     background-repeat: repeat-x
-    // animation: flow 25s infinite
-    // animation-direction: alternate
-    // transition-timing-function: ease-in-out
+    animation: flow 20s infinite
+    animation-direction: alternate-reverse
+    transition-timing-function: ease
+
+.vessel.requires-clean
+    background: lightblue
 
 @keyframes flow
     0%
         background-position-x: 0%
 
     100%
-        background-position-x : 200%
+        background-position-x : 2000%
 </style>
