@@ -6,6 +6,8 @@ import EditResource from "@/views/resources/EditResource.vue"
 import ListResources from "@/views/resources/ListResources.vue"
 import EditTag from "@/views/tags/EditTag.vue"
 import ListTags from "@/views/tags/ListTags.vue"
+import EditRecipe from "@/views/recipes/EditRecipe.vue"
+import ListRecipes from "@/views/recipes/ListRecipes.vue"
 
 Vue.use(VueRouter)
 
@@ -39,6 +41,19 @@ export const routes: Array<RouteConfig> = [
     component: EditTag,
     props: route => ({
       tagId: route.params["tagId"]
+    })
+  },
+  {
+    path: "/list-recipes",
+    name: "RecipeList",
+    component: ListRecipes
+  },
+  {
+    path: "/recipe-management/:recipeId",
+    name: "EditRecipe",
+    component: EditRecipe,
+    props: route => ({
+      recipeId: route.params["recipeId"]
     })
   }
   // {

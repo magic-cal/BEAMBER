@@ -16,11 +16,27 @@ export class Resource {
   name: string
   tags: Tag[]
   readOnly: ResourceReadonly | null = null
+  capacity: number
+  currentStep: Guid | null
+  maintananceRequired: boolean
+  active: boolean
 
-  constructor(id: Guid = Guid.createEmpty(), name = "", tags: Tag[] = []) {
+  constructor(
+    id: Guid = Guid.createEmpty(),
+    name = "",
+    tags: Tag[] = [],
+    capacity = 100,
+    currentStep = null,
+    maintananceRequired = false,
+    active = false
+  ) {
     this.id = id
     this.name = name
     this.tags = tags
+    this.capacity = capacity
+    this.currentStep = currentStep
+    this.maintananceRequired = maintananceRequired
+    this.active = active
   }
 
   fromQueryResultRow(qr: QueryResultRow) {

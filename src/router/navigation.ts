@@ -24,6 +24,12 @@ export const navigationItems: NavigationItem[] = [
     name: "Tags List",
     icon: "",
     pathName: "TagList"
+  },
+  {
+    id: null,
+    name: "Recipe List",
+    icon: "",
+    pathName: "RecipeList"
   }
   // {
   //   id: null,
