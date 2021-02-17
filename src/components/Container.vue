@@ -14,7 +14,7 @@
       <v-col>
         <div>Name: {{ value.name || "-" }}</div>
         <div>Capacity: {{ value.capacity || "-" }}</div>
-        <div>Current Process: {{ value.capacity || "-" }}</div>
+        <div>Current Process: {{ value.process || "-" }}</div>
       </v-col>
     </v-row>
     <v-card-actions>

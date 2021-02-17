@@ -51,7 +51,7 @@ export default class Home extends Vue {
   @WithLoading
   async created() {
     const filter = new ResourceFilter()
-    // TODO: Make this All Vessels but better
+    // @TODO: Make this All Vessels but better
     filter.tagIds = [Guid.fromString("10ed5a49-1668-402a-b0b5-b54818a3dec2")]
     this.resourceList = (await api.getResources()).filter(resource => resource.tags.some(tag => tag.name === "Vessel"))
   }

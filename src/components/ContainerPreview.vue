@@ -14,7 +14,7 @@ export default class ContainerPreview extends Vue {
   public requiresClean!: boolean
 
   get alterPostion() {
-    //  TODO: Make a better mapping
+    //  @TODO: Make a better mapping
     //   Mapping from -60 => +20
     const multiplier = 0.7
     const skew = -53
