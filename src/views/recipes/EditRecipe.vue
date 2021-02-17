@@ -8,6 +8,9 @@
           </v-col>
         </v-row>
         <v-row>
+          <v-col>
+            <SortableList></SortableList>
+          </v-col>
           <v-col :cols="12" :sm="6">
             <v-text-field label="Name" v-model="currentRecipe.name"></v-text-field>
           </v-col>
@@ -101,8 +104,10 @@ import { WithLoading } from "@/store/modules/appStore"
 import { Recipe } from "@/../utils/classes/recipes"
 import Guid from "@/../utils/classes/common/guid"
 import { Resource, Tag } from "utils/classes/resources"
+import SortableList from "@/components/SortableList.vue"
+import { component } from "vue/types/umd"
 
-@Component
+@Component({ components: { SortableList } })
 export default class EditRecipes extends Vue {
   @Prop({ type: String, required: false, default: () => null })
   private recipeId!: string | null
