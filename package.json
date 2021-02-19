@@ -1,9 +1,9 @@
 {
-  "name": "ts-express-vuejs-webpack",
+  "name": "Amber",
   "version": "2.0.0",
-  "description": "Boilerplate for Express + Vue.JS with Typescript",
+  "description": "",
   "private": true,
-  "author": "Onur Elibol",
+  "author": "",
   "scripts": {
     "serve": "concurrently \"npm run dev:server\" \"npm run dev:client\" --raw",
     "build": "concurrently \"npm run build:server\" \"npm run build:client\"",

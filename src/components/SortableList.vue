@@ -12,9 +12,6 @@
               </v-card>
             </drag>
           </template>
-          <!-- <template #feedback="{ data }">
-            <div class="item feedback" :key="data">{{ data }}</div>
-          </template> -->
         </drop-list>
       </v-col>
     </v-row>
@@ -33,7 +30,7 @@ export default {
   },
   data: function() {
     return {
-      items: ["a", "b", "c", "d", "e"]
+      items: ["1", "2", "3", "4", "5"]
     }
   },
   methods: {
