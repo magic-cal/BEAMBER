@@ -21,22 +21,14 @@
 <script lang="ts">
 import { Drag, DropList, InsertEvent } from "vue-easy-dnd"
 
-export default {
-  // @TODO: Make this class style
-  name: "SortableList",
-  components: {
-    Drag,
-    DropList
-  },
-  data: function() {
-    return {
-      items: ["1", "2", "3", "4", "5"]
-    }
-  },
-  methods: {
-    onInsert(event: InsertEvent) {
-      this.items.splice(event.index, 0, event.data)
-    }
+import Vue from "vue"
+import { Component, Model, Prop } from "vue-property-decorator"
+@Component({ components: { DropList, Drag } })
+export default class Container extends Vue {
+  items = ["1", "2", "3", "4", "5"]
+
+  onInsert(event: InsertEvent) {
+    this.items.splice(event.index, 0, event.data)
   }
 }
 </script>
