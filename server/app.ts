@@ -21,12 +21,12 @@ const swaggerOptions = {
   swaggerDefinition: {
     info: {
       version: "1.0.0",
-      title: "Customer API",
-      description: "Customer API Information",
+      title: "Amber API",
+      description: "Amber API Information and calls",
       contact: {
-        name: "Amazing Developer"
+        name: "Callum McClure"
       },
-      servers: ["http://localhost:3000"]
+      servers: ["http://localhost:3000", "http://localhost:1000"]
     }
   },
   // ['.routes/*.js']
