@@ -4,16 +4,13 @@ const router = express.Router()
 
 import resourceRouter from "./resourceRoutes"
 import tagRouter from "./tagRoutes"
+import recipeRouter from "./recipeRoutes"
 
 // router.use("/", (req, res) => {
 //   console.log("h", req)
 // })
 router.use("/resources", resourceRouter)
 router.use("/tags", tagRouter)
-// router.use("/resources", () => {
-//   console.log("res")
-// })
-// router.use("/artists", artistsRouter)
-// router.use("/albums", albumsRouter)
+router.use("/recipes", recipeRouter)
 
 export default router
