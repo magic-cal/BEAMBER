@@ -1,21 +1,18 @@
 <template>
-  <v-container fluid class="wrapper">
-    <v-row>
-      <v-col>
-        <drop-list :items="items" class="list" @insert="onInsert" @reorder="$event.apply(items)">
-          <template #item="{ item }">
-            <drag class="" :key="item"
-              ><v-card>
-                <h1>
-                  {{ item }}
-                </h1>
-              </v-card>
-            </drag>
-          </template>
-        </drop-list>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-row>
+    <v-col>
+      <drop-list :items="items" class="list" @insert="onInsert" @reorder="$event.apply(items)">
+        <template #item="{ item }">
+          <drag :key="getValue(item)"
+            ><v-card class="pa-2 ma-1">
+              <v-icon>mdi-drag-vertical</v-icon>
+              {{ getText(item) }}
+            </v-card>
+          </drag>
+        </template>
+      </drop-list>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">
@@ -23,12 +20,29 @@ import { Drag, DropList, InsertEvent } from "vue-easy-dnd"
 
 import Vue from "vue"
 import { Component, Model, Prop } from "vue-property-decorator"
+import Guid from "utils/classes/common/guid"
+
 @Component({ components: { DropList, Drag } })
-export default class Container extends Vue {
-  items = ["1", "2", "3", "4", "5"]
+export default class SortableList extends Vue {
+  @Prop({ type: Array, required: false, default: () => [{ name: "hi", id: "d" }] })
+  public items!: (string | object)[]
+
+  @Prop({ type: Function, default: (item: any) => item.name, required: false })
+  public text!: (item: any) => string | number
+
+  @Prop({ type: Function, default: (item: any) => item.id, required: false })
+  public value!: (item: any) => string | number | Guid
 
   onInsert(event: InsertEvent) {
     this.items.splice(event.index, 0, event.data)
+  }
+
+  getValue(item: any) {
+    return this.value(item).toString()
+  }
+
+  getText(item: any) {
+    return this.text(item)
   }
 }
 </script>
