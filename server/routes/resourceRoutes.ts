@@ -17,7 +17,7 @@ import { Resource } from "utils/classes/resources"
 /**
  * @swagger
  * /resources/update:
- *   post:
+ *   put:
  *     tags:
  *       - Resource
  *     operationId: updateResource
@@ -41,7 +41,7 @@ import { Resource } from "utils/classes/resources"
  *         content:
  *           application/json
  */
-router.post("/update", async (req, res) => {
+router.put("/update", async (req, res) => {
   console.log("update")
   console.log("req.body.resource", req.body.resource)
   console.log("Intance of Guid", req.body.resource.id instanceof Guid)
@@ -99,7 +99,7 @@ router.post("/get-by", async (req, res) => {
 /**
  * @swagger
  * /resources/delete:
- *   post:
+ *   delete:
  *     tags:
  *       - Resource
  *     operationId: deleteResource
@@ -118,7 +118,7 @@ router.post("/get-by", async (req, res) => {
  *         content:
  *           application/json
  */
-router.post("/delete", async (req, res) => {
+router.delete("/delete", async (req, res) => {
   console.log("delete")
   res.send(await deleteResource(req.body.id))
 })

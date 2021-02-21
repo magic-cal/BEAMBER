@@ -4,6 +4,7 @@ import { Recipe, RecipeFilter } from "utils/classes/recipes"
 import Guid from "utils/classes/common/guid"
 
 const baseUrl = "http://localhost:3000"
+// const baseUrl = "http://86d78e65dcc1.ngrok.io"
 const resourceService = "/resources"
 const recipeService = "/recipes"
 const tagService = "/tags"
@@ -26,7 +27,7 @@ export default {
   },
 
   async updateOrCreateResource(resource: Resource): Promise<void> {
-    const res = await axios.post(`${baseUrl}${resourceService}/update`, {
+    const res = await axios.put(`${baseUrl}${resourceService}/update`, {
       resource: resource
     })
     console.log("updateOrCreateResource", res)
@@ -34,8 +35,10 @@ export default {
   },
 
   async deleteResource(id: Guid): Promise<void> {
-    const res = await axios.post(`${baseUrl}${resourceService}/delete`, {
-      id: id
+    const res = await axios.delete(`${baseUrl}${resourceService}/delete`, {
+      data: {
+        id: id
+      }
     })
     console.log("deleteResource", res)
   },
@@ -57,7 +60,7 @@ export default {
   },
 
   async updateOrCreateTag(tag: Tag): Promise<void> {
-    const res = await axios.post(`${baseUrl}${tagService}/update`, {
+    const res = await axios.put(`${baseUrl}${tagService}/update`, {
       tag: tag
     })
     console.log("updateOrCreateTag", res)
@@ -65,8 +68,10 @@ export default {
   },
 
   async deleteTag(id: Guid): Promise<void> {
-    const res = await axios.post(`${baseUrl}${tagService}/delete`, {
-      id: id
+    const res = await axios.delete(`${baseUrl}${tagService}/delete`, {
+      data: {
+        id: id
+      }
     })
     console.log("deleteTag", res)
   },

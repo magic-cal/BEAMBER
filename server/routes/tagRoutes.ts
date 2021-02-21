@@ -11,7 +11,7 @@ import { Tag } from "utils/classes/resources"
 /**
  * @swagger
  * /tags/update:
- *   post:
+ *   put:
  *     tags:
  *       - Tag
  *     operationId: updateTag
@@ -34,7 +34,7 @@ import { Tag } from "utils/classes/resources"
  *         content:
  *           application/json
  */
-router.post("/update", async (req, res) => {
+router.put("/update", async (req, res) => {
   console.log("update")
   console.log("req.body.tag", req.body.tag)
   console.log("Intance of Guid", req.body.tag.id instanceof Guid)
@@ -93,7 +93,7 @@ router.post("/get-by", async (req, res) => {
 /**
  * @swagger
  * /tags/delete:
- *   post:
+ *   delete:
  *     tags:
  *       - Tag
  *     operationId: deleteTag
@@ -112,7 +112,7 @@ router.post("/get-by", async (req, res) => {
  *         content:
  *           application/json
  */
-router.post("/delete", async (req, res) => {
+router.delete("/delete", async (req, res) => {
   console.log("delete")
   res.send(await deleteTag(req.body.id))
 })
