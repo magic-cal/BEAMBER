@@ -27,7 +27,8 @@ const swaggerOptions = {
         name: "Callum McClure"
       },
       servers: ["http://localhost:3000", "http://localhost:1000"]
-    }
+    },
+    components: {}
   },
   // ['.routes/*.js']
   apis: ["./server/routes/*.ts"]

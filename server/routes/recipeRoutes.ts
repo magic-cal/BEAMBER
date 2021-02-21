@@ -22,6 +22,8 @@ import { Recipe } from "utils/classes/recipes"
  *         description: The recipe to update
  *         required: true
  *         deprecated: false
+ *         schema:
+ *           $ref: '#/components/schemas/Recipe'
  *         example:
  *           recipe:
  *             id:
@@ -62,6 +64,8 @@ router.put("/update", async (req, res) => {
  *         in: body
  *         description: The Recipe to Get
  *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/Guid'
  *         example:
  *             id:
  *              value: 6a129529-b7ae-47bb-bbfd-6de95c3d5a51
@@ -111,9 +115,11 @@ router.post("/get-by", async (req, res) => {
  *         in: body
  *         description: The Recipe to Delete
  *         required: true
+ *         schema:
+ *          $ref: '#/components/schemas/Guid'
  *         example:
- *             id:
- *              value: 6a129529-b7ae-47bb-bbfd-6de95c3d5a51
+ *          id:
+ *           value: 6a129529-b7ae-47bb-bbfd-6de95c3d5a51
  *     responses:
  *       200:
  *         description: Successful Deletion
@@ -126,3 +132,44 @@ router.delete("/delete", async (req, res) => {
 })
 
 export default router
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *   Recipe:
+ *     type: object
+ *     properties:
+ *       id:
+ *         $ref: '#/components/schemas/Guid'
+ *       name:
+ *         type: string
+ *       description:
+ *         type: string
+ *       requirementIds:
+ *         type: array
+ *         items:
+ *           $ref: '#/components/schemas/Guid'
+ *       readOnly:
+ *         type: object
+ *         $ref: '#/components/schemas/RecipeReadOnly'
+ *
+ *   RecipeReadOnly:
+ *     type: object
+ *     properties:
+ *      startTime:
+ *          type: number
+ *      endTime:
+ *          type: number
+ *      isAssembly:
+ *          type: boolean
+ *      isScheduled:
+ *          type: boolean
+ *      isComplete:
+ *         type: boolean
+ *
+ *   Guid:
+ *     type: object
+ *     properties:
+ *       value:
+ *         type: string
+ */
