@@ -15,10 +15,6 @@
             <v-col :cols="12" :sm="6">
               <v-text-field label="Description" v-model="currentRecipe.description"></v-text-field>
             </v-col>
-            <v-col>
-              <sortable-list :items="recipeSteps" :text="i => i.name" :value="i => i.id"></sortable-list>
-            </v-col>
-            <!-- @TODO: Recipes May Require a popup for reordering -->
             <v-col :cols="12" :sm="6">
               <v-select
                 multiple
@@ -30,6 +26,10 @@
                 clearable
               ></v-select>
             </v-col>
+            <v-col :cols="recipeSteps.length > 2 ? 12 : 6">
+              <sortable-list :items="recipeSteps" :text="i => i.name" :value="i => i.id"></sortable-list>
+            </v-col>
+            <!-- @TODO: Recipes May Require a popup for reordering -->
           </v-row>
         </v-container>
         <v-footer
@@ -45,12 +45,15 @@
       <v-card class="mt-6">
         <v-container>
           <v-row>
-            <v-col><h1>Recipe Steps</h1> </v-col>
+            <v-col
+              ><h1>Recipe Steps</h1>
+              <p>***Just Stubs***</p></v-col
+            >
             <v-col :cols="12"><v-btn @click.prevent.stop="addRecipeStep">Add Step</v-btn> </v-col>
           </v-row>
           <v-row v-for="(recipeStep, key) in recipeSteps" :key="recipeStep.id.value">
             <v-col :cols="12"
-              ><h3>Step : {{ key }}</h3>
+              ><h3>Step : {{ key + 1 }}</h3>
             </v-col>
             <v-col :cols="12" :sm="6">
               <v-text-field label="Name" v-model="recipeStep.name"></v-text-field>
@@ -60,24 +63,24 @@
             </v-col>
             <v-col :cols="12" :sm="6">
               <v-select
-                multiple
                 label="Resource Type"
                 v-model="recipeStep.tagId"
                 item-text="name"
                 item-value="id"
                 :items="allTags"
                 clearable
+                :disabled="!!recipeStep.requirementIds"
               ></v-select>
             </v-col>
             <v-col :cols="12" :sm="6">
               <v-select
-                multiple
                 label="Specific Resource"
                 v-model="recipeStep.requirementIds"
                 item-text="name"
                 item-value="id"
                 :items="allResources"
                 clearable
+                :disabled="!!recipeStep.tagId"
               ></v-select>
             </v-col>
             <v-col :cols="12"><v-divider /></v-col>

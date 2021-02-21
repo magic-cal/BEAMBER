@@ -3,9 +3,16 @@
     <div id="nav">
       <v-app-bar color="primary accent-4" src="@/assets/beer.jpg">
         <v-app-bar-nav-icon @click.stop="navigationDraw = !navigationDraw"></v-app-bar-nav-icon>
-        <v-toolbar-title>Amber - Vessle Management</v-toolbar-title>
+        <v-toolbar-title>
+          <div @click="goHome">
+            Amber - Vessle Management
+          </div>
+        </v-toolbar-title>
         <!-- <v-icon @click="viewContainers">md-plus</v-icon> -->
         <v-spacer></v-spacer>
+        <v-btn icon @click="goHome">
+          <v-icon>mdi-home</v-icon>
+        </v-btn>
       </v-app-bar>
     </div>
     <navigation-menu @input="navigationDraw = $event" v-model="navigationDraw"> </navigation-menu>
@@ -30,6 +37,10 @@ export default class App extends Vue {
 
   async viewContainers() {
     await this.$router.push("/viewContainers")
+  }
+
+  async goHome() {
+    await this.$router.push({ name: "Home" })
   }
 
   get loading(): boolean {

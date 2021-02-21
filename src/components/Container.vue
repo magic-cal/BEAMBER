@@ -9,12 +9,14 @@
           class="ma-2"
           src="https://www.pngkit.com/png/detail/61-610226_holland-juice-glass-svg-glass-clipart.png"
         /> -->
-        <container-preview />
+        <!-- Add value -->
+        <container-preview :requires-clean="value.maintananceRequired" />
       </v-col>
       <v-col>
         <div>Name: {{ value.name || "-" }}</div>
         <div>Capacity: {{ value.capacity || "-" }}</div>
         <div>Current Process: {{ value.process || "-" }}</div>
+        <div>Requires Clean: {{ value.maintananceRequired ? "Yes" : "No" || "-" }}</div>
       </v-col>
     </v-row>
     <v-card-actions>
