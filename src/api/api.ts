@@ -1,9 +1,11 @@
 import axios from "axios"
 import { Resource, ResourceFilter, Tag, TagFilter } from "utils/classes/resources"
+import { Recipe, RecipeFilter } from "utils/classes/recipes"
 import Guid from "utils/classes/common/guid"
 
 const baseUrl = "http://localhost:3000"
 const resourceService = "/resources"
+const recipeService = "/recipes"
 const tagService = "/tags"
 
 export default {
@@ -67,5 +69,38 @@ export default {
       id: id
     })
     console.log("deleteTag", res)
+  },
+
+  //  RECIPE SERVICE #####################################################################################
+
+  async getRecipe(id: Guid): Promise<Recipe> {
+    const res = await axios.post(`${baseUrl}${recipeService}/get`, {
+      id: id
+    })
+    console.log("getRecipe", res)
+    return res.data as Recipe
+  },
+
+  async getRecipes(filter?: RecipeFilter): Promise<Recipe[]> {
+    const res = await axios.post(`${baseUrl}${recipeService}/get-by`, { filter: filter })
+    console.log("getRecipes", res)
+    return res.data
+  },
+
+  async updateOrCreateRecipe(recipe: Recipe): Promise<void> {
+    const res = await axios.put(`${baseUrl}${recipeService}/update`, {
+      recipe: recipe
+    })
+    console.log("updateOrCreateRecipe", res)
+    return res.data
+  },
+
+  async deleteRecipe(id: Guid): Promise<void> {
+    const res = await axios.delete(`${baseUrl}${recipeService}/delete`, {
+      data: {
+        id: id
+      }
+    })
+    console.log("deleteRecipe", res)
   }
 }

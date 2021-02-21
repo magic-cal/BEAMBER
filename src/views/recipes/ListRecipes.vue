@@ -60,10 +60,10 @@ export default class ListRecipes extends Vue {
 
   @WithLoading
   async created() {
-    // this.recipes = await api.getRecipes()
+    this.recipes = await api.getRecipes()
     // this.recipes.forEach(recipe => {
-    //   recipe.readOnly = new RecipeReadonly()
-    //   recipe.readOnly.fromTags(recipe.tags)
+    //   // recipe.readOnly = new RecipeReadonly()
+    //   // recipe.readOnly.fromTags(recipe.tags)
     // })
   }
 }

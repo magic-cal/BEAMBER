@@ -24,19 +24,6 @@ import { Recipe } from "utils/classes/recipes"
  *         deprecated: false
  *         schema:
  *           $ref: '#/components/schemas/Recipe'
- *         example:
- *           recipe:
- *             id:
- *               value: 6a129529-b7ae-47bb-bbfd-6de95c3d5a51
- *             name: string
- *             description: string
- *             requirementIds: []
- *             readOnly:
- *               startTime: 0
- *               endTime: 0
- *               isAssembly: false
- *               isScheduled: false
- *               isComplete: false
  *         x-last-modified: 1613852751652
  *     responses:
  *       200:
@@ -47,7 +34,6 @@ import { Recipe } from "utils/classes/recipes"
 router.put("/update", async (req, res) => {
   console.log("update")
   console.log("req.body.recipe", req.body.recipe)
-  console.log("Intance of Guid", req.body.recipe.id instanceof Guid)
 
   res.send(await updateOrCreateRecipe(req.body.recipe as Recipe))
 })
@@ -66,9 +52,7 @@ router.put("/update", async (req, res) => {
  *         required: true
  *         schema:
  *           $ref: '#/components/schemas/Guid'
- *         example:
- *             id:
- *              value: 6a129529-b7ae-47bb-bbfd-6de95c3d5a51
+ *
  *     responses:
  *       200:
  *         description: The selected Recipe.
@@ -152,6 +136,19 @@ export default router
  *       readOnly:
  *         type: object
  *         $ref: '#/components/schemas/RecipeReadOnly'
+ *     example:
+ *           recipe:
+ *             id:
+ *               value: 6a129529-b7ae-47bb-bbfd-6de95c3d5a51
+ *             name: IPA
+ *             description: Generic IPA Recipe
+ *             requirementIds: []
+ *             readOnly:
+ *               startTime: 0
+ *               endTime: 0
+ *               isAssembly: false
+ *               isScheduled: false
+ *               isComplete: false
  *
  *   RecipeReadOnly:
  *     type: object
@@ -172,4 +169,7 @@ export default router
  *     properties:
  *       value:
  *         type: string
+ *     example:
+ *      id:
+ *        value: 6a129529-b7ae-47bb-bbfd-6de95c3d5a51
  */

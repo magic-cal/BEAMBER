@@ -26,7 +26,7 @@ const swaggerOptions = {
       contact: {
         name: "Callum McClure"
       },
-      servers: ["http://localhost:3000", "http://localhost:1000"]
+      servers: ["http://localhost:3000"]
     },
     components: {}
   },

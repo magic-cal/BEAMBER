@@ -3,8 +3,10 @@ import App from "./App.vue"
 import router from "./router"
 import vuetify from "@/plugins/vuetify"
 import "@mdi/font/css/materialdesignicons.css" // Ensure you are using css-loader
+import APage from "@/components/APage.vue"
 
 Vue.config.productionTip = false
+Vue.component("APage", APage)
 
 new Vue({
   router,
