@@ -27,7 +27,7 @@
               ></v-select>
             </v-col>
             <v-col :cols="recipeSteps.length > 2 ? 12 : 6">
-              <sortable-list :items="recipeSteps" :text="i => i.name" :value="i => i.id"></sortable-list>
+              <sortable-list :items="recipeSteps" :text="(i) => i.name" :value="(i) => i.id"></sortable-list>
             </v-col>
             <!-- @TODO: Recipes May Require a popup for reordering -->
           </v-row>

@@ -61,7 +61,7 @@ export default class ListResources extends Vue {
   @WithLoading
   async created() {
     this.resources = await api.getResources()
-    this.resources.forEach(resource => {
+    this.resources.forEach((resource) => {
       resource.readOnly = new ResourceReadonly()
       resource.readOnly.fromTags(resource.tags)
     })

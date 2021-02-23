@@ -26,7 +26,7 @@ export const routes: Array<RouteConfig> = [
     path: "/resource-management/:resourceId",
     name: "EditResource",
     component: EditResource,
-    props: route => ({
+    props: (route) => ({
       resourceId: route.params["resourceId"]
     })
   },
@@ -39,7 +39,7 @@ export const routes: Array<RouteConfig> = [
     path: "/tag-management/:tagId",
     name: "EditTag",
     component: EditTag,
-    props: route => ({
+    props: (route) => ({
       tagId: route.params["tagId"]
     })
   },
@@ -52,7 +52,7 @@ export const routes: Array<RouteConfig> = [
     path: "/recipe-management/:recipeId",
     name: "EditRecipe",
     component: EditRecipe,
-    props: route => ({
+    props: (route) => ({
       recipeId: route.params["recipeId"]
     })
   }
