@@ -6,7 +6,6 @@ jobs:
     docker:
       - image: 'cimg/base:stable'
     steps: 
-      - run: node --version
       - run: npm run lint
 workflows:
   node-tests:
