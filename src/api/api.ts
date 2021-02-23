@@ -4,7 +4,7 @@ import { Recipe, RecipeFilter } from "utils/classes/recipes"
 import Guid from "utils/classes/common/guid"
 
 const baseUrl = "http://localhost:3000"
-// const baseUrl = "http://86d78e65dcc1.ngrok.io"
+// const baseUrl = "http://###########.ngrok.io" ## For live Demo
 const resourceService = "/resources"
 const recipeService = "/recipes"
 const tagService = "/tags"

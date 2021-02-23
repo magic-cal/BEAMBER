@@ -21,7 +21,7 @@
     </v-row>
     <v-card-actions>
       <v-col :cols="12">
-        <v-btn @click.stop.prevent class="pb-0" style="width: 100%">Actions</v-btn>
+        <v-btn @click.stop.prevent="editResource(value)" class="pb-0" style="width: 100%">Actions</v-btn>
       </v-col>
     </v-card-actions>
   </v-card>

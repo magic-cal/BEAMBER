@@ -6,11 +6,11 @@ export interface NavigationItem {
 }
 
 export const navigationItems: NavigationItem[] = [
-  { id: null, name: "Home", icon: "", pathName: "Home" },
+  { id: null, name: "Home", icon: "mdi-home", pathName: "Home" },
   {
     id: null,
     name: "Resources List",
-    icon: "",
+    icon: "mdi-cup",
     pathName: "ResourceList"
   },
   // {
@@ -22,13 +22,13 @@ export const navigationItems: NavigationItem[] = [
   {
     id: null,
     name: "Tags List",
-    icon: "",
+    icon: "mdi-tag",
     pathName: "TagList"
   },
   {
     id: null,
     name: "Recipe List",
-    icon: "",
+    icon: "mdi-format-list-numbered",
     pathName: "RecipeList"
   }
   // {

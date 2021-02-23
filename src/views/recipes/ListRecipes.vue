@@ -38,10 +38,10 @@ export default class ListRecipes extends Vue {
       value: "name"
     },
     {
-      text: "Recipe Tags",
+      text: "Recipe Description",
       align: "start",
       sortable: false,
-      value: "readOnly.tagList"
+      value: "description"
     }
   ]
 

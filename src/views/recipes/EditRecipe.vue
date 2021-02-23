@@ -1,5 +1,5 @@
 <template>
-  <APage>
+  <a-page>
     <v-container>
       <v-card>
         <v-container>
@@ -88,9 +88,9 @@
         </v-container>
         <v-footer
           ><v-row>
-            <v-col> <v-btn @click="deleteRecipe" v-if="recipeId"> Delete </v-btn></v-col>
+            <v-col> <v-btn disabled @click="deleteRecipe" v-if="recipeId"> Delete </v-btn></v-col>
             <v-col align="right"
-              ><v-btn @click="update">{{ recipeId ? "Update" : "Create" }}</v-btn></v-col
+              ><v-btn disabled @click="update">{{ recipeId ? "Update" : "Create" }}</v-btn></v-col
             ></v-row
           ></v-footer
         >
@@ -101,7 +101,7 @@
         </v-row></v-footer
       >
     </v-container>
-  </APage>
+  </a-page>
 </template>
 
 <script lang="ts">
@@ -113,7 +113,7 @@ import { Recipe, RecipeStep } from "@/../utils/classes/recipes"
 import Guid from "@/../utils/classes/common/guid"
 import { Resource, Tag } from "utils/classes/resources"
 import SortableList from "@/components/SortableList.vue"
-import { Drag, DropList, InsertEvent } from "vue-easy-dnd"
+import { Drag, DropList } from "vue-easy-dnd"
 
 @Component({ components: { SortableList, DropList, Drag } })
 export default class EditRecipes extends Vue {
