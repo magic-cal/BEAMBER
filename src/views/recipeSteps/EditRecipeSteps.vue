@@ -57,7 +57,6 @@ import Vue from "vue"
 import { Component, Prop } from "vue-property-decorator"
 import { WithLoading } from "@/store/modules/appStore"
 import { Recipe } from "@/../utils/classes/recipes"
-import Guid from "@/../utils/classes/common/guid"
 import { Resource, Tag } from "utils/classes/resources"
 
 @Component

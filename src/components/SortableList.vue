@@ -19,7 +19,7 @@
 import { Drag, DropList, InsertEvent } from "vue-easy-dnd"
 
 import Vue from "vue"
-import { Component, Model, Prop } from "vue-property-decorator"
+import { Component, Prop } from "vue-property-decorator"
 import Guid from "utils/classes/common/guid"
 
 @Component({ components: { DropList, Drag } })

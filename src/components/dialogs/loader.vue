@@ -12,7 +12,6 @@
 <script lang="ts">
 import { Vue, Component, Watch } from "vue-property-decorator"
 import appStore from "@/store/modules/appStore"
-import { mixins } from "vue-class-component"
 
 /**
  * Unfortunately when this dialog comes and goes quickly the overlay can sometimes get stuck active. Presumably this is
@@ -20,7 +19,7 @@ import { mixins } from "vue-class-component"
  */
 @Component
 export default class Loader extends Vue {
-  timer: any = 0
+  timer = 0
   active = false
 
   get loading() {
@@ -29,13 +28,13 @@ export default class Loader extends Vue {
   }
 
   @Watch("loading", { immediate: true })
-  public loadingWatch(val: boolean, oldVal: boolean) {
+  public loadingWatch(val: boolean) {
     clearTimeout(this.timer)
 
     this.active = val
 
     if (!val) {
-      this.timer = setTimeout(() => {
+      this.timer = window.setTimeout(() => {
         ;(this.$refs.loadingDialog as any).removeOverlay()
       }, 100)
     }

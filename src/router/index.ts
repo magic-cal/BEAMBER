@@ -1,7 +1,6 @@
 import Vue from "vue"
 import VueRouter, { RouteConfig } from "vue-router"
 import Home from "../views/Home.vue"
-import Admin from "@/views/Admin.vue"
 import EditResource from "@/views/resources/EditResource.vue"
 import ListResources from "@/views/resources/ListResources.vue"
 import EditTag from "@/views/tags/EditTag.vue"

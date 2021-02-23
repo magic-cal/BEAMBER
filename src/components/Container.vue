@@ -29,10 +29,9 @@
 
 <script lang="ts">
 import { Resource } from "@/../utils/classes/resources"
-import Guid from "utils/classes/common/guid"
 import ContainerPreview from "@/components/ContainerPreview.vue"
 import Vue from "vue"
-import { Component, Model, Prop } from "vue-property-decorator"
+import { Component, Prop } from "vue-property-decorator"
 @Component({ components: { ContainerPreview } })
 export default class Container extends Vue {
   // @Model("input", {type: Boolean, required: true})
