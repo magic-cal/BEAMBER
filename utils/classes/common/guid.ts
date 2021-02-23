@@ -30,7 +30,7 @@ export default class Guid {
   }
 
   public static create(): Guid {
-    return new Guid([Guid.gen(2), Guid.gen(1), Guid.gen(1), Guid.gen(1), Guid.gen(3)].join("-"))
+    return new Guid(Guid.generateGuidString())
   }
 
   public static createEmpty(): Guid {
@@ -42,7 +42,7 @@ export default class Guid {
   }
 
   public static raw(): string {
-    return [Guid.gen(2), Guid.gen(1), Guid.gen(1), Guid.gen(1), Guid.gen(3)].join("-")
+    return Guid.generateGuidString()
   }
 
   private static gen(count: number): string {
@@ -52,6 +52,10 @@ export default class Guid {
       out += (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
     }
     return out
+  }
+
+  private static generateGuidString() {
+    return [Guid.gen(2), Guid.gen(1), Guid.gen(1), Guid.gen(1), Guid.gen(3)].join("-")
   }
 
   public readonly value: string
