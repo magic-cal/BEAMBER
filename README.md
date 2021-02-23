@@ -1,5 +1,6 @@
 # Amber
 
+Main: [![Build Status](https://travis-ci.com/magic-cal/BEAMBER.svg?branch=main)](https://travis-ci.com/magic-cal/BEAMBER) Dev: [![Build Status](https://travis-ci.com/magic-cal/BEAMBER.svg?branch=dev)](https://travis-ci.com/magic-cal/BEAMBER)
 A resource scheduling system for breweries and distilleries
 
 `npm run serve` to run both client & server project concurrently
