@@ -1,17 +1,18 @@
 <template>
   <div class="home">
-    <!-- <v-row>
+    <v-row>
       <v-col align="center">
         <h1>Amber</h1>
+        <h1>{{ $t("hello_world") }}</h1>
       </v-col>
-    </v-row> -->
+    </v-row>
     <v-container>
       <v-row>
         <v-col align="center">
-          <v-btn :to="{ name: 'ResourceList' }">ResourceList</v-btn>
+          <v-btn :to="{ name: 'ResourceList' }">{{ $t("resource_list") }}</v-btn>
         </v-col>
         <v-col align="center">
-          <v-btn :to="{ name: 'TagList' }">TagList</v-btn>
+          <v-btn :to="{ name: 'TagList' }">{{ $t("tag_list") }}</v-btn>
         </v-col>
         <!-- <v-col align="center">
           <v-btn>Hi</v-btn>
