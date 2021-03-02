@@ -4,17 +4,17 @@
       <v-container>
         <v-row>
           <v-col
-            ><h1>{{ resourceId ? "Edit Resource: " + currentResource.name : "Create Resource" }}</h1>
+            ><h1>{{ resourceId ? $t("edit_resource") + ": " + currentResource.name : $t("create_resource") }}</h1>
           </v-col>
         </v-row>
         <v-row>
           <v-col :cols="12" :sm="6">
-            <v-text-field label="Name" v-model="currentResource.name"></v-text-field>
+            <v-text-field :label="$t('name')" v-model="currentResource.name"></v-text-field>
           </v-col>
           <v-col :cols="12" :sm="6">
             <v-select
               multiple
-              label="Tags"
+              :label="$t('tags')"
               v-model="currentResource.tags"
               item-text="name"
               item-value="id.value"
@@ -27,16 +27,20 @@
       </v-container>
       <v-footer
         ><v-row>
-          <v-col> <v-btn @click="deleteResource" v-if="resourceId"> Delete </v-btn></v-col>
+          <v-col>
+            <v-btn @click="deleteResource" v-if="resourceId">{{ $t("delete") }}</v-btn></v-col
+          >
           <v-col align="right"
-            ><v-btn @click="update">{{ resourceId ? "Update" : "Create" }}</v-btn></v-col
+            ><v-btn @click="update">{{ $t(resourceId ? "update" : "create") }}</v-btn></v-col
           ></v-row
         ></v-footer
       >
     </v-card>
     <v-footer fixed outlined
       ><v-row>
-        <v-col> <v-btn @click="back">Back</v-btn></v-col>
+        <v-col>
+          <v-btn @click="back">{{ $t("back") }}</v-btn></v-col
+        >
       </v-row></v-footer
     >
   </v-container>

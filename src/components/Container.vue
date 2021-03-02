@@ -13,15 +13,15 @@
         <container-preview :requires-clean="value.maintananceRequired" />
       </v-col>
       <v-col>
-        <div>Name: {{ value.name || "-" }}</div>
-        <div>Capacity: {{ value.capacity || "-" }}</div>
-        <div>Current Process: {{ value.process || "-" }}</div>
-        <div>Requires Clean: {{ value.maintananceRequired ? "Yes" : "No" || "-" }}</div>
+        <div>{{ $t("name") }}: {{ value.name || "-" }}</div>
+        <div>{{ $t("capacity") }}: {{ value.capacity || "-" }}</div>
+        <div>{{ $t("current_process") }}: {{ value.process || "-" }}</div>
+        <div>{{ $t("requires_clean") }}: {{ $t(value.maintananceRequired.toString()) || "-" }}</div>
       </v-col>
     </v-row>
     <v-card-actions>
       <v-col :cols="12">
-        <v-btn @click.stop.prevent="editResource(value)" class="pb-0" style="width: 100%">Actions</v-btn>
+        <v-btn @click.stop.prevent="editResource(value)" class="pb-0" style="width: 100%">{{ $t("actions") }}</v-btn>
       </v-col>
     </v-card-actions>
   </v-card>

@@ -14,7 +14,9 @@
     </v-row>
     <v-footer fixed
       ><v-row>
-        <v-col align="right"><v-btn @click="createNew">Create New</v-btn></v-col></v-row
+        <v-col align="right"
+          ><v-btn @click="createNew">{{ $t("create_new") }}</v-btn></v-col
+        ></v-row
       ></v-footer
     >
   </v-container>
@@ -32,13 +34,13 @@ export default class ListTags extends Vue {
 
   headers = [
     {
-      text: "Tag Name",
+      text: this.$t("tag_name"),
       align: "start",
       sortable: true,
       value: "name"
     },
     {
-      text: "Tag Description",
+      text: this.$t("tag_description"),
       align: "start",
       sortable: false,
       value: "description"

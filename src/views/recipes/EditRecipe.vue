@@ -5,20 +5,20 @@
         <v-container>
           <v-row>
             <v-col
-              ><h1>{{ recipeId ? "Edit Recipe: " + currentRecipe.name : "Create Recipe" }}</h1>
+              ><h1>{{ recipeId ? $t("edit_recipe") + ": " + currentRecipe.name : $t("create_recipe") }}</h1>
             </v-col>
           </v-row>
           <v-row>
             <v-col :cols="12" :sm="6">
-              <v-text-field label="Name" v-model="currentRecipe.name"></v-text-field>
+              <v-text-field :label="$t('name')" v-model="currentRecipe.name"></v-text-field>
             </v-col>
             <v-col :cols="12" :sm="6">
-              <v-text-field label="Description" v-model="currentRecipe.description"></v-text-field>
+              <v-text-field :label="$t('description')" v-model="currentRecipe.description"></v-text-field>
             </v-col>
             <v-col :cols="12" :sm="6">
               <v-select
                 multiple
-                label="Recipe Prerequisites"
+                :label="$t('recipe_prerequisites')"
                 v-model="currentRecipe.requirementIds"
                 item-text="name"
                 item-value="id"
@@ -34,9 +34,11 @@
         </v-container>
         <v-footer
           ><v-row>
-            <v-col> <v-btn @click="deleteRecipe" v-if="recipeId"> Delete </v-btn></v-col>
+            <v-col>
+              <v-btn @click="deleteRecipe" v-if="recipeId">{{ $t("delete") }}</v-btn></v-col
+            >
             <v-col align="right"
-              ><v-btn @click="update">{{ recipeId ? "Update" : "Create" }}</v-btn></v-col
+              ><v-btn @click="update">{{ $t(recipeId ? "update" : "create") }}</v-btn></v-col
             ></v-row
           ></v-footer
         >
@@ -46,24 +48,26 @@
         <v-container>
           <v-row>
             <v-col
-              ><h1>Recipe Steps</h1>
+              ><h1>{{ $t("recipe_steps") }}</h1>
               <p>***Just Stubs***</p></v-col
             >
-            <v-col :cols="12"><v-btn @click.prevent.stop="addRecipeStep">Add Step</v-btn> </v-col>
+            <v-col :cols="12"
+              ><v-btn @click.prevent.stop="addRecipeStep">{{ $t("add_step") }}</v-btn>
+            </v-col>
           </v-row>
           <v-row v-for="(recipeStep, key) in recipeSteps" :key="recipeStep.id.value">
             <v-col :cols="12"
-              ><h3>Step : {{ key + 1 }}</h3>
+              ><h3>{{ $t("step") + ": " }}{{ key + 1 }}</h3>
             </v-col>
             <v-col :cols="12" :sm="6">
-              <v-text-field label="Name" v-model="recipeStep.name"></v-text-field>
+              <v-text-field :label="$t('name')" v-model="recipeStep.name"></v-text-field>
             </v-col>
             <v-col :cols="12" :sm="6">
-              <v-text-field label="Description" v-model="recipeStep.description"></v-text-field>
+              <v-text-field :label="$t('description')" v-model="recipeStep.description"></v-text-field>
             </v-col>
             <v-col :cols="12" :sm="6">
               <v-select
-                label="Resource Type"
+                :label="$t('resource_type')"
                 v-model="recipeStep.tagId"
                 item-text="name"
                 item-value="id"
@@ -74,7 +78,7 @@
             </v-col>
             <v-col :cols="12" :sm="6">
               <v-select
-                label="Specific Resource"
+                :label="$t('specific_resource')"
                 v-model="recipeStep.requirementIds"
                 item-text="name"
                 item-value="id"
@@ -88,16 +92,20 @@
         </v-container>
         <v-footer
           ><v-row>
-            <v-col> <v-btn disabled @click="deleteRecipe" v-if="recipeId"> Delete </v-btn></v-col>
+            <v-col>
+              <v-btn disabled @click="deleteRecipe" v-if="recipeId">{{ $t("delete") }}</v-btn></v-col
+            >
             <v-col align="right"
-              ><v-btn disabled @click="update">{{ recipeId ? "Update" : "Create" }}</v-btn></v-col
+              ><v-btn disabled @click="update">{{ $t(recipeId ? "update" : "create") }}</v-btn></v-col
             ></v-row
           ></v-footer
         >
       </v-card>
       <v-footer fixed outlined
         ><v-row>
-          <v-col> <v-btn @click="back">Back</v-btn></v-col>
+          <v-col>
+            <v-btn @click="back">{{ $t("back") }}</v-btn></v-col
+          >
         </v-row></v-footer
       >
     </v-container>

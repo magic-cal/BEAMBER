@@ -4,30 +4,34 @@
       <v-container>
         <v-row>
           <v-col
-            ><h1>{{ tagId ? "Edit Tag: " + currentTag.name : "Create Tag" }}</h1>
+            ><h1>{{ tagId ? $t("edit_tag") + ": " + currentTag.name : $t("create_tag") }}</h1>
           </v-col>
         </v-row>
         <v-row>
           <v-col :cols="12" :sm="6">
-            <v-text-field label="Name" v-model="currentTag.name"></v-text-field>
+            <v-text-field :label="$t('name')" v-model="currentTag.name"></v-text-field>
           </v-col>
           <v-col :cols="12" :sm="6">
-            <v-text-field label="Description" v-model="currentTag.description"></v-text-field>
+            <v-text-field :label="$t('description')" v-model="currentTag.description"></v-text-field>
           </v-col>
         </v-row>
       </v-container>
       <v-footer
         ><v-row>
-          <v-col> <v-btn @click="deleteTag" v-if="tagId"> Delete </v-btn></v-col>
+          <v-col>
+            <v-btn @click="deleteTag" v-if="tagId">{{ $t("delete") }}</v-btn></v-col
+          >
           <v-col align="right"
-            ><v-btn @click="update">{{ tagId ? "Update" : "Create" }}</v-btn></v-col
+            ><v-btn @click="update">{{ $t(tagId ? "update" : "create") }}</v-btn></v-col
           ></v-row
         ></v-footer
       >
     </v-card>
     <v-footer fixed outlined
       ><v-row>
-        <v-col> <v-btn @click="back">Back</v-btn></v-col>
+        <v-col>
+          <v-btn @click="back">{{ $t("back") }}</v-btn></v-col
+        >
       </v-row></v-footer
     >
   </v-container>
