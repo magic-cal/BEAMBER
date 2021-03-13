@@ -16,6 +16,7 @@
     "routes-gen": "tsoa routes",
     "copy-swagger-ui": "ncp ./src/swagger-ui ./dist/swagger-ui",
     "tsoa": "tsoa",
+    "gen": "npm run swagger-gen && npm run routes-gen && npm run fe",
     "fe": "npx openapi-generator-cli generate -g typescript-fetch -i ./utils/swagger.json -o ./src/api1 --skip-validate-spec"
   },
   "dependencies": {

@@ -23,22 +23,6 @@ import {
     TagToJSON,
 } from '../models';
 
-export interface DeleteTagRequest {
-    body: any | null;
-}
-
-export interface GetTagRequest {
-    body: any | null;
-}
-
-export interface GetTagsByFilterRequest {
-    requestBody?: { [key: string]: object; };
-}
-
-export interface UpdateOrCreateTagRequest {
-    requestBody: { [key: string]: object; };
-}
-
 /**
  * 
  */
@@ -46,23 +30,16 @@ export class TagsApi extends runtime.BaseAPI {
 
     /**
      */
-    async deleteTagRaw(requestParameters: DeleteTagRequest): Promise<runtime.ApiResponse<boolean>> {
-        if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling deleteTag.');
-        }
-
+    async deleteTagRaw(): Promise<runtime.ApiResponse<boolean>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
             path: `/tags/delete`,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.body as any,
         });
 
         return new runtime.TextApiResponse(response) as any;
@@ -70,30 +47,23 @@ export class TagsApi extends runtime.BaseAPI {
 
     /**
      */
-    async deleteTag(requestParameters: DeleteTagRequest): Promise<boolean> {
-        const response = await this.deleteTagRaw(requestParameters);
+    async deleteTag(): Promise<boolean> {
+        const response = await this.deleteTagRaw();
         return await response.value();
     }
 
     /**
      */
-    async getTagRaw(requestParameters: GetTagRequest): Promise<runtime.ApiResponse<Tag>> {
-        if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling getTag.');
-        }
-
+    async getTagRaw(): Promise<runtime.ApiResponse<Tag>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
             path: `/tags/get`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.body as any,
         });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => TagFromJSON(jsonValue));
@@ -101,26 +71,23 @@ export class TagsApi extends runtime.BaseAPI {
 
     /**
      */
-    async getTag(requestParameters: GetTagRequest): Promise<Tag> {
-        const response = await this.getTagRaw(requestParameters);
+    async getTag(): Promise<Tag> {
+        const response = await this.getTagRaw();
         return await response.value();
     }
 
     /**
      */
-    async getTagsByFilterRaw(requestParameters: GetTagsByFilterRequest): Promise<runtime.ApiResponse<Array<Tag>>> {
+    async getTagsByFilterRaw(): Promise<runtime.ApiResponse<Array<Tag>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
             path: `/tags/get-by`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.requestBody,
         });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(TagFromJSON));
@@ -128,30 +95,23 @@ export class TagsApi extends runtime.BaseAPI {
 
     /**
      */
-    async getTagsByFilter(requestParameters: GetTagsByFilterRequest): Promise<Array<Tag>> {
-        const response = await this.getTagsByFilterRaw(requestParameters);
+    async getTagsByFilter(): Promise<Array<Tag>> {
+        const response = await this.getTagsByFilterRaw();
         return await response.value();
     }
 
     /**
      */
-    async updateOrCreateTagRaw(requestParameters: UpdateOrCreateTagRequest): Promise<runtime.ApiResponse<QueryResultAny>> {
-        if (requestParameters.requestBody === null || requestParameters.requestBody === undefined) {
-            throw new runtime.RequiredError('requestBody','Required parameter requestParameters.requestBody was null or undefined when calling updateOrCreateTag.');
-        }
-
+    async updateOrCreateTagRaw(): Promise<runtime.ApiResponse<QueryResultAny>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
             path: `/tags/update`,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.requestBody,
         });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => QueryResultAnyFromJSON(jsonValue));
@@ -159,8 +119,8 @@ export class TagsApi extends runtime.BaseAPI {
 
     /**
      */
-    async updateOrCreateTag(requestParameters: UpdateOrCreateTagRequest): Promise<QueryResultAny> {
-        const response = await this.updateOrCreateTagRaw(requestParameters);
+    async updateOrCreateTag(): Promise<QueryResultAny> {
+        const response = await this.updateOrCreateTagRaw();
         return await response.value();
     }
 
