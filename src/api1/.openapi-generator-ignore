@@ -21,3 +21,5 @@
 #docs/*.md
 # Then explicitly reverse the ignore rule for a single file:
 #!docs/README.md
+#Update runtime to allow fetch withough GlobalFetch -> WindowOrWorkerGlobalScope
+runtime.ts

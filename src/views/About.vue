@@ -13,7 +13,7 @@
 <script lang="ts">
 import Vue from "vue"
 import Component from "vue-class-component"
-import api from "@/api/api.ts"
+import api from "@/api/api"
 import Guid from "utils/classes/common/guid"
 import { Resource } from "utils/classes/resources"
 
