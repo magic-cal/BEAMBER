@@ -24,7 +24,7 @@
 
 <script lang="ts">
 // import api from "@/api/api"
-import { TagsApi } from "@/api1/index"
+import api from "@/api1/api"
 import { WithLoading } from "@/store/modules/appStore"
 import { Tag } from "utils/classes/resources"
 import Vue from "vue"
@@ -63,10 +63,8 @@ export default class ListTags extends Vue {
 
   @WithLoading
   async created() {
-    const i = new TagsApi()
-    this.tags = await i.getTagsByFilter()
-    // this.tags = await i.getTagsByFilter()
-    // this.tags = await api.getTags()
+    this.tags = await api.tagsApi.getTagsByFilter()
+    // i.getTag()
   }
 }
 </script>

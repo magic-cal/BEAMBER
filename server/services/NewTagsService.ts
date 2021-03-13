@@ -61,7 +61,7 @@ export class TagsController extends Controller {
   }
 
   @Post("get-by")
-  public async getTagsByFilter(@BodyProp() filter?: TagFilter) {
+  public async getTagsByFilter(@Body() filter?: TagFilter) {
     let query =
       "SELECT DISTINCT ON (tags.tag_id) tags.tag_id, tag_name, tag_description FROM tags \
       LEFT JOIN resource_tags ON (tags.tag_id = resource_tags.tag_id)"
@@ -75,7 +75,7 @@ export class TagsController extends Controller {
   }
 
   @Delete("delete")
-  public async deleteTag(@BodyProp("id") tagId: Guid) {
+  public async deleteTag(@Body() tagId: Guid) {
     await this.updateResourceRelation([], tagId)
     const result = await sqlToDB("DELETE FROM tags WHERE tag_id = $1", [tagId.value])
     return !!result.rowCount
@@ -87,7 +87,7 @@ export class TagsController extends Controller {
     description: "Mash Tun"
   })
   @Put("update")
-  public async updateOrCreateTag(@BodyProp() tag: Tag) {
+  public async updateOrCreateTag(@Body() tag: Tag) {
     if (tag.id.value !== Guid.createEmpty().value || (await this.getTag(tag.id))) {
       return await sqlToDB("UPDATE tags SET tag_name = $1, tag_description = $2 WHERE tag_id = $3;", [
         tag.name,

@@ -184,7 +184,17 @@
 					"Tags"
 				],
 				"security": [],
-				"parameters": []
+				"parameters": [],
+				"requestBody": {
+					"required": false,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/TagFilter"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/tags/delete": {
@@ -206,7 +216,17 @@
 					"Tags"
 				],
 				"security": [],
-				"parameters": []
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Guid"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/tags/update": {
@@ -236,7 +256,17 @@
 					"Tags"
 				],
 				"security": [],
-				"parameters": []
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Tag"
+							}
+						}
+					}
+				}
 			}
 		}
 	},

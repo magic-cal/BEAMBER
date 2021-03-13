@@ -94,7 +94,7 @@ export function RegisterRoutes(app: express.Router) {
         app.post('/tags/get-by',
             function (request: any, response: any, next: any) {
             const args = {
-                    filter: {"in":"body-prop","name":"filter","ref":"TagFilter"},
+                    filter: {"in":"body","name":"filter","ref":"TagFilter"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -116,7 +116,7 @@ export function RegisterRoutes(app: express.Router) {
         app.delete('/tags/delete',
             function (request: any, response: any, next: any) {
             const args = {
-                    tagId: {"in":"body-prop","name":"id","required":true,"ref":"Guid"},
+                    tagId: {"in":"body","name":"tagId","required":true,"ref":"Guid"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -138,7 +138,7 @@ export function RegisterRoutes(app: express.Router) {
         app.put('/tags/update',
             function (request: any, response: any, next: any) {
             const args = {
-                    tag: {"in":"body-prop","name":"tag","required":true,"ref":"Tag"},
+                    tag: {"in":"body","name":"tag","required":true,"ref":"Tag"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
