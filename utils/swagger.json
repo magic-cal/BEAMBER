@@ -1,0 +1,248 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"Guid": {
+				"example": {
+					"value": "0a0796d0-92a2-46c2-bd51-4fc8b63b7b0d"
+				}
+			},
+			"Tag": {
+				"properties": {
+					"id": {
+						"$ref": "#/components/schemas/Guid"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"description"
+				],
+				"type": "object",
+				"additionalProperties": true,
+				"example": {
+					"id": {
+						"value": "0a0796d0-92a2-46c2-bd51-4fc8b63b7b0a"
+					},
+					"name": "Kettle",
+					"description": "Kettle Tag"
+				}
+			},
+			"TagFilter": {
+				"properties": {
+					"resourceIds": {
+						"items": {
+							"$ref": "#/components/schemas/Guid"
+						},
+						"type": "array",
+						"default": []
+					},
+					"includeDeleted": {
+						"type": "boolean",
+						"default": false
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"FieldDef": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"tableID": {
+						"type": "number",
+						"format": "double"
+					},
+					"columnID": {
+						"type": "number",
+						"format": "double"
+					},
+					"dataTypeID": {
+						"type": "number",
+						"format": "double"
+					},
+					"dataTypeSize": {
+						"type": "number",
+						"format": "double"
+					},
+					"dataTypeModifier": {
+						"type": "number",
+						"format": "double"
+					},
+					"format": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"tableID",
+					"columnID",
+					"dataTypeID",
+					"dataTypeSize",
+					"dataTypeModifier",
+					"format"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"QueryResult_any_": {
+				"properties": {
+					"command": {
+						"type": "string"
+					},
+					"rowCount": {
+						"type": "number",
+						"format": "double"
+					},
+					"oid": {
+						"type": "number",
+						"format": "double"
+					},
+					"fields": {
+						"items": {
+							"$ref": "#/components/schemas/FieldDef"
+						},
+						"type": "array"
+					},
+					"rows": {
+						"items": {},
+						"type": "array"
+					}
+				},
+				"required": [
+					"command",
+					"rowCount",
+					"oid",
+					"fields",
+					"rows"
+				],
+				"type": "object",
+				"additionalProperties": true
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "amber",
+		"version": "2.0.0",
+		"contact": {}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/tags/get": {
+			"post": {
+				"operationId": "GetTag",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Tag"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Tags"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/tags/get-by": {
+			"post": {
+				"operationId": "GetTagsByFilter",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Tag"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Tags"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/tags/delete": {
+			"delete": {
+				"operationId": "DeleteTag",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "boolean"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Tags"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/tags/update": {
+			"put": {
+				"operationId": "UpdateOrCreateTag",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/QueryResult_any_"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "Mash Tun",
+											"description": "Mash Tun"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Tags"
+				],
+				"security": [],
+				"parameters": []
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}

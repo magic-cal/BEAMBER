@@ -1,4 +1,4 @@
-/**
+/*
  Open source implementation taken from: https://github.com/NicolasDeveloper/guid-typescript
 
  Copyright 2019 NicolasDeveloper
@@ -12,6 +12,12 @@
  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
  OF THIS SOFTWARE.
  */
+
+/**
+  @example {
+     "value": "0a0796d0-92a2-46c2-bd51-4fc8b63b7b0d"
+  }
+*/
 export default class Guid {
   public static validator = new RegExp("^[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}$", "i")
 

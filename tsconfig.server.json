@@ -12,11 +12,12 @@
     "removeComments": false,
     "typeRoots": ["node_modules/@types"],
     "sourceMap": true,
+    "resolveJsonModule": true,
     "baseUrl": ".",
     "types": [
       "webpack-env"
     ],
-    "paths": {
+    "paths": { 
       "@/*": [
         "server/*"
       ]

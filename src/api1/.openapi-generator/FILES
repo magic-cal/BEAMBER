@@ -1,0 +1,10 @@
+.openapi-generator-ignore
+apis/TagsApi.ts
+apis/index.ts
+index.ts
+models/FieldDef.ts
+models/QueryResultAny.ts
+models/Tag.ts
+models/TagFilter.ts
+models/index.ts
+runtime.ts

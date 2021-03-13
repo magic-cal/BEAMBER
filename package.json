@@ -11,9 +11,15 @@
     "build:client": "vue-cli-service build",
     "dev:server": "nodemon --config ./nodemon.config.json",
     "build:server": "rimraf dist/server && tsc -p tsconfig.server.json",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "swagger-gen": "tsoa swagger",
+    "routes-gen": "tsoa routes",
+    "copy-swagger-ui": "ncp ./src/swagger-ui ./dist/swagger-ui",
+    "tsoa": "tsoa",
+    "fe": "npx openapi-generator-cli generate -g typescript-fetch -i ./utils/swagger.json -o ./src/api1 --skip-validate-spec"
   },
   "dependencies": {
+    "@openapitools/openapi-generator-cli": "^2.2.2",
     "@types/swagger-jsdoc": "^3.0.2",
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
@@ -26,6 +32,7 @@
     "stylus-loader": "^5.0.0",
     "swagger-jsdoc": "^5.0.1",
     "swagger-ui-express": "^4.1.6",
+    "tsoa": "^3.5.2",
     "vue": "^2.6.12",
     "vue-class-component": "^7.2.6",
     "vue-cli-plugin-vuetify": "^2.1.0",

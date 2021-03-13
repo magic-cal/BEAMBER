@@ -37,8 +37,11 @@ import { Tag } from "utils/classes/resources"
 router.put("/update", async (req, res) => {
   console.log("update")
   console.log("req.body.tag", req.body.tag)
-  console.log("Intance of Guid", req.body.tag.id instanceof Guid)
-
+  try {
+    console.log("Intance of Guid", req.body.tag.id instanceof Guid)
+  } catch (e) {
+    console.error("Cannot Read GUID")
+  }
   res.send(await updateOrCreateTag(req.body.tag as Tag))
 })
 /**
