@@ -3,7 +3,7 @@
   "controllerPathGlobs": ["server/services/*.ts"],
   "spec": {
     "outputDirectory": "./utils",
-    "specVersion": 3,
+    "specVersion": 2,
     "host": "localhost:3000",
     "schemes": ["http"]
   },

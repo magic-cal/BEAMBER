@@ -13,19 +13,25 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    Guid,
+    GuidFromJSON,
+    GuidFromJSONTyped,
+    GuidToJSON,
+} from './';
+
 /**
  * 
  * @export
  * @interface Tag
  */
 export interface Tag {
-    [key: string]: object | any;
     /**
      * 
-     * @type {any}
+     * @type {Guid}
      * @memberof Tag
      */
-    id: any | null;
+    id: Guid;
     /**
      * 
      * @type {string}
@@ -50,8 +56,7 @@ export function TagFromJSONTyped(json: any, ignoreDiscriminator: boolean): Tag {
     }
     return {
         
-            ...json,
-        'id': json['id'],
+        'id': GuidFromJSON(json['id']),
         'name': json['name'],
         'description': json['description'],
     };
@@ -66,8 +71,7 @@ export function TagToJSON(value?: Tag | null): any {
     }
     return {
         
-            ...value,
-        'id': value.id,
+        'id': GuidToJSON(value.id),
         'name': value.name,
         'description': value.description,
     };

@@ -15,24 +15,34 @@
 
 import * as runtime from '../runtime';
 import {
+    Guid,
+    GuidFromJSON,
+    GuidToJSON,
     QueryResultAny,
     QueryResultAnyFromJSON,
     QueryResultAnyToJSON,
     Tag,
     TagFromJSON,
     TagToJSON,
+    TagFilter,
+    TagFilterFromJSON,
+    TagFilterToJSON,
 } from '../models';
 
 export interface DeleteTagRequest {
-    body: any | null;
+    tagId: Guid;
+}
+
+export interface GetTagRequest {
+    tagId: Guid;
 }
 
 export interface GetTagsByFilterRequest {
-    requestBody?: { [key: string]: object; };
+    filter?: TagFilter;
 }
 
 export interface UpdateOrCreateTagRequest {
-    requestBody: { [key: string]: object; };
+    tag: Tag;
 }
 
 /**
@@ -43,8 +53,8 @@ export class TagsApi extends runtime.BaseAPI {
     /**
      */
     async deleteTagRaw(requestParameters: DeleteTagRequest): Promise<runtime.ApiResponse<boolean>> {
-        if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling deleteTag.');
+        if (requestParameters.tagId === null || requestParameters.tagId === undefined) {
+            throw new runtime.RequiredError('tagId','Required parameter requestParameters.tagId was null or undefined when calling deleteTag.');
         }
 
         const queryParameters: any = {};
@@ -58,7 +68,7 @@ export class TagsApi extends runtime.BaseAPI {
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.body as any,
+            body: GuidToJSON(requestParameters.tagId),
         });
 
         return new runtime.TextApiResponse(response) as any;
@@ -73,16 +83,23 @@ export class TagsApi extends runtime.BaseAPI {
 
     /**
      */
-    async getTagRaw(): Promise<runtime.ApiResponse<Tag>> {
+    async getTagRaw(requestParameters: GetTagRequest): Promise<runtime.ApiResponse<Tag>> {
+        if (requestParameters.tagId === null || requestParameters.tagId === undefined) {
+            throw new runtime.RequiredError('tagId','Required parameter requestParameters.tagId was null or undefined when calling getTag.');
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
             path: `/tags/get`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: GuidToJSON(requestParameters.tagId),
         });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => TagFromJSON(jsonValue));
@@ -90,8 +107,8 @@ export class TagsApi extends runtime.BaseAPI {
 
     /**
      */
-    async getTag(): Promise<Tag> {
-        const response = await this.getTagRaw();
+    async getTag(requestParameters: GetTagRequest): Promise<Tag> {
+        const response = await this.getTagRaw(requestParameters);
         return await response.value();
     }
 
@@ -109,7 +126,7 @@ export class TagsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.requestBody,
+            body: TagFilterToJSON(requestParameters.filter),
         });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(TagFromJSON));
@@ -125,8 +142,8 @@ export class TagsApi extends runtime.BaseAPI {
     /**
      */
     async updateOrCreateTagRaw(requestParameters: UpdateOrCreateTagRequest): Promise<runtime.ApiResponse<QueryResultAny>> {
-        if (requestParameters.requestBody === null || requestParameters.requestBody === undefined) {
-            throw new runtime.RequiredError('requestBody','Required parameter requestParameters.requestBody was null or undefined when calling updateOrCreateTag.');
+        if (requestParameters.tag === null || requestParameters.tag === undefined) {
+            throw new runtime.RequiredError('tag','Required parameter requestParameters.tag was null or undefined when calling updateOrCreateTag.');
         }
 
         const queryParameters: any = {};
@@ -137,10 +154,10 @@ export class TagsApi extends runtime.BaseAPI {
 
         const response = await this.request({
             path: `/tags/update`,
-            method: 'PUT',
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.requestBody,
+            body: TagToJSON(requestParameters.tag),
         });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => QueryResultAnyFromJSON(jsonValue));

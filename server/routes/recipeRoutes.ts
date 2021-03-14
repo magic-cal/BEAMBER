@@ -117,59 +117,59 @@ router.delete("/delete", async (req, res) => {
 
 export default router
 /**
- * @swagger
- * components:
- *  schemas:
- *   Recipe:
- *     type: object
- *     properties:
- *       id:
- *         $ref: '#/components/schemas/Guid'
- *       name:
- *         type: string
- *       description:
- *         type: string
- *       requirementIds:
- *         type: array
- *         items:
- *           $ref: '#/components/schemas/Guid'
- *       readOnly:
- *         type: object
- *         $ref: '#/components/schemas/RecipeReadOnly'
- *     example:
- *           recipe:
- *             id:
- *               value: 6a129529-b7ae-47bb-bbfd-6de95c3d5a51
- *             name: IPA
- *             description: Generic IPA Recipe
- *             requirementIds: []
- *             readOnly:
- *               startTime: 0
- *               endTime: 0
- *               isAssembly: false
- *               isScheduled: false
- *               isComplete: false
- *
- *   RecipeReadOnly:
- *     type: object
- *     properties:
- *      startTime:
- *          type: number
- *      endTime:
- *          type: number
- *      isAssembly:
- *          type: boolean
- *      isScheduled:
- *          type: boolean
- *      isComplete:
- *         type: boolean
- *
- *   Guid:
- *     type: object
- *     properties:
- *       value:
- *         type: string
- *     example:
- *      id:
- *        value: 6a129529-b7ae-47bb-bbfd-6de95c3d5a51
+  @swagger
+  components:
+   schemas:
+    Recipe:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Guid'
+        name:
+          type: string
+        description:
+          type: string
+        requirementIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/Guid'
+        readOnly:
+          type: object
+          $ref: '#/components/schemas/RecipeReadOnly'
+      example:
+            recipe:
+              id:
+                value: 6a129529-b7ae-47bb-bbfd-6de95c3d5a51
+              name: IPA
+              description: Generic IPA Recipe
+              requirementIds: []
+              readOnly:
+                startTime: 0
+                endTime: 0
+                isAssembly: false
+                isScheduled: false
+                isComplete: false
+ 
+    RecipeReadOnly:
+      type: object
+      properties:
+       startTime:
+           type: number
+       endTime:
+           type: number
+       isAssembly:
+           type: boolean
+       isScheduled:
+           type: boolean
+       isComplete:
+          type: boolean
+ 
+    Guid:
+      type: object
+      properties:
+        value:
+          type: string
+      example:
+       id:
+         value: 6a129529-b7ae-47bb-bbfd-6de95c3d5a51
  */

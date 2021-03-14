@@ -19,7 +19,6 @@ import { exists, mapValues } from '../runtime';
  * @interface FieldDef
  */
 export interface FieldDef {
-    [key: string]: object | any;
     /**
      * 
      * @type {string}
@@ -74,7 +73,6 @@ export function FieldDefFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     }
     return {
         
-            ...json,
         'name': json['name'],
         'tableID': json['tableID'],
         'columnID': json['columnID'],
@@ -94,7 +92,6 @@ export function FieldDefToJSON(value?: FieldDef | null): any {
     }
     return {
         
-            ...value,
         'name': value.name,
         'tableID': value.tableID,
         'columnID': value.columnID,

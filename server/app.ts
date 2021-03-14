@@ -41,7 +41,7 @@ app.use(cors())
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(config))
 
 RegisterRoutes(app)
-// app.use("/", routes) // All requests will run through here
+app.use("/", routes) // All requests will run through here
 
 app.listen(app.get("port"), () => {
   console.log("App is running at http://localhost:%d in %s mode", app.get("port"), app.get("env"))

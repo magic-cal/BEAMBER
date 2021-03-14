@@ -2,6 +2,7 @@ apis/TagsApi.ts
 apis/index.ts
 index.ts
 models/FieldDef.ts
+models/Guid.ts
 models/QueryResultAny.ts
 models/Tag.ts
 models/TagFilter.ts

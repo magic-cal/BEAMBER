@@ -13,19 +13,25 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    Guid,
+    GuidFromJSON,
+    GuidFromJSONTyped,
+    GuidToJSON,
+} from './';
+
 /**
  * 
  * @export
  * @interface TagFilter
  */
 export interface TagFilter {
-    [key: string]: object | any;
     /**
      * 
-     * @type {Array<any>}
+     * @type {Array<Guid>}
      * @memberof TagFilter
      */
-    resourceIds?: Array<any>;
+    resourceIds?: Array<Guid>;
     /**
      * 
      * @type {boolean}
@@ -44,8 +50,7 @@ export function TagFilterFromJSONTyped(json: any, ignoreDiscriminator: boolean):
     }
     return {
         
-            ...json,
-        'resourceIds': !exists(json, 'resourceIds') ? undefined : json['resourceIds'],
+        'resourceIds': !exists(json, 'resourceIds') ? undefined : ((json['resourceIds'] as Array<any>).map(GuidFromJSON)),
         'includeDeleted': !exists(json, 'includeDeleted') ? undefined : json['includeDeleted'],
     };
 }
@@ -59,8 +64,7 @@ export function TagFilterToJSON(value?: TagFilter | null): any {
     }
     return {
         
-            ...value,
-        'resourceIds': value.resourceIds,
+        'resourceIds': value.resourceIds === undefined ? undefined : ((value.resourceIds as Array<any>).map(GuidToJSON)),
         'includeDeleted': value.includeDeleted,
     };
 }

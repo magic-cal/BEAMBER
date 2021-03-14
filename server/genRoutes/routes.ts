@@ -10,8 +10,11 @@ import * as express from 'express';
 
 const models: TsoaRoute.Models = {
     "Guid": {
-        "dataType": "refAlias",
-        "type": {"dataType":"any","validators":{}},
+        "dataType": "refObject",
+        "properties": {
+            "value": {"dataType":"string","required":true},
+        },
+        "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Tag": {
@@ -27,7 +30,7 @@ const models: TsoaRoute.Models = {
     "TagFilter": {
         "dataType": "refObject",
         "properties": {
-            "resourceIds": {"dataType":"array","array":{"dataType":"refAlias","ref":"Guid"},"default":[]},
+            "resourceIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
             "includeDeleted": {"dataType":"boolean","default":false},
         },
         "additionalProperties": true,
@@ -72,7 +75,7 @@ export function RegisterRoutes(app: express.Router) {
         app.post('/tags/get',
             function (request: any, response: any, next: any) {
             const args = {
-                    tagId: {"in":"body-prop","name":"id","required":true,"ref":"Guid"},
+                    tagId: {"in":"body","name":"tagId","required":true,"ref":"Guid"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -135,7 +138,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.put('/tags/update',
+        app.post('/tags/update',
             function (request: any, response: any, next: any) {
             const args = {
                     tag: {"in":"body","name":"tag","required":true,"ref":"Tag"},

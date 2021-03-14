@@ -1,157 +1,160 @@
 {
-	"components": {
-		"examples": {},
-		"headers": {},
-		"parameters": {},
-		"requestBodies": {},
-		"responses": {},
-		"schemas": {
-			"Guid": {
-				"example": {
-					"value": "0a0796d0-92a2-46c2-bd51-4fc8b63b7b0d"
+	"basePath": "/",
+	"consumes": [
+		"application/json"
+	],
+	"definitions": {
+		"Guid": {
+			"properties": {
+				"value": {
+					"type": "string"
 				}
 			},
-			"Tag": {
-				"properties": {
-					"id": {
-						"$ref": "#/components/schemas/Guid"
-					},
-					"name": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					}
+			"required": [
+				"value"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"Tag": {
+			"properties": {
+				"id": {
+					"$ref": "#/definitions/Guid"
 				},
-				"required": [
-					"id",
-					"name",
-					"description"
-				],
-				"type": "object",
-				"additionalProperties": true,
-				"example": {
-					"id": {
-						"value": "0a0796d0-92a2-46c2-bd51-4fc8b63b7b0a"
-					},
-					"name": "Kettle",
-					"description": "Kettle Tag"
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
 				}
 			},
-			"TagFilter": {
-				"properties": {
-					"resourceIds": {
-						"items": {
-							"$ref": "#/components/schemas/Guid"
-						},
-						"type": "array",
-						"default": []
-					},
-					"includeDeleted": {
-						"type": "boolean",
-						"default": false
-					}
+			"required": [
+				"id",
+				"name",
+				"description"
+			],
+			"type": "object",
+			"additionalProperties": true,
+			"example": {
+				"id": {
+					"value": "0a0796d0-92a2-46c2-bd51-4fc8b63b7b0a"
 				},
-				"type": "object",
-				"additionalProperties": true
-			},
-			"FieldDef": {
-				"properties": {
-					"name": {
-						"type": "string"
-					},
-					"tableID": {
-						"type": "number",
-						"format": "double"
-					},
-					"columnID": {
-						"type": "number",
-						"format": "double"
-					},
-					"dataTypeID": {
-						"type": "number",
-						"format": "double"
-					},
-					"dataTypeSize": {
-						"type": "number",
-						"format": "double"
-					},
-					"dataTypeModifier": {
-						"type": "number",
-						"format": "double"
-					},
-					"format": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"name",
-					"tableID",
-					"columnID",
-					"dataTypeID",
-					"dataTypeSize",
-					"dataTypeModifier",
-					"format"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
-			"QueryResult_any_": {
-				"properties": {
-					"command": {
-						"type": "string"
-					},
-					"rowCount": {
-						"type": "number",
-						"format": "double"
-					},
-					"oid": {
-						"type": "number",
-						"format": "double"
-					},
-					"fields": {
-						"items": {
-							"$ref": "#/components/schemas/FieldDef"
-						},
-						"type": "array"
-					},
-					"rows": {
-						"items": {},
-						"type": "array"
-					}
-				},
-				"required": [
-					"command",
-					"rowCount",
-					"oid",
-					"fields",
-					"rows"
-				],
-				"type": "object",
-				"additionalProperties": true
+				"name": "Kettle",
+				"description": "Kettle Tag"
 			}
 		},
-		"securitySchemes": {}
+		"TagFilter": {
+			"properties": {
+				"resourceIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"type": "object",
+			"additionalProperties": true
+		},
+		"FieldDef": {
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"tableID": {
+					"type": "number",
+					"format": "double"
+				},
+				"columnID": {
+					"type": "number",
+					"format": "double"
+				},
+				"dataTypeID": {
+					"type": "number",
+					"format": "double"
+				},
+				"dataTypeSize": {
+					"type": "number",
+					"format": "double"
+				},
+				"dataTypeModifier": {
+					"type": "number",
+					"format": "double"
+				},
+				"format": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"name",
+				"tableID",
+				"columnID",
+				"dataTypeID",
+				"dataTypeSize",
+				"dataTypeModifier",
+				"format"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"QueryResult_any_": {
+			"properties": {
+				"command": {
+					"type": "string"
+				},
+				"rowCount": {
+					"type": "number",
+					"format": "double"
+				},
+				"oid": {
+					"type": "number",
+					"format": "double"
+				},
+				"fields": {
+					"items": {
+						"$ref": "#/definitions/FieldDef"
+					},
+					"type": "array"
+				},
+				"rows": {
+					"items": {
+						"additionalProperties": true
+					},
+					"type": "array"
+				}
+			},
+			"required": [
+				"command",
+				"rowCount",
+				"oid",
+				"fields",
+				"rows"
+			],
+			"type": "object",
+			"additionalProperties": true
+		}
 	},
 	"info": {
 		"title": "amber",
 		"version": "2.0.0",
 		"contact": {}
 	},
-	"openapi": "3.0.0",
 	"paths": {
 		"/tags/get": {
 			"post": {
 				"operationId": "GetTag",
+				"produces": [
+					"application/json"
+				],
 				"responses": {
 					"200": {
 						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/Tag"
-								}
-							}
+						"schema": {
+							"$ref": "#/definitions/Tag"
 						}
 					}
 				},
@@ -159,24 +162,32 @@
 					"Tags"
 				],
 				"security": [],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "body",
+						"name": "tagId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
 			}
 		},
 		"/tags/get-by": {
 			"post": {
 				"operationId": "GetTagsByFilter",
+				"produces": [
+					"application/json"
+				],
 				"responses": {
 					"200": {
 						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/Tag"
-									},
-									"type": "array"
-								}
-							}
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Tag"
+							},
+							"type": "array"
 						}
 					}
 				},
@@ -184,31 +195,29 @@
 					"Tags"
 				],
 				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": false,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/TagFilter"
-							}
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/TagFilter"
 						}
 					}
-				}
+				]
 			}
 		},
 		"/tags/delete": {
 			"delete": {
 				"operationId": "DeleteTag",
+				"produces": [
+					"application/json"
+				],
 				"responses": {
 					"200": {
 						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "boolean"
-								}
-							}
+						"schema": {
+							"type": "boolean"
 						}
 					}
 				},
@@ -216,38 +225,34 @@
 					"Tags"
 				],
 				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/Guid"
-							}
+				"parameters": [
+					{
+						"in": "body",
+						"name": "tagId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
 						}
 					}
-				}
+				]
 			}
 		},
 		"/tags/update": {
-			"put": {
+			"post": {
 				"operationId": "UpdateOrCreateTag",
+				"produces": [
+					"application/json"
+				],
 				"responses": {
 					"200": {
 						"description": "Ok",
-						"content": {
+						"schema": {
+							"$ref": "#/definitions/QueryResult_any_"
+						},
+						"examples": {
 							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/QueryResult_any_"
-								},
-								"examples": {
-									"Example 1": {
-										"value": {
-											"name": "Mash Tun",
-											"description": "Mash Tun"
-										}
-									}
-								}
+								"name": "Mash Tun",
+								"description": "Mash Tun"
 							}
 						}
 					}
@@ -256,23 +261,26 @@
 					"Tags"
 				],
 				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/Tag"
-							}
+				"parameters": [
+					{
+						"in": "body",
+						"name": "tag",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Tag"
 						}
 					}
-				}
+				]
 			}
 		}
 	},
-	"servers": [
-		{
-			"url": "http://localhost:3000/"
-		}
+	"produces": [
+		"application/json"
+	],
+	"swagger": "2.0",
+	"securityDefinitions": {},
+	"host": "localhost:3000",
+	"schemes": [
+		"http"
 	]
 }

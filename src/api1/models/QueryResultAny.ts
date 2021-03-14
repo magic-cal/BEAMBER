@@ -26,7 +26,6 @@ import {
  * @interface QueryResultAny
  */
 export interface QueryResultAny {
-    [key: string]: object | any;
     /**
      * 
      * @type {string}
@@ -53,10 +52,10 @@ export interface QueryResultAny {
     fields: Array<FieldDef>;
     /**
      * 
-     * @type {Array<any>}
+     * @type {Array<object>}
      * @memberof QueryResultAny
      */
-    rows: Array<any>;
+    rows: Array<object>;
 }
 
 export function QueryResultAnyFromJSON(json: any): QueryResultAny {
@@ -69,7 +68,6 @@ export function QueryResultAnyFromJSONTyped(json: any, ignoreDiscriminator: bool
     }
     return {
         
-            ...json,
         'command': json['command'],
         'rowCount': json['rowCount'],
         'oid': json['oid'],
@@ -87,7 +85,6 @@ export function QueryResultAnyToJSON(value?: QueryResultAny | null): any {
     }
     return {
         
-            ...value,
         'command': value.command,
         'rowCount': value.rowCount,
         'oid': value.oid,

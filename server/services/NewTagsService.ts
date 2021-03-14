@@ -31,7 +31,6 @@ function tagToDb(tag: Tag) {
 @Tags("Tags")
 @Route("tags")
 export class TagsController extends Controller {
-  @Example<Guid>(Guid.create())
   public async updateResourceRelation(resources: Resource[], tagId: Guid) {
     // SIMILAR IMPL IN RESOURCE SERVICE
     // const insertionValues = resources.map(resource => (resource.id.value, tagId.value))
@@ -54,7 +53,7 @@ export class TagsController extends Controller {
   }
 
   @Post("get")
-  public async getTag(@BodyProp("id") tagId: Guid) {
+  public async getTag(@Body() tagId: Guid) {
     const result = await sqlToDB("SELECT * FROM tags WHERE tag_id = $1", [tagId.value])
     const value = result.rows.map((tagResult) => dbToTag(tagResult))[0]
     return value
@@ -86,7 +85,11 @@ export class TagsController extends Controller {
     name: "Mash Tun",
     description: "Mash Tun"
   })
-  @Put("update")
+  /**
+   * Create a Tag or Update
+   * @param tag Tag to update or create
+   */
+  @Post("update")
   public async updateOrCreateTag(@Body() tag: Tag) {
     if (tag.id.value !== Guid.createEmpty().value || (await this.getTag(tag.id))) {
       return await sqlToDB("UPDATE tags SET tag_name = $1, tag_description = $2 WHERE tag_id = $3;", [
