@@ -29,7 +29,6 @@ import { WithLoading } from "@/store/modules/appStore"
 import { Tag } from "utils/classes/resources"
 import Vue from "vue"
 import { Component } from "vue-property-decorator"
-import Guid from "@/../utils/classes/common/guid"
 @Component
 export default class ListTags extends Vue {
   tags: Tag[] = []
@@ -65,8 +64,6 @@ export default class ListTags extends Vue {
   @WithLoading
   async created() {
     this.tags = await api.tagsApi.getTagsByFilter({})
-    api.tagsApi.deleteTag({ tagId: Guid.create() })
-    // i.getTag()
   }
 }
 </script>

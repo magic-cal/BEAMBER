@@ -34,7 +34,7 @@ export class TagsController extends Controller {
   public async updateResourceRelation(resources: Resource[], tagId: Guid) {
     // SIMILAR IMPL IN RESOURCE SERVICE
     // const insertionValues = resources.map(resource => (resource.id.value, tagId.value))
-    const insertionValues: string[] = []
+    // const insertionValues: string[] = []
 
     await sqlToDB("DELETE FROM resource_tags WHERE tag_id = $1", [tagId.value])
     //@TODO: Update Inserts into resources NOT PRETTY
