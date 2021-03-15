@@ -1,6 +1,6 @@
 # Amber
 
-Main: [![Build Status](https://travis-ci.com/magic-cal/BEAMBER.svg?branch=main)](https://travis-ci.com/magic-cal/BEAMBER) Dev: [![Build Status](https://travis-ci.com/magic-cal/BEAMBER.svg?branch=dev)](https://travis-ci.com/magic-cal/BEAMBER)
+Main: [![Build Status](https://travis-ci.com/magic-cal/BEAMBER.svg?branch=main)](https://travis-ci.com/magic-cal/BEAMBER) Dev: [![Build Status](https://travis-ci.com/magic-cal/BEAMBER.svg?branch=dev)](https://travis-ci.com/magic-cal/BEAMBER) Vulnerabilities: [![Known Vulnerabilities](https://snyk.io/test/github/magic-cal/BEAMBER/badge.svg)](https://snyk.io/test/github/{username}/{repo})
 
 A resource scheduling system for breweries and distilleries
 
