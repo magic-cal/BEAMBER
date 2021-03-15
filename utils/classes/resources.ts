@@ -7,7 +7,7 @@ export class ResourceReadonly {
     this.tagList = ""
   }
   fromTags(tagList: Tag[]) {
-    this.tagList = tagList.map(tag => tag.name).join(", ")
+    this.tagList = tagList.map((tag) => tag.name).join(", ")
   }
 }
 
@@ -48,7 +48,15 @@ export class Resource {
     this.tags = []
   }
 }
-
+/**
+  @example {
+   "id": {
+     "value": "0a0796d0-92a2-46c2-bd51-4fc8b63b7b0a"
+   },
+   "name": "Kettle",
+   "description": "Kettle Tag"
+  }
+ */
 export class Tag {
   id: Guid
   name: string

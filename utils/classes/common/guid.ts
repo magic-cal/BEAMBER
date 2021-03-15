@@ -1,18 +1,20 @@
-/**
- Open source implementation taken from: https://github.com/NicolasDeveloper/guid-typescript
+import { Hidden } from "@tsoa/runtime"
 
- Copyright 2019 NicolasDeveloper
-
- Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted,
- provided that the above copyright notice and this permission notice appear in all copies.
-
- THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
- INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
- OF THIS SOFTWARE.
- */
 export default class Guid {
+  public readonly value: string
+
+  private constructor(guid: string) {
+    if (!guid) {
+      throw new TypeError("Invalid argument; `value` has no value.")
+    }
+
+    this.value = Guid.EMPTY
+
+    if (guid && Guid.isGuid(guid)) {
+      this.value = guid
+    }
+  }
+
   public static validator = new RegExp("^[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}$", "i")
 
   public static EMPTY = "00000000-0000-0000-0000-000000000000"
@@ -21,7 +23,6 @@ export default class Guid {
     if (this.isGuid(guid)) {
       return Guid.parse(guid)
     }
-
     return Guid.createEmpty()
   }
 
@@ -58,20 +59,6 @@ export default class Guid {
     return [Guid.gen(2), Guid.gen(1), Guid.gen(1), Guid.gen(1), Guid.gen(3)].join("-")
   }
 
-  public readonly value: string
-
-  private constructor(guid: string) {
-    if (!guid) {
-      throw new TypeError("Invalid argument; `value` has no value.")
-    }
-
-    this.value = Guid.EMPTY
-
-    if (guid && Guid.isGuid(guid)) {
-      this.value = guid
-    }
-  }
-
   public equals(other: Guid): boolean {
     // Comparing string `value` against provided `guid` will auto-call
     // toString on `guid` for comparison
@@ -86,7 +73,7 @@ export default class Guid {
     return this.value
   }
 
-  public toJSON(): any {
+  public toJSONObject(): any {
     return {
       value: this.value
     }

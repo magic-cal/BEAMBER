@@ -1,4 +1,4 @@
-import { sqlToDB } from "./../util/PgDatabase"
+import { sqlToDB } from "../util/PgDatabase"
 import { Resource, Tag, TagFilter } from "../../utils/classes/resources"
 import Guid from "../../utils/classes/common/guid"
 import { QueryResultRow } from "pg"
@@ -36,7 +36,7 @@ export async function updateResourceRelation(resources: Resource[], tagId: Guid)
   await sqlToDB("DELETE FROM resource_tags WHERE tag_id = $1", [tagId.value])
   //@TODO: Update Inserts into resources NOT PRETTY
   await resources.forEach(
-    async resource =>
+    async (resource) =>
       await sqlToDB("INSERT INTO resource_tags (resource_id, tag_id) VALUES ($1,$2)", [resource.id.value, tagId.value])
   )
 }
@@ -48,7 +48,7 @@ export async function addTag(tag: Tag) {
 
 export async function getTag(tagId: Guid) {
   const result = await sqlToDB("SELECT * FROM tags WHERE tag_id = $1", [tagId.value])
-  return result.rows.map(tagResult => dbToTag(tagResult))[0]
+  return result.rows.map((tagResult) => dbToTag(tagResult))[0]
 }
 
 export async function getTagsByFilter(filter: TagFilter = new TagFilter()) {
@@ -56,11 +56,11 @@ export async function getTagsByFilter(filter: TagFilter = new TagFilter()) {
     "SELECT DISTINCT ON (tags.tag_id) tags.tag_id, tag_name, tag_description FROM tags LEFT JOIN resource_tags ON (tags.tag_id = resource_tags.tag_id)"
   const queryClauses: string[] = []
   if (filter.resourceIds?.length) {
-    queryClauses.push(`resource_tags.resource_id IN (${filter.resourceIds.map(ri => `'${ri.value}'`)})`)
+    queryClauses.push(`resource_tags.resource_id IN (${filter.resourceIds.map((ri) => `'${ri.value}'`)})`)
   }
   query += queryClauses.length ? " WHERE " + queryClauses.join(" AND ") : ";"
   const result = await sqlToDB(query)
-  return result.rows.map(tagResult => dbToTag(tagResult))
+  return result.rows.map((tagResult) => dbToTag(tagResult))
 }
 
 export async function deleteTag(tagId: Guid) {

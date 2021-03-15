@@ -1,0 +1,286 @@
+{
+	"basePath": "/",
+	"consumes": [
+		"application/json"
+	],
+	"definitions": {
+		"Guid": {
+			"properties": {
+				"value": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"value"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"Tag": {
+			"properties": {
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"id",
+				"name",
+				"description"
+			],
+			"type": "object",
+			"additionalProperties": true,
+			"example": {
+				"id": {
+					"value": "0a0796d0-92a2-46c2-bd51-4fc8b63b7b0a"
+				},
+				"name": "Kettle",
+				"description": "Kettle Tag"
+			}
+		},
+		"TagFilter": {
+			"properties": {
+				"resourceIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"type": "object",
+			"additionalProperties": true
+		},
+		"FieldDef": {
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"tableID": {
+					"type": "number",
+					"format": "double"
+				},
+				"columnID": {
+					"type": "number",
+					"format": "double"
+				},
+				"dataTypeID": {
+					"type": "number",
+					"format": "double"
+				},
+				"dataTypeSize": {
+					"type": "number",
+					"format": "double"
+				},
+				"dataTypeModifier": {
+					"type": "number",
+					"format": "double"
+				},
+				"format": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"name",
+				"tableID",
+				"columnID",
+				"dataTypeID",
+				"dataTypeSize",
+				"dataTypeModifier",
+				"format"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"QueryResult_any_": {
+			"properties": {
+				"command": {
+					"type": "string"
+				},
+				"rowCount": {
+					"type": "number",
+					"format": "double"
+				},
+				"oid": {
+					"type": "number",
+					"format": "double"
+				},
+				"fields": {
+					"items": {
+						"$ref": "#/definitions/FieldDef"
+					},
+					"type": "array"
+				},
+				"rows": {
+					"items": {
+						"additionalProperties": true
+					},
+					"type": "array"
+				}
+			},
+			"required": [
+				"command",
+				"rowCount",
+				"oid",
+				"fields",
+				"rows"
+			],
+			"type": "object",
+			"additionalProperties": true
+		}
+	},
+	"info": {
+		"title": "amber",
+		"version": "2.0.0",
+		"contact": {}
+	},
+	"paths": {
+		"/tags/get": {
+			"post": {
+				"operationId": "GetTag",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/Tag"
+						}
+					}
+				},
+				"tags": [
+					"Tags"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "tagId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/tags/get-by": {
+			"post": {
+				"operationId": "GetTagsByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Tag"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"Tags"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/TagFilter"
+						}
+					}
+				]
+			}
+		},
+		"/tags/delete": {
+			"delete": {
+				"operationId": "DeleteTag",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"Tags"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "tagId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/tags/update": {
+			"post": {
+				"operationId": "UpdateOrCreateTag",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/QueryResult_any_"
+						},
+						"examples": {
+							"application/json": {
+								"name": "Mash Tun",
+								"description": "Mash Tun"
+							}
+						}
+					}
+				},
+				"tags": [
+					"Tags"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "tag",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Tag"
+						}
+					}
+				]
+			}
+		}
+	},
+	"produces": [
+		"application/json"
+	],
+	"swagger": "2.0",
+	"securityDefinitions": {},
+	"host": "localhost:3000",
+	"schemes": [
+		"http"
+	]
+}

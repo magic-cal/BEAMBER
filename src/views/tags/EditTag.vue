@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import api from "@/api/api"
+import api from "@/api1/api"
 import Vue from "vue"
 import { Component, Prop } from "vue-property-decorator"
 import { WithLoading } from "@/store/modules/appStore"
@@ -57,7 +57,7 @@ export default class EditTags extends Vue {
     console.log("mounted", this.tagId)
 
     if (this.tagId) {
-      this.currentTag = await api.getTag(Guid.fromString(this.tagId))
+      this.currentTag = await api.tagsApi.getTag({ tagId: Guid.fromString(this.tagId) })
       console.log(this.currentTag)
     }
   }
@@ -65,13 +65,13 @@ export default class EditTags extends Vue {
   @WithLoading
   async update() {
     console.log("this.currentTag", this.currentTag)
-    await api.updateOrCreateTag(this.currentTag)
+    await api.tagsApi.updateOrCreateTag({ tag: this.currentTag })
     this.back()
   }
 
   @WithLoading
   async deleteTag() {
-    await api.deleteTag(this.currentTag.id)
+    await api.tagsApi.deleteTag({ tagId: this.currentTag.id })
     this.back()
   }
 

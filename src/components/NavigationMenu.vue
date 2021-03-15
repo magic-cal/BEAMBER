@@ -18,7 +18,7 @@
 <script lang="ts">
 import Vue from "vue"
 import { Component, Model } from "vue-property-decorator"
-import { navigationItems } from "@/router/navigation.ts"
+import { navigationItems } from "@/router/navigation"
 @Component
 export default class NavigationMenu extends Vue {
   @Model("input", { type: Boolean, required: true })

@@ -1,0 +1,26 @@
+{
+  "entryFile": "./server/app.ts",
+  "controllerPathGlobs": ["server/services/*.ts"],
+  "spec": {
+    "outputDirectory": "./utils",
+    "specVersion": 2,
+    "host": "localhost:3000",
+    "schemes": ["http"]
+  },
+  "swagger": {
+    "entryFile": "./server/app.ts",
+    "host": "localhost:3000",
+    "basePath": "/",
+    "servers": [
+      {
+        "url": "localhost:3000",
+        "description": "Development server"
+      }
+    ]
+  },
+  "routes": {
+    "basePath": "/",
+    "entryFile": "./server/app.ts",
+    "routesDir": "./server/genRoutes/"
+  }
+}
