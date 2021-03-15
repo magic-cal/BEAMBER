@@ -2,7 +2,6 @@ import express from "express"
 import dotenv from "dotenv"
 import bodyParser from "body-parser"
 import cors from "cors"
-import swaggerJsDoc from "swagger-jsdoc"
 import swaggerUi from "swagger-ui-express"
 import * as config from "../utils/swagger.json"
 import "./services/NewTagsService"
@@ -38,8 +37,7 @@ app.use(cors())
 // }
 
 // const swaggerDocs = swaggerJsDoc(swaggerOptions)
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(config))
-
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(config, { customSiteTitle: "Amber Docs" }))
 RegisterRoutes(app)
 // app.use("/", routes) // All requests will run through here
 
