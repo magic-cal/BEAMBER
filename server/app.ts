@@ -4,7 +4,9 @@ import bodyParser from "body-parser"
 import cors from "cors"
 import swaggerUi from "swagger-ui-express"
 import * as config from "../utils/swagger.json"
-import "./services/NewTagsService"
+import "./services/NewTagService"
+import "./services/NewResourceService"
+import "./services/NewRecipeService"
 import { RegisterRoutes } from "./genRoutes/routes"
 
 dotenv.config()

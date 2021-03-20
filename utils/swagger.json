@@ -16,7 +16,7 @@
 			"type": "object",
 			"additionalProperties": true
 		},
-		"Tag": {
+		"Recipe": {
 			"properties": {
 				"id": {
 					"$ref": "#/definitions/Guid"
@@ -26,26 +26,57 @@
 				},
 				"description": {
 					"type": "string"
+				},
+				"requirementIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array"
+				},
+				"readOnly": {
+					"properties": {
+						"isComplete": {
+							"type": "boolean"
+						},
+						"isScheduled": {
+							"type": "boolean"
+						},
+						"isAssembly": {
+							"type": "boolean"
+						},
+						"endTime": {
+							"type": "number",
+							"format": "double"
+						},
+						"startTime": {
+							"type": "number",
+							"format": "double"
+						}
+					},
+					"required": [
+						"isComplete",
+						"isScheduled",
+						"isAssembly",
+						"endTime",
+						"startTime"
+					],
+					"type": "object",
+					"x-nullable": true
 				}
 			},
 			"required": [
 				"id",
 				"name",
-				"description"
+				"description",
+				"requirementIds",
+				"readOnly"
 			],
 			"type": "object",
-			"additionalProperties": true,
-			"example": {
-				"id": {
-					"value": "0a0796d0-92a2-46c2-bd51-4fc8b63b7b0a"
-				},
-				"name": "Kettle",
-				"description": "Kettle Tag"
-			}
+			"additionalProperties": true
 		},
-		"TagFilter": {
+		"RecipeFilter": {
 			"properties": {
-				"resourceIds": {
+				"RecipeStepIds": {
 					"items": {
 						"$ref": "#/definitions/Guid"
 					},
@@ -136,6 +167,123 @@
 			],
 			"type": "object",
 			"additionalProperties": true
+		},
+		"Tag": {
+			"properties": {
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"id",
+				"name",
+				"description"
+			],
+			"type": "object",
+			"additionalProperties": true,
+			"example": {
+				"id": {
+					"value": "0a0796d0-92a2-46c2-bd51-4fc8b63b7b0a"
+				},
+				"name": "Kettle",
+				"description": "Kettle Tag"
+			}
+		},
+		"TagFilter": {
+			"properties": {
+				"resourceIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"type": "object",
+			"additionalProperties": true
+		},
+		"ResourceReadonly": {
+			"properties": {
+				"tagList": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"tagList"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"Resource": {
+			"properties": {
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"name": {
+					"type": "string"
+				},
+				"tags": {
+					"items": {
+						"$ref": "#/definitions/Tag"
+					},
+					"type": "array"
+				},
+				"readOnly": {
+					"$ref": "#/definitions/ResourceReadonly"
+				},
+				"capacity": {
+					"type": "number",
+					"format": "double"
+				},
+				"currentStep": {
+					"$ref": "#/definitions/Guid"
+				},
+				"maintananceRequired": {
+					"type": "boolean"
+				},
+				"active": {
+					"type": "boolean"
+				}
+			},
+			"required": [
+				"id",
+				"name",
+				"tags",
+				"readOnly",
+				"capacity",
+				"currentStep",
+				"maintananceRequired",
+				"active"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"ResourceFilter": {
+			"properties": {
+				"tagIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"type": "object",
+			"additionalProperties": true
 		}
 	},
 	"info": {
@@ -144,7 +292,130 @@
 		"contact": {}
 	},
 	"paths": {
-		"/tags/get": {
+		"/Recipe/get": {
+			"post": {
+				"operationId": "GetRecipe",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/Recipe"
+						}
+					}
+				},
+				"tags": [
+					"Recipe"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipeId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Recipe/get-by": {
+			"post": {
+				"operationId": "GetRecipesByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Recipe"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"Recipe"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/RecipeFilter"
+						}
+					}
+				]
+			}
+		},
+		"/Recipe/delete": {
+			"delete": {
+				"operationId": "DeleteRecipe",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"Recipe"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipeId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Recipe/update": {
+			"put": {
+				"operationId": "UpdateOrCreateRecipe",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/QueryResult_any_"
+						}
+					}
+				},
+				"tags": [
+					"Recipe"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipe",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Recipe"
+						}
+					}
+				]
+			}
+		},
+		"/tag/get": {
 			"post": {
 				"operationId": "GetTag",
 				"produces": [
@@ -159,7 +430,7 @@
 					}
 				},
 				"tags": [
-					"Tags"
+					"Tag"
 				],
 				"security": [],
 				"parameters": [
@@ -174,7 +445,7 @@
 				]
 			}
 		},
-		"/tags/get-by": {
+		"/tag/get-by": {
 			"post": {
 				"operationId": "GetTagsByFilter",
 				"produces": [
@@ -192,7 +463,7 @@
 					}
 				},
 				"tags": [
-					"Tags"
+					"Tag"
 				],
 				"security": [],
 				"parameters": [
@@ -207,7 +478,7 @@
 				]
 			}
 		},
-		"/tags/delete": {
+		"/tag/delete": {
 			"delete": {
 				"operationId": "DeleteTag",
 				"produces": [
@@ -222,7 +493,7 @@
 					}
 				},
 				"tags": [
-					"Tags"
+					"Tag"
 				],
 				"security": [],
 				"parameters": [
@@ -237,7 +508,7 @@
 				]
 			}
 		},
-		"/tags/update": {
+		"/tag/update": {
 			"post": {
 				"operationId": "UpdateOrCreateTag",
 				"produces": [
@@ -258,7 +529,7 @@
 					}
 				},
 				"tags": [
-					"Tags"
+					"Tag"
 				],
 				"security": [],
 				"parameters": [
@@ -268,6 +539,129 @@
 						"required": true,
 						"schema": {
 							"$ref": "#/definitions/Tag"
+						}
+					}
+				]
+			}
+		},
+		"/resource/get": {
+			"post": {
+				"operationId": "GetResource",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/Resource"
+						}
+					}
+				},
+				"tags": [
+					"Resource"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "resourceId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/resource/get-by": {
+			"post": {
+				"operationId": "GetResourcesByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Resource"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"Resource"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/ResourceFilter"
+						}
+					}
+				]
+			}
+		},
+		"/resource/delete": {
+			"delete": {
+				"operationId": "DeleteResource",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"Resource"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "resourceId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/resource/update": {
+			"put": {
+				"operationId": "UpdateOrCreateResource",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"additionalProperties": true
+						}
+					}
+				},
+				"tags": [
+					"Resource"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "resource",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Resource"
 						}
 					}
 				]

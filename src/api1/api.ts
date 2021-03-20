@@ -1,9 +1,16 @@
-import { TagsApi } from "@/api1/index"
+import { ResourceApi } from "@/api1/index"
+import { TagApi } from "@/api1/index"
+import { RecipeApi } from "@/api1/index"
 
+// Please Sort Alphabetically
 class Api {
-  tagsApi: TagsApi
+  resourceApi: ResourceApi
+  tagApi: TagApi
+  recipeApi: RecipeApi
   constructor() {
-    this.tagsApi = new TagsApi()
+    this.resourceApi = new ResourceApi()
+    this.tagApi = new TagApi()
+    this.recipeApi = new RecipeApi()
   }
 }
 

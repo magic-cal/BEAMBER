@@ -1,13 +1,14 @@
 import { QueryResultRow } from "pg"
 import Guid from "./common/guid"
 
+export function fromTags(tagList: Tag[]) {
+  return tagList.map((tag) => tag.name).join(", ")
+}
+
 export class ResourceReadonly {
   tagList: string
-  constructor() {
-    this.tagList = ""
-  }
-  fromTags(tagList: Tag[]) {
-    this.tagList = tagList.map((tag) => tag.name).join(", ")
+  constructor(tags?: Tag[]) {
+    this.tagList = fromTags(tags || [])
   }
 }
 
@@ -15,9 +16,9 @@ export class Resource {
   id: Guid
   name: string
   tags: Tag[]
-  readOnly: ResourceReadonly | null = null
+  readOnly: ResourceReadonly
   capacity: number
-  currentStep: Guid | null
+  currentStep: Guid
   maintananceRequired: boolean
   active: boolean
 
@@ -26,7 +27,7 @@ export class Resource {
     name = "",
     tags: Tag[] = [],
     capacity = 100,
-    currentStep = null,
+    currentStep = Guid.createEmpty(),
     maintananceRequired = false,
     active = false
   ) {
@@ -37,16 +38,17 @@ export class Resource {
     this.currentStep = currentStep
     this.maintananceRequired = maintananceRequired
     this.active = active
+    this.readOnly = new ResourceReadonly()
   }
 
-  fromQueryResultRow(qr: QueryResultRow) {
-    console.log("qr.resource_name", qr.resource_name)
-    console.log("Guid.fromString(qr.resource_id)", Guid.fromString(qr.resource_id))
-    this.id = Guid.fromString(qr.resource_id)
+  // fromQueryResultRow(qr: QueryResultRow) {
+  //   console.log("qr.resource_name", qr.resource_name)
+  //   console.log("Guid.fromString(qr.resource_id)", Guid.fromString(qr.resource_id))
+  //   this.id = Guid.fromString(qr.resource_id)
 
-    this.name = qr.resource_name
-    this.tags = []
-  }
+  //   this.name = qr.resource_name
+  //   this.tags = []
+  // }
 }
 /**
   @example {

@@ -63,7 +63,7 @@ export default class ListTags extends Vue {
 
   @WithLoading
   async created() {
-    this.tags = await api.tagsApi.getTagsByFilter({})
+    this.tags = await api.tagApi.getTagsByFilter({})
   }
 }
 </script>

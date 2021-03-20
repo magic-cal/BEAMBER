@@ -10,7 +10,7 @@ export async function updateTagRelation(tags: Tag[], resourceId: Guid) {
   await sqlToDB("DELETE FROM resource_tags WHERE resource_id = $1", [resourceId.value])
   //@TODO: Update Inserts into Tags
   await tags.forEach(
-    async tag =>
+    async (tag) =>
       await sqlToDB("INSERT INTO resource_tags (tag_id, resource_id) VALUES ($1,$2)", [tag.id.value, resourceId.value])
   )
 }
@@ -21,9 +21,9 @@ export async function addResource(resource: Resource) {
 
 export async function getResource(resourceId: Guid) {
   const result = await sqlToDB("SELECT * FROM resources WHERE resource_id = $1", [resourceId.value])
-  return result.rows.map(async resourceResult => {
+  return result.rows.map(async (resourceResult) => {
     const newResource = new Resource()
-    newResource.fromQueryResultRow(resourceResult)
+    // newResource.fromQueryResultRow(resourceResult)
     const filter = new TagFilter()
     filter.resourceIds = [newResource.id]
     newResource.tags = await getTagsByFilter(filter)
@@ -43,14 +43,14 @@ export async function getResourcesByFilter(filter?: ResourceFilter) {
     "SELECT DISTINCT ON (resources.resource_id) resources.resource_id, resource_name FROM resources LEFT JOIN resource_tags ON (resources.resource_id = resource_tags.resource_id)"
   const queryClauses: string[] = []
   if (filter?.tagIds?.length) {
-    queryClauses.push(`resource_tags.tag_id IN (${filter?.tagIds.map(ri => `'${ri.value}'`)})`)
+    queryClauses.push(`resource_tags.tag_id IN (${filter?.tagIds.map((ri) => `'${ri.value}'`)})`)
   }
   query += queryClauses.length ? " WHERE " + queryClauses.join(" AND ") : ";"
   const result = await sqlToDB(query)
 
-  const resources = result.rows.map(resourceResult => {
+  const resources = result.rows.map((resourceResult) => {
     const newResource = new Resource()
-    newResource.fromQueryResultRow(resourceResult)
+    // newResource.fromQueryResultRow(resourceResult)
     return newResource
   })
 

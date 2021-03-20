@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts">
-import api from "@/api/api"
+import api from "@/api1/api"
 import Vue from "vue"
 import { Component, Prop } from "vue-property-decorator"
 import { WithLoading } from "@/store/modules/appStore"
@@ -65,9 +65,9 @@ export default class EditResources extends Vue {
   @WithLoading
   async mounted() {
     console.log("mounted", this.resourceId)
-    this.allTags = await api.getTags()
+    this.allTags = await api.tagApi.getTagsByFilter({})
     if (this.resourceId) {
-      this.currentResource = await api.getResource(Guid.fromString(this.resourceId))
+      this.currentResource = await api.resourceApi.getResource({ resourceId: Guid.fromString(this.resourceId) })
       console.log(this.currentResource)
       // @TODO: Add The Tags
     }
@@ -76,13 +76,13 @@ export default class EditResources extends Vue {
   @WithLoading
   async update() {
     console.log("this.currentResource", this.currentResource)
-    await api.updateOrCreateResource(this.currentResource)
+    await api.resourceApi.updateOrCreateResource({ resource: this.currentResource })
     this.back()
   }
 
   @WithLoading
   async deleteResource() {
-    await api.deleteResource(this.currentResource.id)
+    await api.resourceApi.deleteResource({ resourceId: this.currentResource.id })
     this.back()
   }
 

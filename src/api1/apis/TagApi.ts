@@ -48,7 +48,7 @@ export interface UpdateOrCreateTagRequest {
 /**
  * 
  */
-export class tagApi extends runtime.BaseAPI {
+export class TagApi extends runtime.BaseAPI {
 
     /**
      */
@@ -64,7 +64,7 @@ export class tagApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/tags/delete`,
+            path: `/tag/delete`,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -95,7 +95,7 @@ export class tagApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/tags/get`,
+            path: `/tag/get`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -122,7 +122,7 @@ export class tagApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/tags/get-by`,
+            path: `/tag/get-by`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -153,7 +153,7 @@ export class tagApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/tags/update`,
+            path: `/tag/update`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,

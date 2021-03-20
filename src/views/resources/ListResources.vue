@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import api from "@/api/api"
+import api from "@/api1/api"
 import { WithLoading } from "@/store/modules/appStore"
 import { Resource, ResourceReadonly } from "@/../utils/classes/resources"
 import Vue from "vue"
@@ -60,10 +60,9 @@ export default class ListResources extends Vue {
 
   @WithLoading
   async created() {
-    this.resources = await api.getResources()
+    this.resources = await api.resourceApi.getResourcesByFilter({})
     this.resources.forEach((resource) => {
-      resource.readOnly = new ResourceReadonly()
-      resource.readOnly.fromTags(resource.tags)
+      resource.readOnly = new ResourceReadonly(resource.tags)
     })
   }
 }

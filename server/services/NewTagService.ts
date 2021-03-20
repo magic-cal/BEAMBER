@@ -2,35 +2,36 @@ import { sqlToDB } from "../util/PgDatabase"
 import { Resource, Tag, TagFilter } from "../../utils/classes/resources"
 import Guid from "../../utils/classes/common/guid"
 import { QueryResultRow } from "pg"
-import { Body, BodyProp, Controller, Delete, Example, Post, Put, Route, SuccessResponse, Tags } from "tsoa"
+import { Body, Controller, Delete, Example, Post, Route, Tags } from "tsoa"
 
-export interface FieldParams {
+interface FieldParams {
   fields: string[]
   params: string[]
 }
 
-function dbToTag(tagResultRow: QueryResultRow) {
-  const tag: Tag = new Tag()
-  tag.id = Guid.fromString(tagResultRow.tag_id)
-  tag.name = tagResultRow.tag_name
-  tag.description = tagResultRow.tag_description
-  console.log("tagResultRow", tagResultRow)
-  console.log("TAGGG", tag)
+@Tags("Tag")
+@Route("tag")
+export class TagController extends Controller {
+  dbToTag(tagResultRow: QueryResultRow) {
+    const tag: Tag = new Tag()
+    tag.id = Guid.fromString(tagResultRow.tag_id)
+    tag.name = tagResultRow.tag_name
+    tag.description = tagResultRow.tag_description
+    console.log("tagResultRow", tagResultRow)
+    console.log("TAGGG", tag)
 
-  return tag
-}
+    return tag
+  }
 
-function tagToDb(tag: Tag) {
-  const fieldParams: FieldParams = { fields: [], params: [] }
-  fieldParams.fields.push("tag_name")
-  fieldParams.params.push(tag.name)
-  fieldParams.fields.push("tag_description")
-  fieldParams.params.push(tag.description)
-  return fieldParams
-}
-@Tags("Tags")
-@Route("tags")
-export class TagsController extends Controller {
+  tagToDb(tag: Tag) {
+    const fieldParams: FieldParams = { fields: [], params: [] }
+    fieldParams.fields.push("tag_name")
+    fieldParams.params.push(tag.name)
+    fieldParams.fields.push("tag_description")
+    fieldParams.params.push(tag.description)
+    return fieldParams
+  }
+
   public async updateResourceRelation(resources: Resource[], tagId: Guid) {
     // SIMILAR IMPL IN RESOURCE SERVICE
     // const insertionValues = resources.map(resource => (resource.id.value, tagId.value))
@@ -55,7 +56,7 @@ export class TagsController extends Controller {
   @Post("get")
   public async getTag(@Body() tagId: Guid) {
     const result = await sqlToDB("SELECT * FROM tags WHERE tag_id = $1", [tagId.value])
-    const value = result.rows.map((tagResult) => dbToTag(tagResult))[0]
+    const value = result.rows.map((tagResult) => this.dbToTag(tagResult))[0]
     return value
   }
 
@@ -70,7 +71,7 @@ export class TagsController extends Controller {
     }
     query += queryClauses.length ? " WHERE " + queryClauses.join(" AND ") : ";"
     const result = await sqlToDB(query)
-    return result.rows.map((tagResult) => dbToTag(tagResult))
+    return result.rows.map((tagResult) => this.dbToTag(tagResult))
   }
 
   @Delete("delete")
