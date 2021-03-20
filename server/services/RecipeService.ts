@@ -12,13 +12,13 @@ export class RecipeController extends Controller {
     recipe.id = Guid.fromString(recipeResultRow.recipe_id)
     recipe.name = recipeResultRow.recipe_name
     recipe.description = recipeResultRow.recipe_description
-    recipe.requirementIds = recipeResultRow.recipe_requirement_id
+    recipe.requirementIds = recipeResultRow.recipe_requirement_id ?? []
     recipe.readOnly = {
-      isAssembly: recipeResultRow.recipe_is_assembly,
-      startTime: recipeResultRow.start_time,
-      endTime: recipeResultRow.end_time,
-      isComplete: recipeResultRow.complete,
-      isScheduled: recipeResultRow.scheduled
+      isAssembly: recipeResultRow.recipe_is_assembly ?? false,
+      startTime: recipeResultRow.start_time ?? 0,
+      endTime: recipeResultRow.end_time ?? 0,
+      isComplete: recipeResultRow.complete ?? false,
+      isScheduled: recipeResultRow.scheduled ?? false
     }
     console.log("recipeResultRow", recipeResultRow)
     console.log("RECIPEGG", recipe)
@@ -78,6 +78,7 @@ recipe_is_assembly
     const result = await sqlToDB(query)
     return result.rows.map((recipeResult) => this.dbToRecipe(recipeResult))
   }
+
   @Delete("delete")
   async deleteRecipe(@Body() recipeId: Guid) {
     // await updateResourceRelation([], recipeId)

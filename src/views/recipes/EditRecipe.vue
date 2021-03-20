@@ -138,10 +138,10 @@ export default class EditRecipes extends Vue {
   @WithLoading
   async mounted() {
     console.log("mounted", this.recipeId)
-    this.allTags = await api.getTags()
-    this.allResources = await api.getResources()
+    this.allTags = await api.tagApi.getTagsByFilter({})
+    this.allResources = await api.resourceApi.getResourcesByFilter({})
     if (this.recipeId) {
-      this.currentRecipe = await api.getRecipe(Guid.fromString(this.recipeId))
+      this.currentRecipe = await api.recipeApi.getRecipe({ recipeId: Guid.fromString(this.recipeId) })
       console.log(this.currentRecipe)
       // @TODO: Add The Tags
     }
@@ -167,7 +167,7 @@ export default class EditRecipes extends Vue {
   @WithLoading
   async update() {
     console.log("this.currentRecipe", this.currentRecipe)
-    await api.updateOrCreateRecipe(this.currentRecipe)
+    await api.recipeApi.updateOrCreateRecipe({ recipe: this.currentRecipe })
     // this.currentRecipe.requirementIds.forEach(id => console.log(id, id.equals(id)))
 
     // this.back()
@@ -175,7 +175,7 @@ export default class EditRecipes extends Vue {
 
   @WithLoading
   async deleteRecipe() {
-    await api.deleteRecipe(this.currentRecipe.id)
+    await api.recipeApi.deleteRecipe({ recipeId: this.currentRecipe.id })
     this.back()
   }
 

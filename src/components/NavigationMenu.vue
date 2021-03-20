@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="drawer" absolute temporary @input="$emit('input', $event)">
+  <v-navigation-drawer :value="drawer" absolute temporary @input="$emit('input', $event)">
     <v-list nav dense>
       <v-list-item-group>
         <template v-for="menuItem in navigationMenuItems">

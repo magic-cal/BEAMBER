@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import api from "@/api1/api"
+import api from "@/api/api"
 import Vue from "vue"
 import { Component, Prop } from "vue-property-decorator"
 import { WithLoading } from "@/store/modules/appStore"

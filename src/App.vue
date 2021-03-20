@@ -15,7 +15,7 @@
         </v-btn>
       </v-app-bar>
     </div>
-    <navigation-menu @input="navigationDraw = $event" v-model="navigationDraw"> </navigation-menu>
+    <navigation-menu v-model="navigationDraw"> </navigation-menu>
     <transition name="fade" mode="out-in">
       <router-view id="scrolling-techniques" />
     </transition>

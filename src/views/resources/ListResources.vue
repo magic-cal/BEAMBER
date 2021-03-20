@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import api from "@/api1/api"
+import api from "@/api/api"
 import { WithLoading } from "@/store/modules/appStore"
 import { Resource, ResourceReadonly } from "@/../utils/classes/resources"
 import Vue from "vue"

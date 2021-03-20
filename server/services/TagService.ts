@@ -15,8 +15,8 @@ export class TagController extends Controller {
   dbToTag(tagResultRow: QueryResultRow) {
     const tag: Tag = new Tag()
     tag.id = Guid.fromString(tagResultRow.tag_id)
-    tag.name = tagResultRow.tag_name
-    tag.description = tagResultRow.tag_description
+    tag.name = tagResultRow.tag_name ?? ""
+    tag.description = tagResultRow.tag_description ?? ""
     console.log("tagResultRow", tagResultRow)
     console.log("TAGGG", tag)
 

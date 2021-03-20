@@ -21,6 +21,6 @@
   "routes": {
     "basePath": "/",
     "entryFile": "./server/app.ts",
-    "routesDir": "./server/genRoutes/"
+    "routesDir": "./server/routes/"
   }
 }
