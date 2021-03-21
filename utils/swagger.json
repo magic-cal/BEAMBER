@@ -16,67 +16,56 @@
 			"type": "object",
 			"additionalProperties": true
 		},
-		"Recipe": {
+		"MaintenanceLog": {
 			"properties": {
 				"id": {
 					"$ref": "#/definitions/Guid"
 				},
-				"name": {
+				"resourceId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"type": {
 					"type": "string"
 				},
-				"description": {
+				"details": {
 					"type": "string"
 				},
-				"requirementIds": {
-					"items": {
-						"$ref": "#/definitions/Guid"
-					},
-					"type": "array"
-				},
-				"readOnly": {
-					"properties": {
-						"isComplete": {
-							"type": "boolean"
-						},
-						"isScheduled": {
-							"type": "boolean"
-						},
-						"isAssembly": {
-							"type": "boolean"
-						},
-						"endTime": {
-							"type": "number",
-							"format": "double"
-						},
-						"startTime": {
-							"type": "number",
-							"format": "double"
-						}
-					},
-					"required": [
-						"isComplete",
-						"isScheduled",
-						"isAssembly",
-						"endTime",
-						"startTime"
-					],
-					"type": "object",
-					"x-nullable": true
+				"timestamp": {
+					"type": "number",
+					"format": "double"
 				}
 			},
 			"required": [
 				"id",
-				"name",
-				"description",
-				"requirementIds",
-				"readOnly"
+				"resourceId",
+				"type",
+				"details",
+				"timestamp"
 			],
 			"type": "object",
-			"additionalProperties": true
+			"additionalProperties": true,
+			"example": {
+				"id": {
+					"value": "0a0796d0-92a2-46c2-bd51-4fc8b63b7b0f"
+				},
+				"resourceId": {
+					"value": "e96861e5-0123-4bd3-98c3-3f3ece24349c"
+				},
+				"type": "",
+				"details": "",
+				"timestamp": 0
+			}
 		},
-		"RecipeFilter": {
+		"MaintenanceLogFilter": {
 			"properties": {
-				"RecipeStepIds": {
+				"maintenanceLogStepIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"resourceIds": {
 					"items": {
 						"$ref": "#/definitions/Guid"
 					},
@@ -165,6 +154,81 @@
 				"fields",
 				"rows"
 			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"Recipe": {
+			"properties": {
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"requirementIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array"
+				},
+				"readOnly": {
+					"properties": {
+						"isComplete": {
+							"type": "boolean"
+						},
+						"isScheduled": {
+							"type": "boolean"
+						},
+						"isAssembly": {
+							"type": "boolean"
+						},
+						"endTime": {
+							"type": "number",
+							"format": "double"
+						},
+						"startTime": {
+							"type": "number",
+							"format": "double"
+						}
+					},
+					"required": [
+						"isComplete",
+						"isScheduled",
+						"isAssembly",
+						"endTime",
+						"startTime"
+					],
+					"type": "object",
+					"x-nullable": true
+				}
+			},
+			"required": [
+				"id",
+				"name",
+				"description",
+				"requirementIds",
+				"readOnly"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"RecipeFilter": {
+			"properties": {
+				"RecipeStepIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
 			"type": "object",
 			"additionalProperties": true
 		},
@@ -391,6 +455,129 @@
 		"contact": {}
 	},
 	"paths": {
+		"/maintenanceLog/get": {
+			"post": {
+				"operationId": "GetMaintenanceLog",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/MaintenanceLog"
+						}
+					}
+				},
+				"tags": [
+					"MaintenanceLog"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "maintenanceLogId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/maintenanceLog/get-by": {
+			"post": {
+				"operationId": "GetMaintenanceLogsByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/MaintenanceLog"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"MaintenanceLog"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/MaintenanceLogFilter"
+						}
+					}
+				]
+			}
+		},
+		"/maintenanceLog/delete": {
+			"delete": {
+				"operationId": "DeleteMaintenanceLog",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"MaintenanceLog"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "maintenanceLogId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/maintenanceLog/update": {
+			"put": {
+				"operationId": "UpdateOrCreateMaintenanceLog",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/QueryResult_any_"
+						}
+					}
+				},
+				"tags": [
+					"MaintenanceLog"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "maintenanceLog",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/MaintenanceLog"
+						}
+					}
+				]
+			}
+		},
 		"/Recipe/get": {
 			"post": {
 				"operationId": "GetRecipe",

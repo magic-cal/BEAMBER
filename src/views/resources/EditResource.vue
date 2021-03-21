@@ -31,7 +31,8 @@
             <v-btn @click="deleteResource" v-if="resourceId">{{ $t("delete") }}</v-btn></v-col
           >
           <v-col align="right"
-            ><v-btn @click="update">{{ $t(resourceId ? "update" : "create") }}</v-btn></v-col
+            ><v-btn v-if="resourceId" @click="openLog">{{ $t("maintanence_log") }}</v-btn
+            ><v-btn class="ml-2" @click="update">{{ $t(resourceId ? "update" : "create") }}</v-btn></v-col
           ></v-row
         ></v-footer
       >
@@ -84,6 +85,10 @@ export default class EditResources extends Vue {
   async deleteResource() {
     await api.resourceApi.deleteResource({ resourceId: this.currentResource.id })
     this.back()
+  }
+
+  async openLog() {
+    this.$router.push({ name: "ManageMaintenanceLog", params: { resourceId: this.currentResource.id.value } })
   }
 
   async back() {

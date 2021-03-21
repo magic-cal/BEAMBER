@@ -1,5 +1,7 @@
 export * from './FieldDef';
 export * from './Guid';
+export * from './MaintenanceLog';
+export * from './MaintenanceLogFilter';
 export * from './QueryResultAny';
 export * from './Recipe';
 export * from './RecipeFilter';

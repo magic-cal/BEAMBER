@@ -1,3 +1,4 @@
+apis/MaintenanceLogApi.ts
 apis/RecipeApi.ts
 apis/RecipeStepApi.ts
 apis/ResourceApi.ts
@@ -5,6 +6,8 @@ apis/TagApi.ts
 apis/index.ts
 index.ts
 models/FieldDef.ts
+models/MaintenanceLog.ts
+models/MaintenanceLogFilter.ts
 models/QueryResultAny.ts
 models/Recipe.ts
 models/RecipeFilter.ts
