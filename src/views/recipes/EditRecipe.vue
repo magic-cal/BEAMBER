@@ -113,15 +113,16 @@
 </template>
 
 <script lang="ts">
-import api from "@/api/api"
-import Vue from "vue"
-import { Component, Prop } from "vue-property-decorator"
-import { WithLoading } from "@/store/modules/appStore"
-import { Recipe, RecipeStep } from "@/../utils/classes/recipes"
 import Guid from "@/../utils/classes/common/guid"
-import { Resource, Tag } from "utils/classes/resources"
+import { Recipe } from "@/../utils/classes/recipes"
+import { RecipeStep } from "@/../utils/classes/recipeStep"
+import api from "@/api/api"
 import SortableList from "@/components/SortableList.vue"
+import { WithLoading } from "@/store/modules/appStore"
+import { Resource, Tag } from "utils/classes/resources"
+import Vue from "vue"
 import { Drag, DropList } from "vue-easy-dnd"
+import { Component, Prop } from "vue-property-decorator"
 
 @Component({ components: { SortableList, DropList, Drag } })
 export default class EditRecipes extends Vue {
@@ -158,8 +159,8 @@ export default class EditRecipes extends Vue {
       Guid.create(),
       "Stir Hops with water",
       "Mix water and hops for 20 mins",
-      this.currentRecipe.id,
-      Guid.fromString("ce6d8ee2-dbd9-4007-a609-82a39d7c0747")
+      Guid.fromString("ce6d8ee2-dbd9-4007-a609-82a39d7c0747"),
+      this.currentRecipe.id
     )
     this.recipeSteps.push(...[rs1, rs2])
   }

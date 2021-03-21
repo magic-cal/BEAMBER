@@ -65,6 +65,7 @@ recipe_is_assembly
   }
 
   @Post("get-by")
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async getRecipesByFilter(@Body() filter?: RecipeFilter) {
     let query =
       "SELECT DISTINCT ON (recipes.recipe_id) recipes.recipe_id, recipe_name, recipe_description FROM recipes \

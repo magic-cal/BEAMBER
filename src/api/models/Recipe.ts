@@ -70,9 +70,6 @@ export function RecipeFromJSONTyped(json: any, ignoreDiscriminator: boolean): Re
     if ((json === undefined) || (json === null)) {
         return json;
     }
-    // console.log("json['requirementIds']", json['requirementIds'])
-    // console.log(json);
-    
     return {
         
         'id': GuidFromJSON(json['id']),

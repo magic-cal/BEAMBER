@@ -1,4 +1,3 @@
-import { QueryResultRow } from "pg"
 import Guid from "./common/guid"
 
 export function fromTags(tagList: Tag[]) {
@@ -53,7 +52,7 @@ export class Resource {
 /**
   @example {
    "id": {
-     "value": "0a0796d0-92a2-46c2-bd51-4fc8b63b7b0a"
+     "value": "0a0796d0-92a2-46c2-bd51-4fc8b63b7b0s"
    },
    "name": "Kettle",
    "description": "Kettle Tag"

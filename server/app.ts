@@ -27,7 +27,7 @@ app.listen(app.get("port"), () => {
   console.log("Press CTRL-C to stop\n")
 })
 
-app.use(function errorHandler(err: unknown, req: Request, res: Response, next: NextFunction): Response | void {
+app.use((err: unknown, req: Request, res: Response, next: NextFunction): Response | void => {
   if (err instanceof ValidateError) {
     console.warn(`Caught Validation Error for ${req.path}:`, err.fields)
     return res.status(422).json({
@@ -36,6 +36,7 @@ app.use(function errorHandler(err: unknown, req: Request, res: Response, next: N
     })
   }
   if (err instanceof Error) {
+    console.warn("Internal Server Error", err.message, err.stack)
     return res.status(500).json({
       message: "Internal Server Error"
     })

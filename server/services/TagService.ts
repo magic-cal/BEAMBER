@@ -2,7 +2,7 @@ import { sqlToDB } from "../util/PgDatabase"
 import { Resource, Tag, TagFilter } from "../../utils/classes/resources"
 import Guid from "../../utils/classes/common/guid"
 import { QueryResultRow } from "pg"
-import { Body, Controller, Delete, Example, Post, Route, Tags } from "tsoa"
+import { Body, Controller, Delete, Example, Post, Put, Route, Tags } from "tsoa"
 
 interface FieldParams {
   fields: string[]
@@ -90,7 +90,7 @@ export class TagController extends Controller {
    * Create a Tag or Update
    * @param tag Tag to update or create
    */
-  @Post("update")
+  @Put("update")
   public async updateOrCreateTag(@Body() tag: Tag) {
     if (tag.id.value !== Guid.createEmpty().value || (await this.getTag(tag.id))) {
       return await sqlToDB("UPDATE tags SET tag_name = $1, tag_description = $2 WHERE tag_id = $3;", [

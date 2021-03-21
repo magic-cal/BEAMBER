@@ -154,7 +154,7 @@ export class TagApi extends runtime.BaseAPI {
 
         const response = await this.request({
             path: `/tag/update`,
-            method: 'POST',
+            method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: TagToJSON(requestParameters.tag),

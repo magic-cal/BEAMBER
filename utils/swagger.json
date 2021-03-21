@@ -168,6 +168,96 @@
 			"type": "object",
 			"additionalProperties": true
 		},
+		"RecipeStep": {
+			"properties": {
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"recipeRequirementId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"tagId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"recipeId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"resourceId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"duration": {
+					"type": "number",
+					"format": "double"
+				},
+				"capacity": {
+					"type": "number",
+					"format": "double"
+				},
+				"start": {
+					"type": "number",
+					"format": "double"
+				}
+			},
+			"required": [
+				"id",
+				"name",
+				"description",
+				"recipeRequirementId",
+				"tagId",
+				"recipeId",
+				"resourceId",
+				"duration",
+				"capacity",
+				"start"
+			],
+			"type": "object",
+			"additionalProperties": true,
+			"example": {
+				"id": {
+					"value": "9641905c-8a4b-11eb-8dcd-0242ac130003"
+				},
+				"name": "Name",
+				"description": "Description",
+				"recipeRequirementId": {
+					"value": "964192e6-8a4b-11eb-8dcd-0242ac130003"
+				},
+				"tagId": {
+					"value": "964193e0-8a4b-11eb-8dcd-0242ac130003"
+				},
+				"recipeId": {
+					"value": "964194bc-8a4b-11eb-8dcd-0242ac130003"
+				},
+				"resourceId": {
+					"value": "9641958e-8a4b-11eb-8dcd-0242ac130003"
+				},
+				"duration": 0,
+				"capacity": 0,
+				"start": 0
+			}
+		},
+		"RecipeStepFilter": {
+			"properties": {
+				"RecipeIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"type": "object",
+			"additionalProperties": true
+		},
 		"Tag": {
 			"properties": {
 				"id": {
@@ -189,7 +279,7 @@
 			"additionalProperties": true,
 			"example": {
 				"id": {
-					"value": "0a0796d0-92a2-46c2-bd51-4fc8b63b7b0a"
+					"value": "0a0796d0-92a2-46c2-bd51-4fc8b63b7b0s"
 				},
 				"name": "Kettle",
 				"description": "Kettle Tag"
@@ -415,6 +505,129 @@
 				]
 			}
 		},
+		"/RecipeStep/get": {
+			"post": {
+				"operationId": "GetRecipeStep",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/RecipeStep"
+						}
+					}
+				},
+				"tags": [
+					"RecipeStep"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipeStepId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/RecipeStep/get-by": {
+			"post": {
+				"operationId": "GetRecipeStepsByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/RecipeStep"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"RecipeStep"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/RecipeStepFilter"
+						}
+					}
+				]
+			}
+		},
+		"/RecipeStep/delete": {
+			"delete": {
+				"operationId": "DeleteRecipeStep",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"RecipeStep"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipeStepId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/RecipeStep/update": {
+			"put": {
+				"operationId": "UpdateOrCreateRecipeStep",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/QueryResult_any_"
+						}
+					}
+				},
+				"tags": [
+					"RecipeStep"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipeStep",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/RecipeStep"
+						}
+					}
+				]
+			}
+		},
 		"/tag/get": {
 			"post": {
 				"operationId": "GetTag",
@@ -509,7 +722,7 @@
 			}
 		},
 		"/tag/update": {
-			"post": {
+			"put": {
 				"operationId": "UpdateOrCreateTag",
 				"produces": [
 					"application/json"

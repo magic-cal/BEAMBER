@@ -4,6 +4,8 @@ export * from './QueryResultAny';
 export * from './Recipe';
 export * from './RecipeFilter';
 export * from './RecipeReadOnly';
+export * from './RecipeStep';
+export * from './RecipeStepFilter';
 export * from './Resource';
 export * from './ResourceFilter';
 export * from './ResourceReadonly';
