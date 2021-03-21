@@ -7,6 +7,7 @@ import * as config from "../utils/swagger.json"
 import "./services/TagService"
 import "./services/ResourceService"
 import "./services/RecipeService"
+import "./services/RecipeStepService"
 import { RegisterRoutes } from "./routes/routes"
 import { ValidateError } from "tsoa"
 

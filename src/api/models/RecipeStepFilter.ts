@@ -50,7 +50,7 @@ export function RecipeStepFilterFromJSONTyped(json: any, ignoreDiscriminator: bo
     }
     return {
         
-        'recipeIds': !exists(json, 'RecipeIds') ? undefined : ((json['RecipeIds'] as Array<any>).map(GuidFromJSON)),
+        'recipeIds': !exists(json, 'recipeIds') ? undefined : ((json['recipeIds'] as Array<any>).map(GuidFromJSON)),
         'includeDeleted': !exists(json, 'includeDeleted') ? undefined : json['includeDeleted'],
     };
 }
@@ -64,7 +64,7 @@ export function RecipeStepFilterToJSON(value?: RecipeStepFilter | null): any {
     }
     return {
         
-        'RecipeIds': value.recipeIds === undefined ? undefined : ((value.recipeIds as Array<any>).map(GuidToJSON)),
+        'recipeIds': value.recipeIds === undefined ? undefined : ((value.recipeIds as Array<any>).map(GuidToJSON)),
         'includeDeleted': value.includeDeleted,
     };
 }

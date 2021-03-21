@@ -83,6 +83,7 @@ const models: TsoaRoute.Models = {
             "duration": {"dataType":"double","required":true},
             "capacity": {"dataType":"double","required":true},
             "start": {"dataType":"double","required":true},
+            "sequence": {"dataType":"double","required":true},
         },
         "additionalProperties": true,
     },
@@ -90,7 +91,7 @@ const models: TsoaRoute.Models = {
     "RecipeStepFilter": {
         "dataType": "refObject",
         "properties": {
-            "RecipeIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
+            "recipeIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
             "includeDeleted": {"dataType":"boolean","default":false},
         },
         "additionalProperties": true,

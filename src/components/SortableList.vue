@@ -1,12 +1,25 @@
 <template>
   <v-row>
-    <v-col>
-      <drop-list :items="items" class="list" @insert="onInsert" @reorder="$event.apply(items)">
+    <v-col align="start">
+      <drop-list :items="items" class="list" @insert="onInsert" @reorder="reorder">
         <template #item="{ item }">
           <drag :key="getValue(item)"
             ><v-card class="pa-2 ma-1">
-              <v-icon>mdi-drag-vertical</v-icon>
-              {{ getText(item) }}
+              <v-row justify="center">
+                <v-col justify="center">
+                  <v-icon>mdi-drag-vertical</v-icon>
+                  <template v-if="showIndex">
+                    {{ getIndex(item) + 1 + "." }}
+                  </template>
+                  {{ getText(item) }}
+                </v-col>
+                <v-col align="end">
+                  <v-btn v-if="withDelete" class="mx-1" small @click="$emit('delete', value(item))">{{
+                    $t("Delete")
+                  }}</v-btn>
+                  <v-btn v-if="withEdit" class="mx-1" small @click="$emit('edit', value(item))">{{ $t("edit") }}</v-btn>
+                </v-col>
+              </v-row>
             </v-card>
           </drag>
         </template>
@@ -24,7 +37,7 @@ import Guid from "utils/classes/common/guid"
 
 @Component({ components: { DropList, Drag } })
 export default class SortableList extends Vue {
-  @Prop({ type: Array, required: false, default: () => [{ name: "hi", id: "d" }] })
+  @Prop({ type: Array, required: false, default: () => [] })
   public items!: (string | object)[]
 
   @Prop({ type: Function, default: (item: any) => item.name, required: false })
@@ -33,8 +46,22 @@ export default class SortableList extends Vue {
   @Prop({ type: Function, default: (item: any) => item.id, required: false })
   public value!: (item: any) => string | number | Guid
 
+  @Prop({ type: Boolean, default: false, required: false })
+  public withEdit!: boolean
+
+  @Prop({ type: Boolean, default: false, required: false })
+  public withDelete!: boolean
+
+  @Prop({ type: Boolean, default: false, required: false })
+  public showIndex!: boolean
+
   onInsert(event: InsertEvent) {
     this.items.splice(event.index, 0, event.data)
+  }
+
+  reorder($event: any) {
+    $event.apply(this.items)
+    this.$emit("reorder", this.items)
   }
 
   getValue(item: any) {
@@ -43,6 +70,10 @@ export default class SortableList extends Vue {
 
   getText(item: any) {
     return this.text(item)
+  }
+
+  getIndex(item: any) {
+    return this.items.indexOf(item)
   }
 }
 </script>

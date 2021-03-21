@@ -26,8 +26,18 @@
                 clearable
               ></v-select>
             </v-col>
-            <v-col :cols="recipeSteps.length > 2 ? 12 : 6">
-              <sortable-list :items="recipeSteps" :text="(i) => i.name" :value="(i) => i.id"></sortable-list>
+            <v-col :cols="recipeSteps.length > 2 ? 12 : 6" align="center">
+              <p>{{ $t("recipe_steps") }}</p>
+              <sortable-list
+                @edit="editStep"
+                @reorder="reorder"
+                :items="recipeSteps"
+                :text="(i) => i.name"
+                :value="(i) => i.id"
+                with-edit
+                show-index
+              ></sortable-list>
+              <v-btn @click="addStep"> {{ $t("add_recipe_step") }} <v-icon>mdi-plus</v-icon></v-btn>
             </v-col>
             <!-- @TODO: Recipes May Require a popup for reordering -->
           </v-row>
@@ -44,63 +54,6 @@
         >
       </v-card>
 
-      <v-card class="mt-6">
-        <v-container>
-          <v-row>
-            <v-col
-              ><h1>{{ $t("recipe_steps") }}</h1>
-              <p>***Just Stubs***</p></v-col
-            >
-            <v-col :cols="12"
-              ><v-btn @click.prevent.stop="addRecipeStep">{{ $t("add_step") }}</v-btn>
-            </v-col>
-          </v-row>
-          <v-row v-for="(recipeStep, key) in recipeSteps" :key="recipeStep.id.value">
-            <v-col :cols="12"
-              ><h3>{{ $t("step") + ": " }}{{ key + 1 }}</h3>
-            </v-col>
-            <v-col :cols="12" :sm="6">
-              <v-text-field :label="$t('name')" v-model="recipeStep.name"></v-text-field>
-            </v-col>
-            <v-col :cols="12" :sm="6">
-              <v-text-field :label="$t('description')" v-model="recipeStep.description"></v-text-field>
-            </v-col>
-            <v-col :cols="12" :sm="6">
-              <v-select
-                :label="$t('resource_type')"
-                v-model="recipeStep.tagId"
-                item-text="name"
-                item-value="id"
-                :items="allTags"
-                clearable
-                :disabled="!!recipeStep.requirementIds"
-              ></v-select>
-            </v-col>
-            <v-col :cols="12" :sm="6">
-              <v-select
-                :label="$t('specific_resource')"
-                v-model="recipeStep.requirementIds"
-                item-text="name"
-                item-value="id"
-                :items="allResources"
-                clearable
-                :disabled="!!recipeStep.tagId"
-              ></v-select>
-            </v-col>
-            <v-col :cols="12"><v-divider /></v-col>
-          </v-row>
-        </v-container>
-        <v-footer
-          ><v-row>
-            <v-col>
-              <v-btn disabled @click="deleteRecipe" v-if="recipeId">{{ $t("delete") }}</v-btn></v-col
-            >
-            <v-col align="right"
-              ><v-btn disabled @click="update">{{ $t(recipeId ? "update" : "create") }}</v-btn></v-col
-            ></v-row
-          ></v-footer
-        >
-      </v-card>
       <v-footer fixed outlined
         ><v-row>
           <v-col>
@@ -146,32 +99,40 @@ export default class EditRecipes extends Vue {
       console.log(this.currentRecipe)
       // @TODO: Add The Tags
     }
+    this.recipeSteps = await api.recipeStepApi.getRecipeStepsByFilter({
+      filter: { recipeIds: [this.currentRecipe.id] }
+    })
+    this.recipeSteps.sort((a, b) => a.sequence - b.sequence)
+    console.log("this.recipeSteps", this.recipeSteps)
+  }
 
-    //@TODO: Remove Temp Assignment
-    const rs1 = new RecipeStep(
-      Guid.create(),
-      "Load Hops",
-      "Add 1KG of Hops to the Fermenter",
-      this.currentRecipe.id,
-      Guid.fromString("ce6d8ee2-dbd9-4007-a609-82a39d7c0747")
-    )
-    const rs2 = new RecipeStep(
-      Guid.create(),
-      "Stir Hops with water",
-      "Mix water and hops for 20 mins",
-      Guid.fromString("ce6d8ee2-dbd9-4007-a609-82a39d7c0747"),
-      this.currentRecipe.id
-    )
-    this.recipeSteps.push(...[rs1, rs2])
+  editStep(stepId: Guid) {
+    console.log("stepId", stepId)
+    this.$router.push({
+      name: "EditRecipeStep",
+      params: { recipeStepId: stepId.value }
+    })
+  }
+
+  addStep() {
+    this.$router.push({
+      name: "AddRecipeStep",
+      params: { recipeId: this.currentRecipe.id.value }
+    })
+  }
+
+  @WithLoading
+  async reorder() {
+    this.recipeSteps.forEach((rs, index) => (rs.sequence = index))
+    // @TODO: Make this a BE call to update all steps
+    await Promise.all(this.recipeSteps.map((rs) => api.recipeStepApi.updateOrCreateRecipeStep({ recipeStep: rs })))
   }
 
   @WithLoading
   async update() {
     console.log("this.currentRecipe", this.currentRecipe)
     await api.recipeApi.updateOrCreateRecipe({ recipe: this.currentRecipe })
-    // this.currentRecipe.requirementIds.forEach(id => console.log(id, id.equals(id)))
-
-    // this.back()
+    this.back()
   }
 
   @WithLoading

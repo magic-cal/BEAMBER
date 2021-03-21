@@ -9,16 +9,17 @@ import { Body, Controller, Delete, Post, Put, Route, Tags } from "tsoa"
 export class RecipeStepController extends Controller {
   dbToRecipeStep(recipeStepResultRow: QueryResultRow) {
     const recipeStep: RecipeStep = new RecipeStep()
-    recipeStep.id = recipeStepResultRow.recipe_step_id
+    recipeStep.id = Guid.fromString(recipeStepResultRow.recipe_step_id)
     recipeStep.name = recipeStepResultRow.recipe_step_name
     recipeStep.description = recipeStepResultRow.recipe_step_description
-    recipeStep.recipeRequirementId = recipeStepResultRow.recipe_step_recipe_requirement_id
-    recipeStep.tagId = recipeStepResultRow.recipe_step_tag_id
-    recipeStep.recipeId = recipeStepResultRow.recipe_step_recipe_id
-    recipeStep.resourceId = recipeStepResultRow.recipe_step_resource_id
+    recipeStep.recipeRequirementId = Guid.fromString(recipeStepResultRow.recipe_step_recipe_requirement_id)
+    recipeStep.tagId = Guid.fromString(recipeStepResultRow.recipe_step_tag_id)
+    recipeStep.recipeId = Guid.fromString(recipeStepResultRow.recipe_step_recipe_id)
+    recipeStep.resourceId = Guid.fromString(recipeStepResultRow.recipe_step_resource_id)
     recipeStep.duration = recipeStepResultRow.recipe_step_duration
     recipeStep.capacity = recipeStepResultRow.recipe_step_capacity
     recipeStep.start = recipeStepResultRow.recipe_step_start
+    recipeStep.sequence = recipeStepResultRow.recipe_step_sequence ?? 0
     console.log("recipeStepResultRow", recipeStepResultRow)
     console.log("RECIPEGG", recipeStep)
 
@@ -55,15 +56,14 @@ export class RecipeStepController extends Controller {
   async getRecipeStepsByFilter(@Body() filter?: RecipeStepFilter) {
     let query =
       "\
-SELECT DISTINCT ON (recipe_steps.recipe_step_id) recipe_steps.recipe_step_id, \
-* \
+SELECT DISTINCT ON (recipe_steps.recipe_step_id) recipe_steps.recipe_step_id,  recipe_step_name, recipe_step_description, recipe_step_recipe_requirement_id, recipe_step_tag_id, recipe_step_recipe_id, recipe_step_resource_id, recipe_step_duration, recipe_step_capacity, recipe_step_start, recipe_step_sequence \
 FROM recipe_steps \
-    "
-    // LEFT JOIN resource_recipe_steps ON (recipe_steps.recipe_step_id = resource_recipe_steps.recipe_step_id)\
+LEFT JOIN recipes ON (recipe_steps.recipe_step_recipe_id = recipes.recipe_id)\
+"
     const queryClauses: string[] = []
-    // if (filter.resourceIds?.length) {
-    //   queryClauses.push(`resource_recipe_steps.resource_id IN (${filter.resourceIds.map(ri => `'${ri.value}'`)})`)
-    // }
+    if (filter?.recipeIds?.length) {
+      queryClauses.push(`recipes.recipe_id IN (${filter.recipeIds.map((ri) => `'${ri.value}'`)})`)
+    }
     query += queryClauses.length ? " WHERE " + queryClauses.join(" AND ") : ";"
     const result = await sqlToDB(query)
     return result.rows.map((recipeStepResult) => this.dbToRecipeStep(recipeStepResult))
@@ -78,9 +78,10 @@ FROM recipe_steps \
 
   @Put("update")
   async updateOrCreateRecipeStep(@Body() recipeStep: RecipeStep) {
+    console.log(recipeStep.id.value !== Guid.createEmpty().value, "recipeStep.id.value !== Guid.createEmpty().value")
     if (recipeStep.id.value !== Guid.createEmpty().value && (await this.getRecipeStep(recipeStep.id))) {
       return await sqlToDB(
-        "UPDATE recipe_steps SET recipe_step_id = $1, recipe_step_name = $2, recipe_step_description = $3, recipe_step_recipe_requirement_id = $4, recipe_step_tag_id = $5, recipe_step_recipe_id = $6, recipe_step_resource_id = $7, recipe_step_duration = $8, recipe_step_capacity = $9, recipe_step_start = $10 WHERE recipe_step_id = $1;",
+        "UPDATE recipe_steps SET recipe_step_id = $1, recipe_step_name = $2, recipe_step_description = $3, recipe_step_recipe_requirement_id = $4, recipe_step_tag_id = $5, recipe_step_recipe_id = $6, recipe_step_resource_id = $7, recipe_step_duration = $8, recipe_step_capacity = $9, recipe_step_start = $10, recipe_step_sequence = $11 WHERE recipe_step_id = $1;",
         [
           recipeStep.id.value,
           recipeStep.name,
@@ -91,7 +92,8 @@ FROM recipe_steps \
           recipeStep.resourceId.value,
           recipeStep.duration,
           recipeStep.capacity,
-          recipeStep.start
+          recipeStep.start,
+          recipeStep.sequence
         ]
       )
     }
@@ -111,8 +113,9 @@ recipe_step_recipe_id,
 recipe_step_resource_id,
 recipe_step_duration,
 recipe_step_capacity,
-recipe_step_start
-) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+recipe_step_start,
+recipe_step_sequence
+) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
       [
         recipeStep.id.value,
         recipeStep.name,
@@ -123,7 +126,8 @@ recipe_step_start
         recipeStep.resourceId.value,
         recipeStep.duration,
         recipeStep.capacity,
-        recipeStep.start
+        recipeStep.start,
+        recipeStep.sequence
       ]
     )
   }

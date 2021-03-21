@@ -14,11 +14,22 @@ export const messages = {
     create_new: "Create New",
     description: "Description",
 
+    // Metrics
+    seconds: "Seconds",
+    minutes: "Minutes",
+    liters: "Liters",
+
+    //Validation
+    validation_not_number: "Not a number",
+    validation_negative: "Negative not allowed",
+    validation_required: "Required Value",
+
     // Home
     amber: "Amber",
     vessel_management: "Vessel Management",
     hello_world: "Hello World",
     capacity: "Capacity",
+    required_capacity: "Required Capacity",
     current_process: "Current Process",
     requires_clean: "Requires Clean",
     resource_list: "ResourceList",
@@ -35,12 +46,16 @@ export const messages = {
     create_recipe: "Create Recipe",
     recipe_prerequisites: "Recipe Prerequisites",
     recipe_steps: "Recipe Steps",
+    recipe_step: "Recipe Step",
     add_step: "Add Step",
+    add_recipe_step: "Add Recipe Step",
     recipe_name: "Recipe Name",
     recipe_description: "Recipe Description",
     resource_type: "Resource Type",
     specific_resource: "Specific Resource",
     resource_requirement_type: "Resource Requirement Type",
-    specific_resource_requirement: "Specific Resource Requirement"
+    specific_resource_requirement: "Specific Resource Requirement",
+    duration: "Duration",
+    start: "Start"
   }
 }

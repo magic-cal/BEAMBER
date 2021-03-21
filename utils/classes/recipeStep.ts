@@ -3,21 +3,21 @@ import Guid from "./common/guid"
 /**
   @example {
   "id": {
-    "value": "9641905c-8a4b-11eb-8dcd-0242ac130003"
+    "value": "d01ac8d3-b823-4f8d-9643-06c6b6d8fb13"
   },
   "name": "Name",
   "description": "Description",
   "recipeRequirementId": {
-    "value": "964192e6-8a4b-11eb-8dcd-0242ac130003"
+    "value": "93000dfb-11a7-4be4-91c0-57140564243c"
   },
   "tagId": {
-    "value": "964193e0-8a4b-11eb-8dcd-0242ac130003"
+    "value": "de1df70b-0794-4328-8118-c3462b694e67"
   },
   "recipeId": {
-    "value": "964194bc-8a4b-11eb-8dcd-0242ac130003"
+    "value": "8df24173-85fa-415c-ba66-668f65c05822"
   },
   "resourceId": {
-    "value": "9641958e-8a4b-11eb-8dcd-0242ac130003"
+    "value": "a9f0cb6a-e804-4782-bbed-b271619c4eff"
   },
   "duration": 0,
   "capacity": 0,
@@ -35,6 +35,7 @@ export class RecipeStep {
   duration: number
   capacity: number
   start: number
+  sequence: number
 
   constructor(
     id: Guid = Guid.createEmpty(),
@@ -46,7 +47,8 @@ export class RecipeStep {
     resourceId: Guid = Guid.createEmpty(),
     duration = 0,
     capacity = 0,
-    start = 0
+    start = 0,
+    sequence = 0
   ) {
     this.id = id
     this.name = name
@@ -58,6 +60,7 @@ export class RecipeStep {
     this.duration = duration
     this.capacity = capacity
     this.start = start
+    this.sequence = sequence
   }
 }
 /**
@@ -67,6 +70,6 @@ export class RecipeStep {
 }
  */
 export class RecipeStepFilter {
-  RecipeIds: Guid[] = []
+  recipeIds: Guid[] = []
   includeDeleted = false
 }

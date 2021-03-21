@@ -86,6 +86,12 @@ export interface RecipeStep {
      * @memberof RecipeStep
      */
     start: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof RecipeStep
+     */
+    sequence: number;
 }
 
 export function RecipeStepFromJSON(json: any): RecipeStep {
@@ -108,6 +114,7 @@ export function RecipeStepFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'duration': json['duration'],
         'capacity': json['capacity'],
         'start': json['start'],
+        'sequence': json['sequence'],
     };
 }
 
@@ -130,6 +137,7 @@ export function RecipeStepToJSON(value?: RecipeStep | null): any {
         'duration': value.duration,
         'capacity': value.capacity,
         'start': value.start,
+        'sequence': value.sequence,
     };
 }
 
