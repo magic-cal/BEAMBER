@@ -1,5 +1,3 @@
-import { Hidden } from "@tsoa/runtime"
-
 export default class Guid {
   public readonly value: string
 

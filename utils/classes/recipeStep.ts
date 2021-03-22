@@ -28,23 +28,23 @@ export class RecipeStep {
   id: Guid
   name: string
   description: string
-  recipeRequirementId: Guid
-  tagId: Guid
+  recipeRequirementId?: Guid
+  tagId?: Guid
   recipeId: Guid
-  resourceId: Guid
+  resourceId?: Guid
   duration: number
   capacity: number
   start: number
   sequence: number
 
   constructor(
-    id: Guid = Guid.createEmpty(),
+    id = Guid.createEmpty(),
     name = "",
     description = "",
-    recipeRequirementId: Guid = Guid.createEmpty(),
-    tagId: Guid = Guid.createEmpty(),
-    recipeId: Guid = Guid.createEmpty(),
-    resourceId: Guid = Guid.createEmpty(),
+    recipeRequirementId = undefined,
+    tagId = undefined,
+    recipeId = Guid.createEmpty(),
+    resourceId = undefined,
     duration = 0,
     capacity = 0,
     start = 0,

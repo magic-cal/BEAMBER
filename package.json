@@ -35,7 +35,7 @@
     "stylus-loader": "^5.0.0",
     "swagger-jsdoc": "^5.0.1",
     "swagger-ui-express": "^4.1.6",
-    "tsoa": "^3.5.2",
+    "tsoa": "^3.6.1",
     "vue": "^2.6.12",
     "vue-class-component": "^7.2.6",
     "vue-cli-plugin-vuetify": "^2.1.0",

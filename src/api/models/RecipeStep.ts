@@ -49,13 +49,13 @@ export interface RecipeStep {
      * @type {Guid}
      * @memberof RecipeStep
      */
-    recipeRequirementId: Guid;
+    recipeRequirementId?: Guid;
     /**
      * 
      * @type {Guid}
      * @memberof RecipeStep
      */
-    tagId: Guid;
+    tagId?: Guid;
     /**
      * 
      * @type {Guid}
@@ -67,7 +67,7 @@ export interface RecipeStep {
      * @type {Guid}
      * @memberof RecipeStep
      */
-    resourceId: Guid;
+    resourceId?: Guid;
     /**
      * 
      * @type {number}
@@ -107,10 +107,10 @@ export function RecipeStepFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'id': GuidFromJSON(json['id']),
         'name': json['name'],
         'description': json['description'],
-        'recipeRequirementId': GuidFromJSON(json['recipeRequirementId']),
-        'tagId': GuidFromJSON(json['tagId']),
+        'recipeRequirementId': !exists(json, 'recipeRequirementId') ? undefined : GuidFromJSON(json['recipeRequirementId']),
+        'tagId': !exists(json, 'tagId') ? undefined : GuidFromJSON(json['tagId']),
         'recipeId': GuidFromJSON(json['recipeId']),
-        'resourceId': GuidFromJSON(json['resourceId']),
+        'resourceId': !exists(json, 'resourceId') ? undefined : GuidFromJSON(json['resourceId']),
         'duration': json['duration'],
         'capacity': json['capacity'],
         'start': json['start'],

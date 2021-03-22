@@ -100,10 +100,10 @@ const models: TsoaRoute.Models = {
             "id": {"ref":"Guid","required":true},
             "name": {"dataType":"string","required":true},
             "description": {"dataType":"string","required":true},
-            "recipeRequirementId": {"ref":"Guid","required":true},
-            "tagId": {"ref":"Guid","required":true},
+            "recipeRequirementId": {"ref":"Guid"},
+            "tagId": {"ref":"Guid"},
             "recipeId": {"ref":"Guid","required":true},
-            "resourceId": {"ref":"Guid","required":true},
+            "resourceId": {"ref":"Guid"},
             "duration": {"dataType":"double","required":true},
             "capacity": {"dataType":"double","required":true},
             "start": {"dataType":"double","required":true},
@@ -183,7 +183,7 @@ export function RegisterRoutes(app: express.Router) {
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
         app.post('/maintenanceLog/get',
-            function (request: any, response: any, next: any) {
+            function MaintenanceLogController_getMaintenanceLog(request: any, response: any, next: any) {
             const args = {
                     maintenanceLogId: {"in":"body","name":"maintenanceLogId","required":true,"ref":"Guid"},
             };
@@ -205,7 +205,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/maintenanceLog/get-by',
-            function (request: any, response: any, next: any) {
+            function MaintenanceLogController_getMaintenanceLogsByFilter(request: any, response: any, next: any) {
             const args = {
                     filter: {"in":"body","name":"filter","ref":"MaintenanceLogFilter"},
             };
@@ -227,7 +227,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.delete('/maintenanceLog/delete',
-            function (request: any, response: any, next: any) {
+            function MaintenanceLogController_deleteMaintenanceLog(request: any, response: any, next: any) {
             const args = {
                     maintenanceLogId: {"in":"body","name":"maintenanceLogId","required":true,"ref":"Guid"},
             };
@@ -249,7 +249,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.put('/maintenanceLog/update',
-            function (request: any, response: any, next: any) {
+            function MaintenanceLogController_updateOrCreateMaintenanceLog(request: any, response: any, next: any) {
             const args = {
                     maintenanceLog: {"in":"body","name":"maintenanceLog","required":true,"ref":"MaintenanceLog"},
             };
@@ -271,7 +271,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/Recipe/get',
-            function (request: any, response: any, next: any) {
+            function RecipeController_getRecipe(request: any, response: any, next: any) {
             const args = {
                     recipeId: {"in":"body","name":"recipeId","required":true,"ref":"Guid"},
             };
@@ -293,7 +293,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/Recipe/get-by',
-            function (request: any, response: any, next: any) {
+            function RecipeController_getRecipesByFilter(request: any, response: any, next: any) {
             const args = {
                     filter: {"in":"body","name":"filter","ref":"RecipeFilter"},
             };
@@ -315,7 +315,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.delete('/Recipe/delete',
-            function (request: any, response: any, next: any) {
+            function RecipeController_deleteRecipe(request: any, response: any, next: any) {
             const args = {
                     recipeId: {"in":"body","name":"recipeId","required":true,"ref":"Guid"},
             };
@@ -337,7 +337,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.put('/Recipe/update',
-            function (request: any, response: any, next: any) {
+            function RecipeController_updateOrCreateRecipe(request: any, response: any, next: any) {
             const args = {
                     recipe: {"in":"body","name":"recipe","required":true,"ref":"Recipe"},
             };
@@ -359,7 +359,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/RecipeStep/get',
-            function (request: any, response: any, next: any) {
+            function RecipeStepController_getRecipeStep(request: any, response: any, next: any) {
             const args = {
                     recipeStepId: {"in":"body","name":"recipeStepId","required":true,"ref":"Guid"},
             };
@@ -381,7 +381,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/RecipeStep/get-by',
-            function (request: any, response: any, next: any) {
+            function RecipeStepController_getRecipeStepsByFilter(request: any, response: any, next: any) {
             const args = {
                     filter: {"in":"body","name":"filter","ref":"RecipeStepFilter"},
             };
@@ -403,7 +403,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.delete('/RecipeStep/delete',
-            function (request: any, response: any, next: any) {
+            function RecipeStepController_deleteRecipeStep(request: any, response: any, next: any) {
             const args = {
                     recipeStepId: {"in":"body","name":"recipeStepId","required":true,"ref":"Guid"},
             };
@@ -425,7 +425,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.put('/RecipeStep/update',
-            function (request: any, response: any, next: any) {
+            function RecipeStepController_updateOrCreateRecipeStep(request: any, response: any, next: any) {
             const args = {
                     recipeStep: {"in":"body","name":"recipeStep","required":true,"ref":"RecipeStep"},
             };
@@ -447,7 +447,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/tag/get',
-            function (request: any, response: any, next: any) {
+            function TagController_getTag(request: any, response: any, next: any) {
             const args = {
                     tagId: {"in":"body","name":"tagId","required":true,"ref":"Guid"},
             };
@@ -469,7 +469,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/tag/get-by',
-            function (request: any, response: any, next: any) {
+            function TagController_getTagsByFilter(request: any, response: any, next: any) {
             const args = {
                     filter: {"in":"body","name":"filter","ref":"TagFilter"},
             };
@@ -491,7 +491,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.delete('/tag/delete',
-            function (request: any, response: any, next: any) {
+            function TagController_deleteTag(request: any, response: any, next: any) {
             const args = {
                     tagId: {"in":"body","name":"tagId","required":true,"ref":"Guid"},
             };
@@ -513,7 +513,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.put('/tag/update',
-            function (request: any, response: any, next: any) {
+            function TagController_updateOrCreateTag(request: any, response: any, next: any) {
             const args = {
                     tag: {"in":"body","name":"tag","required":true,"ref":"Tag"},
             };
@@ -535,7 +535,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/resource/get',
-            function (request: any, response: any, next: any) {
+            function ResourceController_getResource(request: any, response: any, next: any) {
             const args = {
                     resourceId: {"in":"body","name":"resourceId","required":true,"ref":"Guid"},
             };
@@ -557,7 +557,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/resource/get-by',
-            function (request: any, response: any, next: any) {
+            function ResourceController_getResourcesByFilter(request: any, response: any, next: any) {
             const args = {
                     filter: {"in":"body","name":"filter","ref":"ResourceFilter"},
             };
@@ -579,7 +579,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.delete('/resource/delete',
-            function (request: any, response: any, next: any) {
+            function ResourceController_deleteResource(request: any, response: any, next: any) {
             const args = {
                     resourceId: {"in":"body","name":"resourceId","required":true,"ref":"Guid"},
             };
@@ -601,7 +601,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.put('/resource/update',
-            function (request: any, response: any, next: any) {
+            function ResourceController_updateOrCreateResource(request: any, response: any, next: any) {
             const args = {
                     resource: {"in":"body","name":"resource","required":true,"ref":"Resource"},
             };
@@ -639,7 +639,7 @@ export function RegisterRoutes(app: express.Router) {
                 let headers;
                 if (isController(controllerObj)) {
                     headers = controllerObj.getHeaders();
-                    statusCode = controllerObj.getStatus();
+                    statusCode = controllerObj.getStatus() || statusCode;
                 }
 
                 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -652,6 +652,9 @@ export function RegisterRoutes(app: express.Router) {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
     function returnHandler(response: any, statusCode?: number, data?: any, headers: any = {}) {
+        if (response.headersSent) {
+            return;
+        }
         Object.keys(headers).forEach((name: string) => {
             response.set(name, headers[name]);
         });
@@ -663,7 +666,7 @@ export function RegisterRoutes(app: express.Router) {
             response.status(statusCode || 204).end();
         }
     }
-    
+
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
     function responder(response: any): TsoaResponse<HttpStatusCodeLiteral, unknown>  {
@@ -691,6 +694,14 @@ export function RegisterRoutes(app: express.Router) {
                     return validationService.ValidateParam(args[key], request.body, name, fieldErrors, undefined, {"noImplicitAdditionalProperties":"ignore"});
                 case 'body-prop':
                     return validationService.ValidateParam(args[key], request.body[name], name, fieldErrors, 'body.', {"noImplicitAdditionalProperties":"ignore"});
+                case 'formData':
+                    if (args[key].dataType === 'file') {
+                        return validationService.ValidateParam(args[key], request.file, name, fieldErrors, undefined, {"noImplicitAdditionalProperties":"ignore"});
+                    } else if (args[key].dataType === 'array' && args[key].array.dataType === 'file') {
+                        return validationService.ValidateParam(args[key], request.files, name, fieldErrors, undefined, {"noImplicitAdditionalProperties":"ignore"});
+                    } else {
+                        return validationService.ValidateParam(args[key], request.body[name], name, fieldErrors, undefined, {"noImplicitAdditionalProperties":"ignore"});
+                    }
                 case 'res':
                     return responder(response);
             }

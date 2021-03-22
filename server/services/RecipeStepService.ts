@@ -7,20 +7,22 @@ import { Body, Controller, Delete, Post, Put, Route, Tags } from "tsoa"
 @Tags("RecipeStep")
 @Route("RecipeStep")
 export class RecipeStepController extends Controller {
-  dbToRecipeStep(recipeStepResultRow: QueryResultRow) {
+  dbToRecipeStep(row: QueryResultRow) {
     const recipeStep: RecipeStep = new RecipeStep()
-    recipeStep.id = Guid.fromString(recipeStepResultRow.recipe_step_id)
-    recipeStep.name = recipeStepResultRow.recipe_step_name
-    recipeStep.description = recipeStepResultRow.recipe_step_description
-    recipeStep.recipeRequirementId = Guid.fromString(recipeStepResultRow.recipe_step_recipe_requirement_id)
-    recipeStep.tagId = Guid.fromString(recipeStepResultRow.recipe_step_tag_id)
-    recipeStep.recipeId = Guid.fromString(recipeStepResultRow.recipe_step_recipe_id)
-    recipeStep.resourceId = Guid.fromString(recipeStepResultRow.recipe_step_resource_id)
-    recipeStep.duration = recipeStepResultRow.recipe_step_duration
-    recipeStep.capacity = recipeStepResultRow.recipe_step_capacity
-    recipeStep.start = recipeStepResultRow.recipe_step_start
-    recipeStep.sequence = recipeStepResultRow.recipe_step_sequence ?? 0
-    console.log("recipeStepResultRow", recipeStepResultRow)
+    recipeStep.id = Guid.fromString(row.recipe_step_id)
+    recipeStep.name = row.recipe_step_name
+    recipeStep.description = row.recipe_step_description
+    recipeStep.recipeRequirementId = row.recipe_step_recipe_requirement_id
+      ? Guid.fromString(row.recipe_step_recipe_requirement_id)
+      : undefined
+    recipeStep.tagId = row.recipe_step_tag_id ? Guid.fromString(row.recipe_step_tag_id) : undefined
+    recipeStep.recipeId = Guid.fromString(row.recipe_step_recipe_id)
+    recipeStep.resourceId = row.recipe_step_resource_id ? Guid.fromString(row.recipe_step_resource_id) : undefined
+    recipeStep.duration = row.recipe_step_duration
+    recipeStep.capacity = row.recipe_step_capacity
+    recipeStep.start = row.recipe_step_start
+    recipeStep.sequence = row.recipe_step_sequence ?? 0
+    console.log("row", row)
     console.log("RECIPEGG", recipeStep)
 
     return recipeStep
@@ -86,10 +88,10 @@ LEFT JOIN recipes ON (recipe_steps.recipe_step_recipe_id = recipes.recipe_id)\
           recipeStep.id.value,
           recipeStep.name,
           recipeStep.description,
-          recipeStep.recipeRequirementId.value,
-          recipeStep.tagId.value,
+          recipeStep.recipeRequirementId?.value,
+          recipeStep.tagId?.value,
           recipeStep.recipeId.value,
-          recipeStep.resourceId.value,
+          recipeStep.resourceId?.value,
           recipeStep.duration,
           recipeStep.capacity,
           recipeStep.start,
@@ -120,10 +122,10 @@ recipe_step_sequence
         recipeStep.id.value,
         recipeStep.name,
         recipeStep.description,
-        recipeStep.recipeRequirementId.value,
-        recipeStep.tagId.value,
+        recipeStep.recipeRequirementId?.value,
+        recipeStep.tagId?.value,
         recipeStep.recipeId.value,
-        recipeStep.resourceId.value,
+        recipeStep.resourceId?.value,
         recipeStep.duration,
         recipeStep.capacity,
         recipeStep.start,

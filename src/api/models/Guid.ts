@@ -22,7 +22,7 @@ export function GuidToJSON(value?: Guid | null): any {
         return undefined;
     }
     if (value === null) {
-        return null;
+        return undefined;
     }
     return {
         'value': value.value,
