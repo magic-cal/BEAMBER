@@ -27,13 +27,13 @@
                   item-value="id"
                   :items="allTags"
                   clearable
-                  :disabled="!!currentRecipeStep.requirementIds"
+                  :disabled="!!currentRecipeStep.resourceId"
                 ></v-select>
               </v-col>
               <v-col :cols="12" :sm="6">
                 <v-select
                   :label="$t('specific_resource')"
-                  v-model="currentRecipeStep.requirementIds"
+                  v-model="currentRecipeStep.resourceId"
                   item-text="name"
                   item-value="id"
                   :items="allResources"
