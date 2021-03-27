@@ -1,13 +1,13 @@
 <template>
   <a-page>
     <v-container>
-      <!-- <v-card> -->
       <v-container>
         <v-row>
           <v-col>
             <v-data-table
               disable-pagination
               :headers="headers"
+              @click:row="rowClicked"
               :items="maintenenceLogs"
               item-key="id.toString()"
               class="elevation-1"
@@ -15,12 +15,13 @@
         ></v-row>
       </v-container>
 
-      <!-- </v-card> -->
-
       <v-footer fixed outlined
         ><v-row>
           <v-col>
             <v-btn @click="back">{{ $t("back") }}</v-btn></v-col
+          >
+          <v-col align="right"
+            ><v-btn @click="createNew">{{ $t("create_new") }}</v-btn></v-col
           >
         </v-row></v-footer
       >
@@ -30,8 +31,6 @@
 
 <script lang="ts">
 import Guid from "@/../utils/classes/common/guid"
-import { Recipe } from "@/../utils/classes/recipes"
-import { RecipeStep } from "@/../utils/classes/recipeStep"
 import { MaintenanceLog } from "@/api"
 import api from "@/api/api"
 import SortableList from "@/components/SortableList.vue"
@@ -81,43 +80,22 @@ export default class ManageMaintenanceLog extends Vue {
     }
   ]
 
-  editStep(stepId: Guid) {
-    console.log("stepId", stepId)
+  rowClicked(rowItem: MaintenanceLog) {
     this.$router.push({
-      name: "EditRecipeStep",
-      params: { recipeStepId: stepId.value }
+      name: "EditMaintenanceLog",
+      params: { maintenanceLogId: rowItem.id.value }
     })
   }
 
-  addStep() {
-    this.$router.push({
-      name: "AddRecipeStep"
-      // params: { recipeId: this.currentRecipe.id.value }
-    })
-  }
-
-  @WithLoading
-  async reorder() {
-    // this.recipeSteps.forEach((rs, index) => (rs.sequence = index))
-    // @TODO: Make this a BE call to update all steps
-    // await Promise.all(this.recipeSteps.map((rs) => api.recipeStepApi.updateOrCreateRecipeStep({ recipeStep: rs })))
-  }
-
-  @WithLoading
-  async update() {
-    // console.log("this.currentRecipe", this.currentRecipe)
-    // await api.recipeApi.updateOrCreateRecipe({ recipe: this.currentRecipe })
-    this.back()
-  }
-
-  @WithLoading
-  async deleteRecipe() {
-    // await api.recipeApi.deleteRecipe({ recipeId: this.currentRecipe.id })
-    this.back()
-  }
-
-  addRecipeStep() {
-    // this.recipeSteps.push(new RecipeStep())
+  createNew() {
+    if (this.resourceId) {
+      this.$router.push({
+        name: "CreateMaintenanceLog",
+        params: { resourceId: this.resourceId }
+      })
+    } else {
+      throw new Error("Cannot find resource id" + this.resourceId)
+    }
   }
 
   async back() {

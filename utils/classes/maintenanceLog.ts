@@ -1,3 +1,4 @@
+import { LocalDate } from "@js-joda/core"
 import Guid from "./common/guid"
 
 /**
@@ -14,9 +15,15 @@ export class MaintenanceLog {
   resourceId: Guid
   type: string
   details: string
-  timestamp: number
+  timestamp: string
 
-  constructor(id = Guid.createEmpty(), resourceId = Guid.createEmpty(), type = "", details = "", timestamp = 0) {
+  constructor(
+    id = Guid.createEmpty(),
+    resourceId = Guid.createEmpty(),
+    type = "",
+    details = "",
+    timestamp = LocalDate.now().toString()
+  ) {
     this.id = id
     this.resourceId = resourceId
     this.type = type

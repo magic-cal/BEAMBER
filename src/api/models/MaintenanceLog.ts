@@ -52,10 +52,10 @@ export interface MaintenanceLog {
     details: string;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof MaintenanceLog
      */
-    timestamp: number;
+    timestamp: string;
 }
 
 export function MaintenanceLogFromJSON(json: any): MaintenanceLog {

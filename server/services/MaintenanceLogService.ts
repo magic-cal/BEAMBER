@@ -13,6 +13,8 @@ export class MaintenanceLogController extends Controller {
     maintenanceLog.resourceId = Guid.fromString(maintenanceLogResultRow.maintenance_log_resource_id)
     maintenanceLog.details = maintenanceLogResultRow.maintenance_log_details ?? ""
     maintenanceLog.type = maintenanceLogResultRow.maintenance_log_type ?? ""
+    if (maintenanceLogResultRow.maintenance_log_timestamp)
+      maintenanceLog.timestamp = maintenanceLogResultRow.maintenance_log_timestamp ?? ""
     console.log("maintenanceLogResultRow", maintenanceLogResultRow)
     console.log("RECIPEGG", maintenanceLog)
 
@@ -36,7 +38,7 @@ export class MaintenanceLogController extends Controller {
   async getMaintenanceLogsByFilter(@Body() filter?: MaintenanceLogFilter) {
     let query =
       "\
-SELECT DISTINCT ON (maintenance_logs.maintenance_log_id) maintenance_log_id, maintenance_log_resource_id, maintenance_log_details, maintenance_log_type \
+SELECT DISTINCT ON (maintenance_logs.maintenance_log_id) maintenance_log_id, maintenance_log_resource_id, maintenance_log_details, maintenance_log_type, maintenance_log_timestamp \
 FROM maintenance_logs \
 LEFT JOIN resources ON (maintenance_logs.maintenance_log_resource_id = resources.resource_id)\
 "
@@ -64,8 +66,14 @@ LEFT JOIN resources ON (maintenance_logs.maintenance_log_resource_id = resources
     )
     if (maintenanceLog.id.value !== Guid.createEmpty().value && (await this.getMaintenanceLog(maintenanceLog.id))) {
       return await sqlToDB(
-        "UPDATE maintenance_logs SET maintenance_log_id = $1, maintenance_log_resource_id = $2, maintenance_log_details = $3, maintenance_log_type = $4 WHERE maintenance_log_id = $1;",
-        [maintenanceLog.id.value, maintenanceLog.resourceId.value, maintenanceLog.details, maintenanceLog.type]
+        "UPDATE maintenance_logs SET maintenance_log_id = $1, maintenance_log_resource_id = $2, maintenance_log_details = $3, maintenance_log_type = $4, maintenance_log_timestamp = $5 WHERE maintenance_log_id = $1;",
+        [
+          maintenanceLog.id.value,
+          maintenanceLog.resourceId.value,
+          maintenanceLog.details,
+          maintenanceLog.type,
+          maintenanceLog.timestamp
+        ]
       )
     }
     return await this.addMaintenanceLog(maintenanceLog)
@@ -78,9 +86,16 @@ LEFT JOIN resources ON (maintenance_logs.maintenance_log_resource_id = resources
 maintenance_log_id,
 maintenance_log_resource_id,
 maintenance_log_details,
-maintenance_log_type
-) VALUES ($1, $2, $3, $4)`,
-      [maintenanceLog.id.value, maintenanceLog.resourceId.value, maintenanceLog.details, maintenanceLog.type]
+maintenance_log_type,
+maintenance_log_timestamp
+) VALUES ($1, $2, $3, $4, $5)`,
+      [
+        maintenanceLog.id.value,
+        maintenanceLog.resourceId.value,
+        maintenanceLog.details,
+        maintenanceLog.type,
+        maintenanceLog.timestamp
+      ]
     )
   }
 }

@@ -8,7 +8,8 @@ import ListTags from "@/views/tags/ListTags.vue"
 import EditRecipe from "@/views/recipes/EditRecipe.vue"
 import EditRecipeStep from "@/views/recipes/EditRecipeStep.vue"
 import ListRecipes from "@/views/recipes/ListRecipes.vue"
-import ManageMaintenanceLog from "@/views/recipes/ManageMaintenanceLog.vue"
+import ManageMaintenanceLog from "@/views/resources/ManageMaintenanceLog.vue"
+import EditMaintenanceLog from "@/views/resources/EditMaintenanceLog.vue"
 
 Vue.use(VueRouter)
 
@@ -77,6 +78,22 @@ export const routes: Array<RouteConfig> = [
     path: "/manage-maintenance-log/:resourceId",
     name: "ManageMaintenanceLog",
     component: ManageMaintenanceLog,
+    props: (route) => ({
+      resourceId: route.params["resourceId"]
+    })
+  },
+  {
+    path: "/edit-maintenance-log/:maintenanceLogId",
+    name: "EditMaintenanceLog",
+    component: EditMaintenanceLog,
+    props: (route) => ({
+      maintenanceLogId: route.params["maintenanceLogId"]
+    })
+  },
+  {
+    path: "/create-maintenance-log/:resourceId",
+    name: "CreateMaintenanceLog",
+    component: EditMaintenanceLog,
     props: (route) => ({
       resourceId: route.params["resourceId"]
     })

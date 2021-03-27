@@ -16,6 +16,9 @@
 			"type": "object",
 			"additionalProperties": true
 		},
+		"LocalDate": {
+			"type": "string"
+		},
 		"MaintenanceLog": {
 			"properties": {
 				"id": {
@@ -31,8 +34,7 @@
 					"type": "string"
 				},
 				"timestamp": {
-					"type": "number",
-					"format": "double"
+					"$ref": "#/definitions/LocalDate"
 				}
 			},
 			"required": [

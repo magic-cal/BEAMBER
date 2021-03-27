@@ -56,6 +56,16 @@ export const messages = {
     resource_requirement_type: "Resource Requirement Type",
     specific_resource_requirement: "Specific Resource Requirement",
     duration: "Duration",
-    start: "Start"
+    start: "Start",
+
+    // maintenance
+
+    log_date: "Log Date",
+    log_type: "Log Type",
+    log_details: "Log Details",
+    edit_maintenance_log: "Edit Maintenance Log",
+    create_maintenance_log: "Create Maintenance Log",
+    type: "Type",
+    details: "Details"
   }
 }
