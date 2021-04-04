@@ -36,6 +36,12 @@ import {
 export interface Resource {
     /**
      * 
+     * @type {number}
+     * @memberof Resource
+     */
+    versionNo: number;
+    /**
+     * 
      * @type {Guid}
      * @memberof Resource
      */
@@ -94,6 +100,7 @@ export function ResourceFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     }
     return {
         
+        'versionNo': json['versionNo'],
         'id': GuidFromJSON(json['id']),
         'name': json['name'],
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
@@ -114,6 +121,7 @@ export function ResourceToJSON(value?: Resource | null): any {
     }
     return {
         
+        'versionNo': value.versionNo,
         'id': GuidToJSON(value.id),
         'name': value.name,
         'tags': ((value.tags as Array<any>).map(TagToJSON)),

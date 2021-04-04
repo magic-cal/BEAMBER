@@ -1,3 +1,4 @@
+import { AmberApiFields } from "./amberApiFields"
 import Guid from "./common/guid"
 
 /**
@@ -24,7 +25,7 @@ import Guid from "./common/guid"
   "start": 0
   }
  */
-export class RecipeStep {
+export class RecipeStep extends AmberApiFields {
   id: Guid
   name: string
   description: string
@@ -50,6 +51,7 @@ export class RecipeStep {
     start = 0,
     sequence = 0
   ) {
+    super()
     this.id = id
     this.name = name
     this.description = description

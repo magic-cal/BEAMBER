@@ -28,6 +28,12 @@ import {
 export interface RecipeStep {
     /**
      * 
+     * @type {number}
+     * @memberof RecipeStep
+     */
+    versionNo: number;
+    /**
+     * 
      * @type {Guid}
      * @memberof RecipeStep
      */
@@ -104,6 +110,7 @@ export function RecipeStepFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     }
     return {
         
+        'versionNo': json['versionNo'],
         'id': GuidFromJSON(json['id']),
         'name': json['name'],
         'description': json['description'],
@@ -127,6 +134,7 @@ export function RecipeStepToJSON(value?: RecipeStep | null): any {
     }
     return {
         
+        'versionNo': value.versionNo,
         'id': GuidToJSON(value.id),
         'name': value.name,
         'description': value.description,

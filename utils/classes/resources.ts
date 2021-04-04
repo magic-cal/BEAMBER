@@ -1,3 +1,4 @@
+import { AmberApiFields } from "./amberApiFields"
 import Guid from "./common/guid"
 
 export function fromTags(tagList: Tag[]) {
@@ -11,7 +12,7 @@ export class ResourceReadonly {
   }
 }
 
-export class Resource {
+export class Resource extends AmberApiFields {
   id: Guid
   name: string
   tags: Tag[]
@@ -30,6 +31,7 @@ export class Resource {
     maintananceRequired = false,
     active = false
   ) {
+    super()
     this.id = id
     this.name = name
     this.tags = tags

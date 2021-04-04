@@ -28,6 +28,12 @@ import {
 export interface MaintenanceLog {
     /**
      * 
+     * @type {number}
+     * @memberof MaintenanceLog
+     */
+    versionNo: number;
+    /**
+     * 
      * @type {Guid}
      * @memberof MaintenanceLog
      */
@@ -68,6 +74,7 @@ export function MaintenanceLogFromJSONTyped(json: any, ignoreDiscriminator: bool
     }
     return {
         
+        'versionNo': json['versionNo'],
         'id': GuidFromJSON(json['id']),
         'resourceId': GuidFromJSON(json['resourceId']),
         'type': json['type'],
@@ -85,6 +92,7 @@ export function MaintenanceLogToJSON(value?: MaintenanceLog | null): any {
     }
     return {
         
+        'versionNo': value.versionNo,
         'id': GuidToJSON(value.id),
         'resourceId': GuidToJSON(value.resourceId),
         'type': value.type,

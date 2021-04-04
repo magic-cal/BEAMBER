@@ -28,6 +28,7 @@ const models: TsoaRoute.Models = {
     "MaintenanceLog": {
         "dataType": "refObject",
         "properties": {
+            "versionNo": {"dataType":"double","required":true},
             "id": {"ref":"Guid","required":true},
             "resourceId": {"ref":"Guid","required":true},
             "type": {"dataType":"string","required":true},
@@ -98,6 +99,7 @@ const models: TsoaRoute.Models = {
     "RecipeStep": {
         "dataType": "refObject",
         "properties": {
+            "versionNo": {"dataType":"double","required":true},
             "id": {"ref":"Guid","required":true},
             "name": {"dataType":"string","required":true},
             "description": {"dataType":"string","required":true},
@@ -152,6 +154,7 @@ const models: TsoaRoute.Models = {
     "Resource": {
         "dataType": "refObject",
         "properties": {
+            "versionNo": {"dataType":"double","required":true},
             "id": {"ref":"Guid","required":true},
             "name": {"dataType":"string","required":true},
             "tags": {"dataType":"array","array":{"ref":"Tag"},"required":true},

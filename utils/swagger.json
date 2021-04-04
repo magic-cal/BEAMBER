@@ -18,6 +18,10 @@
 		},
 		"MaintenanceLog": {
 			"properties": {
+				"versionNo": {
+					"type": "number",
+					"format": "double"
+				},
 				"id": {
 					"$ref": "#/definitions/Guid"
 				},
@@ -35,6 +39,7 @@
 				}
 			},
 			"required": [
+				"versionNo",
 				"id",
 				"resourceId",
 				"type",
@@ -238,6 +243,10 @@
 		},
 		"RecipeStep": {
 			"properties": {
+				"versionNo": {
+					"type": "number",
+					"format": "double"
+				},
 				"id": {
 					"$ref": "#/definitions/Guid"
 				},
@@ -277,6 +286,7 @@
 				}
 			},
 			"required": [
+				"versionNo",
 				"id",
 				"name",
 				"description",
@@ -390,6 +400,10 @@
 		},
 		"Resource": {
 			"properties": {
+				"versionNo": {
+					"type": "number",
+					"format": "double"
+				},
 				"id": {
 					"$ref": "#/definitions/Guid"
 				},
@@ -420,6 +434,7 @@
 				}
 			},
 			"required": [
+				"versionNo",
 				"id",
 				"name",
 				"tags",

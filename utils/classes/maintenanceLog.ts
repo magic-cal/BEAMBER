@@ -1,4 +1,5 @@
 import { LocalDate } from "@js-joda/core"
+import { AmberApiFields } from "./amberApiFields"
 import Guid from "./common/guid"
 
 /**
@@ -10,7 +11,7 @@ import Guid from "./common/guid"
 "timestamp": 0
 }
  */
-export class MaintenanceLog {
+export class MaintenanceLog extends AmberApiFields {
   id: Guid
   resourceId: Guid
   type: string
@@ -24,6 +25,7 @@ export class MaintenanceLog {
     details = "",
     timestamp = LocalDate.now().toString()
   ) {
+    super()
     this.id = id
     this.resourceId = resourceId
     this.type = type
