@@ -1,5 +1,6 @@
 // import { QueryResultRow } from "pg"
 import Guid from "./common/guid"
+import { AmberApiFields } from "./amberApiFields"
 
 // export class RecipeReadonly {
 //   tagList: string
@@ -11,7 +12,7 @@ import Guid from "./common/guid"
 //   }
 // }
 
-export class Recipe {
+export class Recipe extends AmberApiFields {
   id: Guid
   name: string
   description: string
@@ -32,6 +33,7 @@ export class Recipe {
     requirementIds: Guid[] = [],
     readOnly = null
   ) {
+    super()
     this.id = id
     this.name = name
     this.description = description

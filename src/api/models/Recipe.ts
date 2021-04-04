@@ -32,6 +32,12 @@ import {
 export interface Recipe {
     /**
      * 
+     * @type {number}
+     * @memberof Recipe
+     */
+    versionNo: number;
+    /**
+     * 
      * @type {Guid}
      * @memberof Recipe
      */
@@ -72,6 +78,7 @@ export function RecipeFromJSONTyped(json: any, ignoreDiscriminator: boolean): Re
     }
     return {
         
+        'versionNo': json['versionNo'],
         'id': GuidFromJSON(json['id']),
         'name': json['name'],
         'description': json['description'],
@@ -89,6 +96,7 @@ export function RecipeToJSON(value?: Recipe | null): any {
     }
     return {
         
+        'versionNo': value.versionNo,
         'id': GuidToJSON(value.id),
         'name': value.name,
         'description': value.description,

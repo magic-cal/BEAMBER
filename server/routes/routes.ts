@@ -25,11 +25,6 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "LocalDate": {
-        "dataType": "refAlias",
-        "type": {"dataType":"string","validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "MaintenanceLog": {
         "dataType": "refObject",
         "properties": {
@@ -37,7 +32,7 @@ const models: TsoaRoute.Models = {
             "resourceId": {"ref":"Guid","required":true},
             "type": {"dataType":"string","required":true},
             "details": {"dataType":"string","required":true},
-            "timestamp": {"ref":"LocalDate","required":true},
+            "timestamp": {"dataType":"string","required":true},
         },
         "additionalProperties": true,
     },
@@ -81,6 +76,7 @@ const models: TsoaRoute.Models = {
     "Recipe": {
         "dataType": "refObject",
         "properties": {
+            "versionNo": {"dataType":"double","required":true},
             "id": {"ref":"Guid","required":true},
             "name": {"dataType":"string","required":true},
             "description": {"dataType":"string","required":true},

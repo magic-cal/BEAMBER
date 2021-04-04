@@ -3,12 +3,14 @@ import { Recipe, RecipeFilter } from "../../utils/classes/recipes"
 import Guid from "../../utils/classes/common/guid"
 import { QueryResultRow } from "pg"
 import { Body, Controller, Delete, Post, Put, Route, Tags } from "tsoa"
+import { genBaseFields, updateBaseFields, validateBaseFields } from "../util/baseDataUtil"
 
 @Tags("Recipe")
 @Route("Recipe")
 export class RecipeController extends Controller {
   dbToRecipe(recipeResultRow: QueryResultRow) {
     const recipe: Recipe = new Recipe()
+    genBaseFields(recipeResultRow, recipe)
     recipe.id = Guid.fromString(recipeResultRow.recipe_id)
     recipe.name = recipeResultRow.recipe_name
     recipe.description = recipeResultRow.recipe_description
@@ -82,7 +84,6 @@ recipe_is_assembly
 
   @Delete("delete")
   async deleteRecipe(@Body() recipeId: Guid) {
-    // await updateResourceRelation([], recipeId)
     const result = await sqlToDB("DELETE FROM recipes WHERE recipe_id = $1", [recipeId.value])
     return !!result.rowCount
   }
@@ -90,25 +91,14 @@ recipe_is_assembly
   @Put("update")
   async updateOrCreateRecipe(@Body() recipe: Recipe) {
     if (recipe.id.value !== Guid.createEmpty().value && (await this.getRecipe(recipe.id))) {
+      await validateBaseFields(recipe, "SELECT * FROM recipes WHERE recipe_id = $1", [recipe.id.value])
+      recipe = updateBaseFields(recipe)
+      // @TODO: Look at validation Updates
       return await sqlToDB(
-        "UPDATE recipes SET recipe_name = $1, recipe_description = $2, recipe_requirement_id = $3, recipe_is_assembly = $4 WHERE recipe_id = $5;",
-        [recipe.name, recipe.description, null, recipe.readOnly?.isAssembly, recipe.id.value]
+        "UPDATE recipes SET recipe_name = $1, recipe_description = $2, recipe_requirement_id = $3, recipe_is_assembly = $4, version_no = $6 WHERE recipe_id = $5;",
+        [recipe.name, recipe.description, null, recipe.readOnly?.isAssembly, recipe.id.value, recipe.versionNo]
       )
     }
     return await this.addRecipe(recipe)
   }
-  // async Update(Id, Recipe){
-
-  // }
-  // async Delete(Id){
-
-  // }
-
-  // CREATE TABLE public.recipes
-  // (
-  //     recipe_id uuid NOT NULL DEFAULT gen_random_uuid(),
-  //     recipe_name character varying COLLATE pg_catalog."default",
-  //     recipe_description character varying COLLATE pg_catalog."default",
-  //     CONSTRAINT recipes_pkey PRIMARY KEY (recipe_id)
-  // )
 }
