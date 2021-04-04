@@ -91,7 +91,9 @@ recipe_is_assembly
   @Put("update")
   async updateOrCreateRecipe(@Body() recipe: Recipe) {
     if (recipe.id.value !== Guid.createEmpty().value && (await this.getRecipe(recipe.id))) {
-      await validateBaseFields(recipe, "SELECT * FROM recipes WHERE recipe_id = $1", [recipe.id.value])
+      if (!(await validateBaseFields(recipe, "SELECT * FROM recipes WHERE recipe_id = $1", [recipe.id.value]))) {
+        this.setStatus(412)
+      }
       recipe = updateBaseFields(recipe)
       // @TODO: Look at validation Updates
       return await sqlToDB(
