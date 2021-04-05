@@ -10,7 +10,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "removeComments": false,
-    "typeRoots": ["node_modules/@types"],
+    "typeRoots": ["node_modules/@types, util/types"],
     "sourceMap": true,
     "resolveJsonModule": true,
     "baseUrl": ".",
