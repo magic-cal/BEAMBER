@@ -22,11 +22,9 @@ export class Assembly extends AmberApiFields {
     id: Guid = Guid.createEmpty(),
     name = "",
     description = "",
-    requirementIds: Guid[] = [],
-    readOnly = null,
     complete = false,
-    parentId?: Guid,
     recipeId?: Guid,
+    parentId?: Guid,
     recipeProductId?: Guid
   ) {
     super()
