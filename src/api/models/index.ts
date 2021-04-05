@@ -1,3 +1,5 @@
+export * from './Assembly';
+export * from './AssemblyFilter';
 export * from './FieldDef';
 export * from './Guid';
 export * from './MaintenanceLog';

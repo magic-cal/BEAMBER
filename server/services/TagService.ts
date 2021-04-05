@@ -63,7 +63,7 @@ export class TagController extends Controller {
   @Post("get-by")
   public async getTagsByFilter(@Body() filter?: TagFilter) {
     let query =
-      "SELECT DISTINCT ON (tags.tag_id) tags.tag_id, tag_name, tag_description FROM tags \
+      "SELECT DISTINCT ON (tags.tag_id) tags.* FROM tags \
       LEFT JOIN resource_tags ON (tags.tag_id = resource_tags.tag_id)"
     const queryClauses: string[] = []
     if (filter?.resourceIds?.length) {

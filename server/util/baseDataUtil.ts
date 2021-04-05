@@ -21,3 +21,7 @@ export function updateBaseFields<T extends AmberApiFields>(data: T) {
   data.versionNo++
   return data
 }
+
+export function extractBaseFields<T extends AmberApiFields>(data: T) {
+  return [data.versionNo]
+}

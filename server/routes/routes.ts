@@ -3,6 +3,8 @@
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, HttpStatusCodeLiteral, TsoaResponse } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { AssemblyController } from './../services/AssemblyService';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { MaintenanceLogController } from './../services/MaintenanceLogService';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { RecipeController } from './../services/RecipeService';
@@ -25,24 +27,25 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "MaintenanceLog": {
+    "Assembly": {
         "dataType": "refObject",
         "properties": {
             "versionNo": {"dataType":"double","required":true},
             "id": {"ref":"Guid","required":true},
-            "resourceId": {"ref":"Guid","required":true},
-            "type": {"dataType":"string","required":true},
-            "details": {"dataType":"string","required":true},
-            "timestamp": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string","required":true},
+            "complete": {"dataType":"boolean","required":true},
+            "parentId": {"ref":"Guid"},
+            "recipeId": {"ref":"Guid"},
+            "recipeProductId": {"ref":"Guid"},
         },
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "MaintenanceLogFilter": {
+    "AssemblyFilter": {
         "dataType": "refObject",
         "properties": {
-            "maintenanceLogStepIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
-            "resourceIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
+            "AssemblyStepIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
             "includeDeleted": {"dataType":"boolean","default":false},
         },
         "additionalProperties": true,
@@ -70,6 +73,29 @@ const models: TsoaRoute.Models = {
             "oid": {"dataType":"double","required":true},
             "fields": {"dataType":"array","array":{"ref":"FieldDef"},"required":true},
             "rows": {"dataType":"array","array":{"dataType":"any"},"required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "MaintenanceLog": {
+        "dataType": "refObject",
+        "properties": {
+            "versionNo": {"dataType":"double","required":true},
+            "id": {"ref":"Guid","required":true},
+            "resourceId": {"ref":"Guid","required":true},
+            "type": {"dataType":"string","required":true},
+            "details": {"dataType":"string","required":true},
+            "timestamp": {"dataType":"string","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "MaintenanceLogFilter": {
+        "dataType": "refObject",
+        "properties": {
+            "maintenanceLogStepIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
+            "resourceIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
+            "includeDeleted": {"dataType":"boolean","default":false},
         },
         "additionalProperties": true,
     },
@@ -186,6 +212,94 @@ export function RegisterRoutes(app: express.Router) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
+        app.post('/Assembly/get',
+            function AssemblyController_getAssembly(request: any, response: any, next: any) {
+            const args = {
+                    assemblyId: {"in":"body","name":"assemblyId","required":true,"ref":"Guid"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AssemblyController();
+
+
+            const promise = controller.getAssembly.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/Assembly/get-by',
+            function AssemblyController_getAssembliesByFilter(request: any, response: any, next: any) {
+            const args = {
+                    filter: {"in":"body","name":"filter","ref":"AssemblyFilter"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AssemblyController();
+
+
+            const promise = controller.getAssembliesByFilter.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/Assembly/delete',
+            function AssemblyController_deleteAssembly(request: any, response: any, next: any) {
+            const args = {
+                    assemblyId: {"in":"body","name":"assemblyId","required":true,"ref":"Guid"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AssemblyController();
+
+
+            const promise = controller.deleteAssembly.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/Assembly/update',
+            function AssemblyController_updateOrCreateAssembly(request: any, response: any, next: any) {
+            const args = {
+                    assembly: {"in":"body","name":"assembly","required":true,"ref":"Assembly"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AssemblyController();
+
+
+            const promise = controller.updateOrCreateAssembly.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/maintenanceLog/get',
             function MaintenanceLogController_getMaintenanceLog(request: any, response: any, next: any) {
             const args = {

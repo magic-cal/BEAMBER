@@ -16,7 +16,7 @@
 			"type": "object",
 			"additionalProperties": true
 		},
-		"MaintenanceLog": {
+		"Assembly": {
 			"properties": {
 				"versionNo": {
 					"type": "number",
@@ -25,51 +25,38 @@
 				"id": {
 					"$ref": "#/definitions/Guid"
 				},
-				"resourceId": {
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"complete": {
+					"type": "boolean"
+				},
+				"parentId": {
 					"$ref": "#/definitions/Guid"
 				},
-				"type": {
-					"type": "string"
+				"recipeId": {
+					"$ref": "#/definitions/Guid"
 				},
-				"details": {
-					"type": "string"
-				},
-				"timestamp": {
-					"type": "string"
+				"recipeProductId": {
+					"$ref": "#/definitions/Guid"
 				}
 			},
 			"required": [
 				"versionNo",
 				"id",
-				"resourceId",
-				"type",
-				"details",
-				"timestamp"
+				"name",
+				"description",
+				"complete"
 			],
 			"type": "object",
-			"additionalProperties": true,
-			"example": {
-				"id": {
-					"value": "0a0796d0-92a2-46c2-bd51-4fc8b63b7b0f"
-				},
-				"resourceId": {
-					"value": "e96861e5-0123-4bd3-98c3-3f3ece24349c"
-				},
-				"type": "",
-				"details": "",
-				"timestamp": 0
-			}
+			"additionalProperties": true
 		},
-		"MaintenanceLogFilter": {
+		"AssemblyFilter": {
 			"properties": {
-				"maintenanceLogStepIds": {
-					"items": {
-						"$ref": "#/definitions/Guid"
-					},
-					"type": "array",
-					"default": []
-				},
-				"resourceIds": {
+				"AssemblyStepIds": {
 					"items": {
 						"$ref": "#/definitions/Guid"
 					},
@@ -158,6 +145,74 @@
 				"fields",
 				"rows"
 			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"MaintenanceLog": {
+			"properties": {
+				"versionNo": {
+					"type": "number",
+					"format": "double"
+				},
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"resourceId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"type": {
+					"type": "string"
+				},
+				"details": {
+					"type": "string"
+				},
+				"timestamp": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"versionNo",
+				"id",
+				"resourceId",
+				"type",
+				"details",
+				"timestamp"
+			],
+			"type": "object",
+			"additionalProperties": true,
+			"example": {
+				"id": {
+					"value": "0a0796d0-92a2-46c2-bd51-4fc8b63b7b0f"
+				},
+				"resourceId": {
+					"value": "e96861e5-0123-4bd3-98c3-3f3ece24349c"
+				},
+				"type": "",
+				"details": "",
+				"timestamp": 0
+			}
+		},
+		"MaintenanceLogFilter": {
+			"properties": {
+				"maintenanceLogStepIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"resourceIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
 			"type": "object",
 			"additionalProperties": true
 		},
@@ -471,6 +526,129 @@
 		"contact": {}
 	},
 	"paths": {
+		"/Assembly/get": {
+			"post": {
+				"operationId": "GetAssembly",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/Assembly"
+						}
+					}
+				},
+				"tags": [
+					"Assembly"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "assemblyId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Assembly/get-by": {
+			"post": {
+				"operationId": "GetAssembliesByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Assembly"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"Assembly"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/AssemblyFilter"
+						}
+					}
+				]
+			}
+		},
+		"/Assembly/delete": {
+			"delete": {
+				"operationId": "DeleteAssembly",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"Assembly"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "assemblyId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Assembly/update": {
+			"put": {
+				"operationId": "UpdateOrCreateAssembly",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/QueryResult_any_"
+						}
+					}
+				},
+				"tags": [
+					"Assembly"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "assembly",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Assembly"
+						}
+					}
+				]
+			}
+		},
 		"/maintenanceLog/get": {
 			"post": {
 				"operationId": "GetMaintenanceLog",
