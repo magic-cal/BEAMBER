@@ -10,6 +10,7 @@ import EditRecipeStep from "@/views/recipes/EditRecipeStep.vue"
 import ListRecipes from "@/views/recipes/ListRecipes.vue"
 import ManageMaintenanceLog from "@/views/resources/ManageMaintenanceLog.vue"
 import EditMaintenanceLog from "@/views/resources/EditMaintenanceLog.vue"
+import GanttasticTest from "@/views/dev/GanttasticTest.vue"
 
 Vue.use(VueRouter)
 
@@ -97,6 +98,14 @@ export const routes: Array<RouteConfig> = [
     props: (route) => ({
       resourceId: route.params["resourceId"]
     })
+  },
+  {
+    path: "/test/ganttastic",
+    name: "GanttasticTest",
+    component: GanttasticTest
+    // props: (route) => ({
+    //   resourceId: route.params["resourceId"]
+    // })
   }
   // {
   //   path: "/breweries/:resourceId",

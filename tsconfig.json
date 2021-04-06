@@ -12,12 +12,14 @@
     "sourceMap": true,
     "baseUrl": ".",
     "resolveJsonModule": true,
+    "typeRoots": ["utils/types"],
     "types": [
-      "webpack-env"
+      "webpack-env",
+      "./utils/types"
     ],
     "paths": {
       "@/*": [
-        "src/*"
+        "src/*",
       ],
     },
     "lib": [
