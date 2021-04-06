@@ -11,6 +11,7 @@
     </v-row>
 
     <g-gantt-chart
+      push-on-overlap
       grid
       :chart-start="myChartStart.toISOString()"
       :chart-end="myChartEnd.toISOString()"
