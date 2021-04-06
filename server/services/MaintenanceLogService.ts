@@ -38,7 +38,7 @@ export class MaintenanceLogController extends Controller {
   async getMaintenanceLogsByFilter(@Body() filter?: MaintenanceLogFilter) {
     let query =
       "\
-SELECT DISTINCT ON (maintenance_logs.maintenance_log_id) maintenance_log_id, maintenance_log_resource_id, maintenance_log_details, maintenance_log_type, maintenance_log_timestamp \
+SELECT DISTINCT ON (maintenance_logs.maintenance_log_id) maintenance_logs.*\
 FROM maintenance_logs \
 LEFT JOIN resources ON (maintenance_logs.maintenance_log_resource_id = resources.resource_id)\
 "

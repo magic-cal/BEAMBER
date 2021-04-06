@@ -67,7 +67,7 @@ export class ResourceController extends Controller {
     // })
     //
     let query =
-      "SELECT DISTINCT ON (resources.resource_id) resources.resource_id, resource_name FROM resources LEFT JOIN resource_tags ON (resources.resource_id = resource_tags.resource_id)"
+      "SELECT DISTINCT ON (resources.resource_id) resources.* FROM resources LEFT JOIN resource_tags ON (resources.resource_id = resource_tags.resource_id)"
     const queryClauses: string[] = []
     if (filter?.tagIds?.length) {
       queryClauses.push(`resource_tags.tag_id IN (${filter?.tagIds.map((ri) => `'${ri.value}'`)})`)

@@ -58,7 +58,7 @@ export class RecipeStepController extends Controller {
   async getRecipeStepsByFilter(@Body() filter?: RecipeStepFilter) {
     let query =
       "\
-SELECT DISTINCT ON (recipe_steps.recipe_step_id) recipe_steps.recipe_step_id,  recipe_step_name, recipe_step_description, recipe_step_recipe_requirement_id, recipe_step_tag_id, recipe_step_recipe_id, recipe_step_resource_id, recipe_step_duration, recipe_step_capacity, recipe_step_start, recipe_step_sequence \
+SELECT DISTINCT ON (recipe_steps.recipe_step_id) recipe_steps.* \
 FROM recipe_steps \
 LEFT JOIN recipes ON (recipe_steps.recipe_step_recipe_id = recipes.recipe_id)\
 "
