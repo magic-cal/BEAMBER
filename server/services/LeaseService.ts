@@ -19,8 +19,8 @@ export class LeaseController extends Controller {
     genBaseFields(leaseRow, lease)
     lease.id = Guid.fromString(leaseRow.lease_id)
     lease.name = leaseRow.lease_name
-    lease.startTime = leaseRow.lease_start_time
-    lease.endTime = leaseRow.lease_end_time
+    lease.startTime = new Date(leaseRow.lease_start_time)
+    lease.endTime = new Date(leaseRow.lease_end_time)
     lease.resourceId = leaseRow.lease_resource_id
     lease.maintenanceId = leaseRow.lease_maintenance_id
     lease.assemblyStepId = leaseRow.lease_assembly_step_id
@@ -43,8 +43,8 @@ lease_id, lease_name, lease_resource_id, lease_end_time, lease_start_time, lease
         lease.id.value,
         lease.name,
         lease.resourceId?.value,
-        lease.endTime,
-        lease.startTime,
+        lease.endTime.toISOString(),
+        lease.startTime.toISOString(),
         lease.maintenanceId?.value,
         lease.assemblyStepId?.value,
         lease.packagingId?.value,
@@ -67,7 +67,6 @@ lease_id, lease_name, lease_resource_id, lease_end_time, lease_start_time, lease
   @Post("get-by")
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async getLeasesByFilter(@Body() filter?: LeaseFilter) {
-    await this.addLease(new Lease())
     let query = "SELECT DISTINCT ON (leases.lease_id) leases.* FROM leases \
     "
     // LEFT JOIN resource_leases ON (leases.lease_id = resource_leases.lease_id)\
@@ -102,8 +101,8 @@ lease_id, lease_name, lease_resource_id, lease_end_time, lease_start_time, lease
         lease.id.value,
         lease.name,
         lease.resourceId?.value,
-        lease.endTime,
-        lease.startTime,
+        lease.endTime.toISOString(),
+        lease.startTime.toISOString(),
         lease.maintenanceId?.value,
         lease.assemblyStepId?.value,
         lease.packagingId?.value,
