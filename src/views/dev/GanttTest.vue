@@ -1,16 +1,14 @@
 <template>
   <div class="">
     <v-row class="ml-4">
+      <v-col :cols="12" sm="6"> <h1>Schedule</h1> </v-col>
       <v-col :cols="12" sm="6">
-        <h1>{{ tagId ? $t("edit_tag") + ": " + currentTag.name : $t("create_tag") }}</h1>
-      </v-col>
-      <v-col :cols="12" sm="6">
-        <v-btn icon @click="changeDate(fasle)"><v-icon>mdi-minus</v-icon></v-btn>
+        <v-btn icon @click="changeDate(false)"><v-icon>mdi-minus</v-icon></v-btn>
         <v-btn icon @click="changeDate(true)"><v-icon>mdi-plus</v-icon></v-btn>
       </v-col>
     </v-row>
 
-    <g-gantt-chart :chart-start="myChartStart" :chart-end="myChartEnd" theme="flare">
+    <g-gantt-chart :chart-start="myChartStart.toISOString()" :chart-end="myChartEnd.toISOString()" theme="flare">
       <g-gantt-row
         v-for="row in rows"
         :key="row.label"
@@ -24,74 +22,62 @@
 </template>
 
 <script lang="ts">
-import { Resource } from "@/api"
+import { Lease, Resource } from "@/api"
 import api from "@/api/api"
 import { WithLoading } from "@/store/modules/appStore"
 import { LocalDateTime } from "@js-joda/core/dist/js-joda"
 import Vue from "vue"
 import Component from "vue-class-component"
 import { GGanttChart, GGanttRow } from "vue-ganttastic"
-import moment from "moment"
+import Guid from "utils/classes/common/guid"
+
 @Component({
   components: {
     GGanttChart,
     GGanttRow
   }
 })
-export default class EditRecipes extends Vue {
+export default class Schedule extends Vue {
   resources: Resource[] = []
-  myChartStart = LocalDateTime.now()
-    .withHour(0)
-    .withMinute(0)
-    .toString()
-  myChartEnd = LocalDateTime.now()
-    .withHour(0)
-    .withMinute(0)
-    .plusDays(this.isMobile ? 1 : 5)
-    .toString()
+  leases: Lease[] = []
+  myChartStart = new Date(new Date().setHours(0, 0, 0))
+  myChartEnd = this.addDays(new Date(new Date().setHours(23, 59, 59)), this.isMobile ? 0 : 4)
   // @TODO: Add Types for Rows
   rows: any = []
 
   @WithLoading
   async mounted() {
     this.resources = await api.resourceApi.getResourcesByFilter({})
+    this.leases = await api.leaseApi.getLeasesByFilter({})
     const length = 3
     let timeSkew = length + 1
     // @TODO: Remove testdata
     this.rows = this.resources.map((res) => {
-      const dateTime = LocalDateTime.now()
-        .withHour(0)
-        .plusHours(timeSkew)
+      const dateTime: Date = new Date()
+      // const dateTimeAfter: Date = this.addDays(new Date(new Date().setHours(23, 59, 59)), this.isMobile ? 0 : 4)
       console.log("dateTime ", dateTime)
       timeSkew *= 1.5
+      const filteredLeases = this.leases.filter((l) => l.resourceId.equals(res.id))
+      console.log("fi", filteredLeases)
       return {
         label: res.name,
-        bars: [
-          {
-            startTime: dateTime.toString(),
-            endTime: dateTime.plusHours(length).toString(),
-            id: timeSkew
-          },
-          {
-            startTime: dateTime.plusHours(length + 1).toString(),
-            endTime: dateTime.plusHours(length * 2).toString(),
-            id: timeSkew
-          }
-        ]
+        bars: filteredLeases
       }
     })
   }
   changeDate(increase: boolean) {
-    this.myChartStart = LocalDateTime.parse(this.myChartStart)
-      .plusDays(increase ? 1 : -1)
-      .toString()
-    this.myChartEnd = LocalDateTime.parse(this.myChartEnd)
-      .plusDays(increase ? 1 : -1)
-      .toString()
+    this.myChartStart = this.addDays(this.myChartStart, increase ? 1 : -1)
+    this.myChartEnd = this.addDays(this.myChartEnd, increase ? 1 : -1)
   }
 
   get isMobile() {
     return this.$vuetify.breakpoint.smAndDown
+  }
+
+  addDays(date: Date, days: number) {
+    const copy = new Date(Number(date))
+    copy.setDate(date.getDate() + days)
+    return copy
   }
 }
 </script>

@@ -66,6 +66,14 @@ export const messages = {
     edit_maintenance_log: "Edit Maintenance Log",
     create_maintenance_log: "Create Maintenance Log",
     type: "Type",
-    details: "Details"
+    details: "Details",
+
+    // ENUMS
+
+    enum_lease_type_none: "None",
+    enum_lease_type_assembly_step: "Assembly Step",
+    enum_lease_type_product: "Product",
+    enum_lease_type_maintenance: "Maintenance",
+    enum_lease_type_packaging: "Packaging"
   }
 }

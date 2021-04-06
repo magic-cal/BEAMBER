@@ -30,6 +30,12 @@ export const navigationItems: NavigationItem[] = [
     name: "Recipe List",
     icon: "mdi-format-list-numbered",
     pathName: "RecipeList"
+  },
+  {
+    id: null,
+    name: "Schedule",
+    icon: "mdi-calendar-arrow-right",
+    pathName: "Schedule"
   }
   // {
   //   id: null,

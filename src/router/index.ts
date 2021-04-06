@@ -10,7 +10,8 @@ import EditRecipeStep from "@/views/recipes/EditRecipeStep.vue"
 import ListRecipes from "@/views/recipes/ListRecipes.vue"
 import ManageMaintenanceLog from "@/views/resources/ManageMaintenanceLog.vue"
 import EditMaintenanceLog from "@/views/resources/EditMaintenanceLog.vue"
-import GanttasticTest from "@/views/dev/GanttasticTest.vue"
+import GanttTest from "@/views/dev/GanttTest.vue"
+import Schedule from "@/views/scheduling/Schedule.vue"
 
 Vue.use(VueRouter)
 
@@ -100,9 +101,17 @@ export const routes: Array<RouteConfig> = [
     })
   },
   {
-    path: "/test/ganttastic",
-    name: "GanttasticTest",
-    component: GanttasticTest
+    path: "/test/gantt",
+    name: "GanttTest",
+    component: GanttTest
+    // props: (route) => ({
+    //   resourceId: route.params["resourceId"]
+    // })
+  },
+  {
+    path: "/schedule",
+    name: "Schedule",
+    component: Schedule
     // props: (route) => ({
     //   resourceId: route.params["resourceId"]
     // })

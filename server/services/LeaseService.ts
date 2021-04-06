@@ -1,5 +1,5 @@
 import { sqlToDB } from "../util/PgDatabase"
-import { Lease, LeaseFilter } from "../../utils/classes/leases"
+import { EnumLeaseType, Lease, LeaseFilter } from "../../utils/classes/leases"
 import Guid from "../../utils/classes/common/guid"
 import { QueryResultRow } from "pg"
 import { RecipeController } from "./RecipeService"
@@ -21,11 +21,17 @@ export class LeaseController extends Controller {
     lease.name = leaseRow.lease_name
     lease.startTime = new Date(leaseRow.lease_start_time)
     lease.endTime = new Date(leaseRow.lease_end_time)
-    lease.resourceId = leaseRow.lease_resource_id
+    lease.resourceId = Guid.fromString(leaseRow.lease_resource_id)
     lease.maintenanceId = leaseRow.lease_maintenance_id
     lease.assemblyStepId = leaseRow.lease_assembly_step_id
     lease.packagingId = leaseRow.lease_packaging_id
     lease.productId = leaseRow.lease_product_id
+    lease.leaseType = EnumLeaseType.none
+    if (lease.packagingId) {
+      lease.leaseType = EnumLeaseType.packaging
+    } else if (lease.assemblyStepId) {
+      lease.leaseType = EnumLeaseType.assemblyStep
+    } //@TODO: Implement all lease types
     console.log("leaseRow", leaseRow)
     console.log("LEASEGG", lease)
     return lease
@@ -45,10 +51,10 @@ lease_id, lease_name, lease_resource_id, lease_end_time, lease_start_time, lease
         lease.resourceId?.value,
         lease.endTime.toISOString(),
         lease.startTime.toISOString(),
-        lease.maintenanceId?.value,
-        lease.assemblyStepId?.value,
-        lease.packagingId?.value,
-        lease.productId?.value,
+        undefined, //lease.maintenanceId?.value,
+        undefined, //lease.assemblyStepId?.value,
+        undefined, //lease.packagingId?.value,
+        undefined, //lease.productId?.value,
         ...extractBaseFields(lease)
       ]
     )
@@ -103,10 +109,10 @@ lease_id, lease_name, lease_resource_id, lease_end_time, lease_start_time, lease
         lease.resourceId?.value,
         lease.endTime.toISOString(),
         lease.startTime.toISOString(),
-        lease.maintenanceId?.value,
-        lease.assemblyStepId?.value,
-        lease.packagingId?.value,
-        lease.productId?.value,
+        undefined, //lease.maintenanceId?.value,
+        undefined, //lease.assemblyStepId?.value,
+        undefined, //lease.packagingId?.value,
+        undefined, //lease.productId?.value,
         ...extractBaseFields(lease)
       ]
     )

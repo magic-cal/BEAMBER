@@ -1,7 +1,6 @@
 import Guid from "./common/guid"
 import { AmberApiFields } from "./amberApiFields"
 import BaseEnumType from "./common/baseEnumType"
-import { LocalDateTime } from "@js-joda/core"
 
 // Lease_id uuid NOT NULL DEFAULT gen_random_uuid(),
 // Lease_name character varying COLLATE pg_catalog."default",
@@ -14,13 +13,11 @@ import { LocalDateTime } from "@js-joda/core"
 export class EnumLeaseType implements BaseEnumType {
   private static allValues: EnumLeaseType[] = [] // make sure this is top-most
 
-  public static none = new EnumLeaseType(0, "None", "enum_distribution_status_none")
-  public static pending = new EnumLeaseType(1, "Pending", "enum_distribution_status_pending")
-  public static successful = new EnumLeaseType(2, "Successful", "enum_distribution_status_successful")
-  public static outForDelivery = new EnumLeaseType(3, "OutForDelivery", "enum_distribution_status_out_for_delivery")
-  public static exception = new EnumLeaseType(4, "Exception", "enum_distribution_status_exception")
-  public static failed = new EnumLeaseType(5, "Failed", "enum_distribution_status_failed")
-  public static hasNotes = new EnumLeaseType(6, "HasNotes", "enum_distribution_status_has_notes")
+  public static none = new EnumLeaseType(0, "None", "enum_lease_type_none")
+  public static assemblyStep = new EnumLeaseType(1, "AssemblyStep", "enum_lease_type_assembly_step")
+  public static product = new EnumLeaseType(2, "Product", "enum_lease_type_product")
+  public static maintenance = new EnumLeaseType(3, "Maintenance", "enum_lease_type_maintenance")
+  public static packaging = new EnumLeaseType(4, "Packaging", "enum_lease_type_packaging")
 
   public key: number
   public value: string
@@ -81,4 +78,31 @@ export class Lease extends AmberApiFields {
 export class LeaseFilter {
   LeaseStepIds: Guid[] = []
   includeDeleted = false
+}
+
+export interface GantBarConfig {
+  color?: string
+  opacity?: number
+  background?: string
+  bundle?: string
+}
+
+export class GanttBar {
+  label: string
+  startTime: string
+  endTime: string
+  lease: Lease
+  ganttBarConfig?: GantBarConfig
+  constructor(lease: Lease, config?: GantBarConfig) {
+    this.label = lease.name
+    this.startTime = lease.startTime.toISOString()
+    this.endTime = lease.endTime.toISOString()
+    this.lease = lease
+    this.ganttBarConfig = config
+  }
+  public toLease() {
+    this.lease.endTime = new Date(this.endTime)
+    this.lease.startTime = new Date(this.startTime)
+    return this.lease
+  }
 }
