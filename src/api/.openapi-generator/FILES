@@ -1,4 +1,5 @@
 apis/AssemblyApi.ts
+apis/LeaseApi.ts
 apis/MaintenanceLogApi.ts
 apis/RecipeApi.ts
 apis/RecipeStepApi.ts
@@ -8,7 +9,10 @@ apis/index.ts
 index.ts
 models/Assembly.ts
 models/AssemblyFilter.ts
+models/EnumLeaseType.ts
 models/FieldDef.ts
+models/Lease.ts
+models/LeaseFilter.ts
 models/MaintenanceLog.ts
 models/MaintenanceLogFilter.ts
 models/QueryResultAny.ts

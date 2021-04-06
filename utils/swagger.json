@@ -228,6 +228,95 @@
 			"type": "object",
 			"additionalProperties": true
 		},
+		"EnumLeaseType": {
+			"properties": {
+				"key": {
+					"type": "number",
+					"format": "double"
+				},
+				"value": {
+					"type": "string"
+				},
+				"translationKey": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"key",
+				"value",
+				"translationKey"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"Lease": {
+			"properties": {
+				"versionNo": {
+					"type": "number",
+					"format": "double"
+				},
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"name": {
+					"type": "string"
+				},
+				"resourceId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"endTime": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"startTime": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"leaseType": {
+					"$ref": "#/definitions/EnumLeaseType"
+				},
+				"maintenanceId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"assemblyStepId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"packagingId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"productId": {
+					"$ref": "#/definitions/Guid"
+				}
+			},
+			"required": [
+				"versionNo",
+				"id",
+				"name",
+				"resourceId",
+				"endTime",
+				"startTime",
+				"leaseType"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"LeaseFilter": {
+			"properties": {
+				"LeaseStepIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"type": "object",
+			"additionalProperties": true
+		},
 		"MaintenanceLog": {
 			"properties": {
 				"versionNo": {
@@ -797,6 +886,129 @@
 						"required": true,
 						"schema": {
 							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Lease/get": {
+			"post": {
+				"operationId": "GetLease",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/Lease"
+						}
+					}
+				},
+				"tags": [
+					"Lease"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "leaseId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Lease/get-by": {
+			"post": {
+				"operationId": "GetLeasesByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Lease"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"Lease"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/LeaseFilter"
+						}
+					}
+				]
+			}
+		},
+		"/Lease/delete": {
+			"delete": {
+				"operationId": "DeleteLease",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"Lease"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "leaseId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Lease/update": {
+			"put": {
+				"operationId": "UpdateOrCreateLease",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/QueryResult_any_"
+						}
+					}
+				},
+				"tags": [
+					"Lease"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "lease",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Lease"
 						}
 					}
 				]
