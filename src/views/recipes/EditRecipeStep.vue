@@ -89,7 +89,7 @@
 <script lang="ts">
 import Guid from "@/../utils/classes/common/guid"
 import { Recipe } from "@/../utils/classes/recipes"
-import { RecipeStep } from "@/../utils/classes/recipeStep"
+import { RecipeStep } from "@/../utils/classes/recipeSteps"
 import api from "@/api/api"
 import SortableList from "@/components/SortableList.vue"
 import { WithLoading } from "@/store/modules/appStore"

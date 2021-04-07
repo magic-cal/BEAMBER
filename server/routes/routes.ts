@@ -7,6 +7,8 @@ import { RecipeController } from './../services/RecipeService';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AssemblyController } from './../services/AssemblyService';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { AssemblyStepController } from './../services/AssemblyStepService';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { LeaseController } from './../services/LeaseService';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { MaintenanceLogController } from './../services/MaintenanceLogService';
@@ -96,6 +98,33 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "AssemblyStepIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
+            "includeDeleted": {"dataType":"boolean","default":false},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "AssemblyStep": {
+        "dataType": "refObject",
+        "properties": {
+            "versionNo": {"dataType":"double","required":true},
+            "id": {"ref":"Guid","required":true},
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string","required":true},
+            "assemblyId": {"ref":"Guid","required":true},
+            "assemblyRequirementId": {"ref":"Guid"},
+            "tagId": {"ref":"Guid"},
+            "resourceId": {"ref":"Guid"},
+            "duration": {"dataType":"double","required":true},
+            "capacity": {"dataType":"double","required":true},
+            "sequence": {"dataType":"double","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "AssemblyStepFilter": {
+        "dataType": "refObject",
+        "properties": {
+            "assemblyIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
             "includeDeleted": {"dataType":"boolean","default":false},
         },
         "additionalProperties": true,
@@ -446,6 +475,94 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.createFromRecipe.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/AssemblyStep/get',
+            function AssemblyStepController_getAssemblyStep(request: any, response: any, next: any) {
+            const args = {
+                    assemblyStepId: {"in":"body","name":"assemblyStepId","required":true,"ref":"Guid"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AssemblyStepController();
+
+
+            const promise = controller.getAssemblyStep.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/AssemblyStep/get-by',
+            function AssemblyStepController_getAssemblyStepsByFilter(request: any, response: any, next: any) {
+            const args = {
+                    filter: {"in":"body","name":"filter","ref":"AssemblyStepFilter"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AssemblyStepController();
+
+
+            const promise = controller.getAssemblyStepsByFilter.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/AssemblyStep/delete',
+            function AssemblyStepController_deleteAssemblyStep(request: any, response: any, next: any) {
+            const args = {
+                    assemblyStepId: {"in":"body","name":"assemblyStepId","required":true,"ref":"Guid"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AssemblyStepController();
+
+
+            const promise = controller.deleteAssemblyStep.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/AssemblyStep/update',
+            function AssemblyStepController_updateOrCreateAssemblyStep(request: any, response: any, next: any) {
+            const args = {
+                    assemblyStep: {"in":"body","name":"assemblyStep","required":true,"ref":"AssemblyStep"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AssemblyStepController();
+
+
+            const promise = controller.updateOrCreateAssemblyStep.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

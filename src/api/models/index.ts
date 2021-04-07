@@ -1,5 +1,7 @@
 export * from './Assembly';
 export * from './AssemblyFilter';
+export * from './AssemblyStep';
+export * from './AssemblyStepFilter';
 export * from './EnumLeaseType';
 export * from './FieldDef';
 export * from './Guid';

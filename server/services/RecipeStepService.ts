@@ -1,5 +1,5 @@
 import { sqlToDB } from "../util/PgDatabase"
-import { RecipeStep, RecipeStepFilter } from "../../utils/classes/recipeStep"
+import { RecipeStep, RecipeStepFilter } from "../../utils/classes/recipeSteps"
 import Guid from "../../utils/classes/common/guid"
 import { QueryResultRow } from "pg"
 import { Body, Controller, Delete, Post, Put, Route, Tags } from "tsoa"

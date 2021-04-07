@@ -228,6 +228,101 @@
 			"type": "object",
 			"additionalProperties": true
 		},
+		"AssemblyStep": {
+			"properties": {
+				"versionNo": {
+					"type": "number",
+					"format": "double"
+				},
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"assemblyId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"assemblyRequirementId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"tagId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"resourceId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"duration": {
+					"type": "number",
+					"format": "double"
+				},
+				"capacity": {
+					"type": "number",
+					"format": "double"
+				},
+				"sequence": {
+					"type": "number",
+					"format": "double"
+				}
+			},
+			"required": [
+				"versionNo",
+				"id",
+				"name",
+				"description",
+				"assemblyId",
+				"duration",
+				"capacity",
+				"sequence"
+			],
+			"type": "object",
+			"additionalProperties": true,
+			"example": {
+				"id": {
+					"value": "d01ac8d3-b823-4f8d-9643-06c6b6d8fb13"
+				},
+				"name": "Name",
+				"description": "Description",
+				"assemblyRequirementId": {
+					"value": "93000dfb-11a7-4be4-91c0-57140564243c"
+				},
+				"tagId": {
+					"value": "de1df70b-0794-4328-8118-c3462b694e67"
+				},
+				"assemblyId": {
+					"value": "8df24173-85fa-415c-ba66-668f65c05822"
+				},
+				"resourceId": {
+					"value": "a9f0cb6a-e804-4782-bbed-b271619c4eff"
+				},
+				"duration": 0,
+				"capacity": 0
+			}
+		},
+		"AssemblyStepFilter": {
+			"properties": {
+				"assemblyIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"type": "object",
+			"additionalProperties": true,
+			"example": {
+				"AssemblyIds": [],
+				"includeDeleted": false
+			}
+		},
 		"EnumLeaseType": {
 			"properties": {
 				"key": {
@@ -886,6 +981,129 @@
 						"required": true,
 						"schema": {
 							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/AssemblyStep/get": {
+			"post": {
+				"operationId": "GetAssemblyStep",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/AssemblyStep"
+						}
+					}
+				},
+				"tags": [
+					"AssemblyStep"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "assemblyStepId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/AssemblyStep/get-by": {
+			"post": {
+				"operationId": "GetAssemblyStepsByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/AssemblyStep"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"AssemblyStep"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/AssemblyStepFilter"
+						}
+					}
+				]
+			}
+		},
+		"/AssemblyStep/delete": {
+			"delete": {
+				"operationId": "DeleteAssemblyStep",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"AssemblyStep"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "assemblyStepId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/AssemblyStep/update": {
+			"put": {
+				"operationId": "UpdateOrCreateAssemblyStep",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/QueryResult_any_"
+						}
+					}
+				},
+				"tags": [
+					"AssemblyStep"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "assemblyStep",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/AssemblyStep"
 						}
 					}
 				]
