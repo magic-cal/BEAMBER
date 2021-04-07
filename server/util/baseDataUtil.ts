@@ -10,7 +10,7 @@ export function genBaseFields<T extends AmberApiFields>(resultRow: QueryResultRo
 export async function validateBaseFields<T extends AmberApiFields>(data: T, query: string, queryParams: any[]) {
   const result = await sqlToDB(query, queryParams)
   if (data.versionNo !== result.rows[0]?.version_no) {
-    console.log("Verions", data.versionNo, result.rows[0]?.version_no)
+    // console.log("Verions", data.versionNo, result.rows[0]?.version_no)
     return false
   } else {
     return true

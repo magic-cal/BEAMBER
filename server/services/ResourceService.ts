@@ -36,8 +36,8 @@ export class ResourceController extends Controller {
     resource.currentStep = Guid.createEmpty()
     resource.maintananceRequired = false
     resource.active = true
-    console.log("resourceResultRow", resourceResultRow)
-    console.log("Res", resource)
+    // console.log("resourceResultRow", resourceResultRow)
+    // console.log("Res", resource)
 
     return resource
   }

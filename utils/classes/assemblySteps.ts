@@ -35,18 +35,20 @@ export class AssemblyStep extends AmberApiFields {
   duration: number
   capacity: number
   sequence: number
+  complete: boolean
 
   constructor(
     id = Guid.createEmpty(),
     name = "",
     description = "",
-    assemblyRequirementId = undefined,
-    tagId = undefined,
+    assemblyRequirementId?: Guid,
+    tagId?: Guid,
     assemblyId = Guid.createEmpty(),
-    resourceId = undefined,
+    resourceId?: Guid,
     duration = 0,
     capacity = 0,
-    sequence = 0
+    sequence = 0,
+    complete = false
   ) {
     super()
     this.id = id
@@ -59,6 +61,7 @@ export class AssemblyStep extends AmberApiFields {
     this.duration = duration
     this.capacity = capacity
     this.sequence = sequence
+    this.complete = complete
   }
 }
 /**

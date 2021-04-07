@@ -2,11 +2,21 @@ import { sqlToDB } from "../util/PgDatabase"
 import { AssemblyStep, AssemblyStepFilter } from "../../utils/classes/assemblySteps"
 import Guid from "../../utils/classes/common/guid"
 import { QueryResultRow } from "pg"
-import { Body, Controller, Delete, Post, Put, Route, Tags } from "tsoa"
+import { Body, Controller, Delete, Hidden, Post, Put, Route, Tags } from "tsoa"
+import { RecipeController } from "./RecipeService"
+import { RecipeStepController } from "./RecipeStepService"
+import { RecipeStep } from "utils/classes/recipeSteps"
 
 @Tags("AssemblyStep")
 @Route("AssemblyStep")
 export class AssemblyStepController extends Controller {
+  recipeService: RecipeController
+  recipeStepService: RecipeStepController
+  constructor() {
+    super()
+    this.recipeService = new RecipeController()
+    this.recipeStepService = new RecipeStepController()
+  }
   dbToAssemblyStep(row: QueryResultRow) {
     const assemblyStep: AssemblyStep = new AssemblyStep()
     assemblyStep.id = Guid.fromString(row.assembly_step_id)
@@ -21,8 +31,8 @@ export class AssemblyStepController extends Controller {
     assemblyStep.duration = row.assembly_step_duration
     assemblyStep.capacity = row.assembly_step_capacity
     assemblyStep.sequence = row.assembly_step_sequence ?? 0
-    console.log("row", row)
-    console.log("ASSEMBLYGG", assemblyStep)
+    // console.log("row", row)
+    // console.log("ASSEMBLYGG", assemblyStep)
 
     return assemblyStep
   }
@@ -43,11 +53,11 @@ export class AssemblyStepController extends Controller {
       "\
 SELECT DISTINCT ON (assembly_steps.assembly_step_id) assembly_steps.* \
 FROM assembly_steps \
-LEFT JOIN assemblys ON (assembly_steps.assembly_step_assembly_id = assemblys.assembly_id)\
+LEFT JOIN assemblies ON (assembly_steps.assembly_step_assembly_id = assemblies.assembly_id)\
 "
     const queryClauses: string[] = []
     if (filter?.assemblyIds?.length) {
-      queryClauses.push(`assemblys.assembly_id IN (${filter.assemblyIds.map((ri) => `'${ri.value}'`)})`)
+      queryClauses.push(`assemblies.assembly_id IN (${filter.assemblyIds.map((ri) => `'${ri.value}'`)})`)
     }
     query += queryClauses.length ? " WHERE " + queryClauses.join(" AND ") : ";"
     const result = await sqlToDB(query)
@@ -115,5 +125,23 @@ assembly_step_sequence
         assemblyStep.sequence
       ]
     )
+  }
+
+  async createFromRecipeStep(recipeStep: RecipeStep, assemblyId?: Guid, stepAssemblyRequirementId?: Guid) {
+    const assemblyStepId = Guid.create()
+    const step = new AssemblyStep(
+      assemblyStepId,
+      recipeStep.name,
+      recipeStep.description,
+      stepAssemblyRequirementId,
+      recipeStep.tagId,
+      assemblyId,
+      recipeStep.resourceId,
+      recipeStep.duration,
+      recipeStep.capacity,
+      recipeStep.sequence
+    )
+    await this.updateOrCreateAssemblyStep(step)
+    return step
   }
 }

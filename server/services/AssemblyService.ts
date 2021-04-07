@@ -25,8 +25,14 @@ export class AssemblyController extends Controller {
     assembly.id = Guid.fromString(assemblyRow.assembly_id)
     assembly.name = assemblyRow.assembly_name
     assembly.description = assemblyRow.assembly_description
-    console.log("assemblyRow", assemblyRow)
-    console.log("ASSEMBLYGG", assembly)
+    assembly.complete = assemblyRow.assembly_complete
+    assembly.parentId = assemblyRow.assembly_parent_id ? Guid.fromString(assemblyRow.assembly_parent_id) : undefined
+    assembly.recipeId = assemblyRow.assembly_recipe_id ? Guid.fromString(assemblyRow.assembly_recipe_id) : undefined
+    assembly.recipeProductId = assemblyRow.assembly_recipe_product_id
+      ? Guid.fromString(assemblyRow.assembly_recipe_product_id)
+      : undefined
+    // console.log("assemblyRow", assemblyRow)
+    // console.log("ASSEMBLYGG", assembly)
 
     return assembly
   }
@@ -109,14 +115,20 @@ assembly_id ,assembly_name, assembly_description, assembly_complete, assembly_pa
   }
   @Hidden()
   @Put("create-by")
-  async createFromRecipe(@Body() recipeId: Guid) {
+  async createFromRecipe(@Body() recipeId: Guid, @Body() parentId?: Guid) {
     const assemblyId = Guid.create()
     const recipe = await this.recipeService.getRecipe(recipeId)
-    const assembly = new Assembly(assemblyId, recipe.name, recipe.description, false)
-    console.log(assembly)
+    const assembly = await new Assembly(assemblyId, recipe.name, recipe.description, false, recipeId, parentId)
 
     await this.updateOrCreateAssembly(assembly)
 
     return assembly
+  }
+
+  @Hidden()
+  @Put("create-by-many")
+  async createFromRecipes(@Body() recipeIds: Guid[]) {
+    const assemblies = recipeIds.map((rid) => this.createFromRecipe(rid))
+    return await Promise.all(assemblies)
   }
 }

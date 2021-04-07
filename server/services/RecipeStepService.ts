@@ -22,8 +22,8 @@ export class RecipeStepController extends Controller {
     recipeStep.capacity = row.recipe_step_capacity
     recipeStep.start = row.recipe_step_start
     recipeStep.sequence = row.recipe_step_sequence ?? 0
-    console.log("row", row)
-    console.log("RECIPEGG", recipeStep)
+    // console.log("row", row)
+    // console.log("RECIPEGG", recipeStep)
 
     return recipeStep
   }
@@ -47,10 +47,10 @@ export class RecipeStepController extends Controller {
   @Post("get")
   async getRecipeStep(@Body() recipeStepId: Guid) {
     const result = await sqlToDB("SELECT * FROM recipe_steps WHERE recipe_step_id = $1", [recipeStepId.value])
-    console.log(
-      "result.rows.map(recipeStepResult => dbToRecipeStep(recipeStepResult))[0]",
-      result.rows.map((recipeStepResult) => this.dbToRecipeStep(recipeStepResult))[0]
-    )
+    // console.log(
+    //   "result.rows.map(recipeStepResult => dbToRecipeStep(recipeStepResult))[0]",
+    //   result.rows.map((recipeStepResult) => this.dbToRecipeStep(recipeStepResult))[0]
+    // )
     return result.rows.map((recipeStepResult) => this.dbToRecipeStep(recipeStepResult))[0]
   }
 

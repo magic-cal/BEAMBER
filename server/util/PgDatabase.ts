@@ -30,7 +30,7 @@ pool.on("error", function(err: Error) {
  * @return result
  */
 export const sqlToDB = async (sql: string, data?: any[] | any[][]) => {
-  console.debug(`sqlToDB() sql: ${sql} | data: ${data}`)
+  console.debug(`sqlToDB() sql: ${sql} | data: ${data} \n`)
   let result: QueryResult
   try {
     result = await pool.query(sql, data)

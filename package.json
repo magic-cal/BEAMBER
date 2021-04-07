@@ -11,6 +11,7 @@
     "build:client": "vue-cli-service build",
     "dev:server": "nodemon --config ./nodemon.config.json",
     "build:server": "rimraf dist/server && tsc -p tsconfig.server.json",
+    "debug": "nodemon --config ./nodemon.config.json",
     "lint": "vue-cli-service lint",
     "swagger-gen": "tsoa swagger",
     "routes-gen": "tsoa routes",

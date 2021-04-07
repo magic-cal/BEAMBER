@@ -22,8 +22,8 @@ export class RecipeController extends Controller {
       isComplete: recipeResultRow.complete ?? false,
       isScheduled: recipeResultRow.scheduled ?? false
     }
-    console.log("recipeResultRow", recipeResultRow)
-    console.log("RECIPEGG", recipe)
+    // console.log("recipeResultRow", recipeResultRow)
+    // console.log("RECIPEGG", recipe)
 
     return recipe
   }
@@ -59,10 +59,6 @@ recipe_is_assembly
   @Post("get")
   async getRecipe(@Body() recipeId: Guid) {
     const result = await sqlToDB("SELECT * FROM recipes WHERE recipe_id = $1", [recipeId.value])
-    console.log(
-      "result.rows.map(recipeResult => dbToRecipe(recipeResult))[0]",
-      result.rows.map((recipeResult) => this.dbToRecipe(recipeResult))[0]
-    )
     return result.rows.map((recipeResult) => this.dbToRecipe(recipeResult))[0]
   }
 

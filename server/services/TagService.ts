@@ -17,8 +17,8 @@ export class TagController extends Controller {
     tag.id = Guid.fromString(tagResultRow.tag_id)
     tag.name = tagResultRow.tag_name ?? ""
     tag.description = tagResultRow.tag_description ?? ""
-    console.log("tagResultRow", tagResultRow)
-    console.log("TAGGG", tag)
+    // console.log("tagResultRow", tagResultRow)
+    // console.log("TAGGG", tag)
 
     return tag
   }
