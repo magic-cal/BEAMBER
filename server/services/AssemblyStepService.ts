@@ -77,24 +77,25 @@ LEFT JOIN assemblies ON (assembly_steps.assembly_step_assembly_id = assemblies.a
       assemblyStep.id.value !== Guid.createEmpty().value,
       "assemblyStep.id.value !== Guid.createEmpty().value"
     )
-    if (assemblyStep.id.value !== Guid.createEmpty().value && (await this.getAssemblyStep(assemblyStep.id))) {
-      return await sqlToDB(
-        "UPDATE assembly_steps SET assembly_step_id = $1, assembly_step_name = $2, assembly_step_description = $3, assembly_step_assembly_requirement_id = $4, assembly_step_tag_id = $5, assembly_step_assembly_id = $6, assembly_step_resource_id = $7, assembly_step_duration = $8, assembly_step_capacity = $9, assembly_step_sequence = $10 WHERE assembly_step_id = $1;",
-        [
-          assemblyStep.id.value,
-          assemblyStep.name,
-          assemblyStep.description,
-          assemblyStep.assemblyRequirementId?.value,
-          assemblyStep.tagId?.value,
-          assemblyStep.assemblyId.value,
-          assemblyStep.resourceId?.value,
-          assemblyStep.duration,
-          assemblyStep.capacity,
-          assemblyStep.sequence
-        ]
-      )
+    if (assemblyStep.id.value === Guid.createEmpty().value || !(await this.getAssemblyStep(assemblyStep.id))) {
+      return await this.addAssemblyStep(assemblyStep)
     }
-    return await this.addAssemblyStep(assemblyStep)
+
+    return await sqlToDB(
+      "UPDATE assembly_steps SET assembly_step_id = $1, assembly_step_name = $2, assembly_step_description = $3, assembly_step_assembly_requirement_id = $4, assembly_step_tag_id = $5, assembly_step_assembly_id = $6, assembly_step_resource_id = $7, assembly_step_duration = $8, assembly_step_capacity = $9, assembly_step_sequence = $10 WHERE assembly_step_id = $1;",
+      [
+        assemblyStep.id.value,
+        assemblyStep.name,
+        assemblyStep.description,
+        assemblyStep.assemblyRequirementId?.value,
+        assemblyStep.tagId?.value,
+        assemblyStep.assemblyId.value,
+        assemblyStep.resourceId?.value,
+        assemblyStep.duration,
+        assemblyStep.capacity,
+        assemblyStep.sequence
+      ]
+    )
   }
 
   async addAssemblyStep(assemblyStep: AssemblyStep) {
