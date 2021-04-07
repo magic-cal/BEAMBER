@@ -5,6 +5,8 @@ import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, H
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { RecipeController } from './../services/RecipeService';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { RecipeStepController } from './../services/RecipeStepService';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AssemblyController } from './../services/AssemblyService';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AssemblyStepController } from './../services/AssemblyStepService';
@@ -13,11 +15,11 @@ import { LeaseController } from './../services/LeaseService';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { MaintenanceLogController } from './../services/MaintenanceLogService';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { RecipeStepController } from './../services/RecipeStepService';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { TagController } from './../services/TagService';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { ResourceController } from './../services/ResourceService';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { ScheduleService } from './../services/ScheduleService';
 import * as express from 'express';
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -75,6 +77,34 @@ const models: TsoaRoute.Models = {
             "oid": {"dataType":"double","required":true},
             "fields": {"dataType":"array","array":{"ref":"FieldDef"},"required":true},
             "rows": {"dataType":"array","array":{"dataType":"any"},"required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "RecipeStep": {
+        "dataType": "refObject",
+        "properties": {
+            "versionNo": {"dataType":"double","required":true},
+            "id": {"ref":"Guid","required":true},
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string","required":true},
+            "recipeRequirementId": {"ref":"Guid"},
+            "tagId": {"ref":"Guid"},
+            "recipeId": {"ref":"Guid","required":true},
+            "resourceId": {"ref":"Guid"},
+            "duration": {"dataType":"double","required":true},
+            "capacity": {"dataType":"double","required":true},
+            "start": {"dataType":"double","required":true},
+            "sequence": {"dataType":"double","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "RecipeStepFilter": {
+        "dataType": "refObject",
+        "properties": {
+            "recipeIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
+            "includeDeleted": {"dataType":"boolean","default":false},
         },
         "additionalProperties": true,
     },
@@ -185,34 +215,6 @@ const models: TsoaRoute.Models = {
         "properties": {
             "maintenanceLogStepIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
             "resourceIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
-            "includeDeleted": {"dataType":"boolean","default":false},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "RecipeStep": {
-        "dataType": "refObject",
-        "properties": {
-            "versionNo": {"dataType":"double","required":true},
-            "id": {"ref":"Guid","required":true},
-            "name": {"dataType":"string","required":true},
-            "description": {"dataType":"string","required":true},
-            "recipeRequirementId": {"ref":"Guid"},
-            "tagId": {"ref":"Guid"},
-            "recipeId": {"ref":"Guid","required":true},
-            "resourceId": {"ref":"Guid"},
-            "duration": {"dataType":"double","required":true},
-            "capacity": {"dataType":"double","required":true},
-            "start": {"dataType":"double","required":true},
-            "sequence": {"dataType":"double","required":true},
-        },
-        "additionalProperties": true,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "RecipeStepFilter": {
-        "dataType": "refObject",
-        "properties": {
-            "recipeIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
             "includeDeleted": {"dataType":"boolean","default":false},
         },
         "additionalProperties": true,
@@ -365,6 +367,94 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.updateOrCreateRecipe.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/RecipeStep/get',
+            function RecipeStepController_getRecipeStep(request: any, response: any, next: any) {
+            const args = {
+                    recipeStepId: {"in":"body","name":"recipeStepId","required":true,"ref":"Guid"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new RecipeStepController();
+
+
+            const promise = controller.getRecipeStep.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/RecipeStep/get-by',
+            function RecipeStepController_getRecipeStepsByFilter(request: any, response: any, next: any) {
+            const args = {
+                    filter: {"in":"body","name":"filter","ref":"RecipeStepFilter"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new RecipeStepController();
+
+
+            const promise = controller.getRecipeStepsByFilter.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/RecipeStep/delete',
+            function RecipeStepController_deleteRecipeStep(request: any, response: any, next: any) {
+            const args = {
+                    recipeStepId: {"in":"body","name":"recipeStepId","required":true,"ref":"Guid"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new RecipeStepController();
+
+
+            const promise = controller.deleteRecipeStep.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/RecipeStep/update',
+            function RecipeStepController_updateOrCreateRecipeStep(request: any, response: any, next: any) {
+            const args = {
+                    recipeStep: {"in":"body","name":"recipeStep","required":true,"ref":"RecipeStep"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new RecipeStepController();
+
+
+            const promise = controller.updateOrCreateRecipeStep.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -742,94 +832,6 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/RecipeStep/get',
-            function RecipeStepController_getRecipeStep(request: any, response: any, next: any) {
-            const args = {
-                    recipeStepId: {"in":"body","name":"recipeStepId","required":true,"ref":"Guid"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new RecipeStepController();
-
-
-            const promise = controller.getRecipeStep.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, undefined, next);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/RecipeStep/get-by',
-            function RecipeStepController_getRecipeStepsByFilter(request: any, response: any, next: any) {
-            const args = {
-                    filter: {"in":"body","name":"filter","ref":"RecipeStepFilter"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new RecipeStepController();
-
-
-            const promise = controller.getRecipeStepsByFilter.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, undefined, next);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.delete('/RecipeStep/delete',
-            function RecipeStepController_deleteRecipeStep(request: any, response: any, next: any) {
-            const args = {
-                    recipeStepId: {"in":"body","name":"recipeStepId","required":true,"ref":"Guid"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new RecipeStepController();
-
-
-            const promise = controller.deleteRecipeStep.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, undefined, next);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.put('/RecipeStep/update',
-            function RecipeStepController_updateOrCreateRecipeStep(request: any, response: any, next: any) {
-            const args = {
-                    recipeStep: {"in":"body","name":"recipeStep","required":true,"ref":"RecipeStep"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new RecipeStepController();
-
-
-            const promise = controller.updateOrCreateRecipeStep.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, undefined, next);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/tag/get',
             function TagController_getTag(request: any, response: any, next: any) {
             const args = {
@@ -1003,6 +1005,28 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.updateOrCreateResource.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/Schedule/recipes',
+            function ScheduleService_scheduleRecipes(request: any, response: any, next: any) {
+            const args = {
+                    recipeIds: {"in":"body","name":"recipeIds","required":true,"dataType":"array","array":{"ref":"Guid"}},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new ScheduleService();
+
+
+            const promise = controller.scheduleRecipes.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

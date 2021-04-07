@@ -29,10 +29,6 @@ import {
     QueryResultAnyToJSON,
 } from '../models';
 
-export interface CreateFromRecipeRequest {
-    recipeId: Guid;
-}
-
 export interface DeleteAssemblyRequest {
     assemblyId: Guid;
 }
@@ -53,37 +49,6 @@ export interface UpdateOrCreateAssemblyRequest {
  * 
  */
 export class AssemblyApi extends runtime.BaseAPI {
-
-    /**
-     */
-    async createFromRecipeRaw(requestParameters: CreateFromRecipeRequest): Promise<runtime.ApiResponse<Assembly>> {
-        if (requestParameters.recipeId === null || requestParameters.recipeId === undefined) {
-            throw new runtime.RequiredError('recipeId','Required parameter requestParameters.recipeId was null or undefined when calling createFromRecipe.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/Assembly/create-by`,
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: GuidToJSON(requestParameters.recipeId),
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => AssemblyFromJSON(jsonValue));
-    }
-
-    /**
-     */
-    async createFromRecipe(requestParameters: CreateFromRecipeRequest): Promise<Assembly> {
-        const response = await this.createFromRecipeRaw(requestParameters);
-        return await response.value();
-    }
 
     /**
      */

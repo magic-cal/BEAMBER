@@ -3,16 +3,21 @@ import { Assembly, AssemblyFilter } from "../../utils/classes/assemblies"
 import Guid from "../../utils/classes/common/guid"
 import { QueryResultRow } from "pg"
 import { RecipeController } from "./RecipeService"
-import { Body, Controller, Delete, Post, Put, Route, Tags } from "tsoa"
+import { RecipeStepController } from "./RecipeStepService"
+import { Body, Controller, Delete, Hidden, Post, Put, Route, Tags } from "tsoa"
 import { extractBaseFields, genBaseFields, updateBaseFields, validateBaseFields } from "../util/baseDataUtil"
+import { RecipeStepFilter } from "utils/classes/recipeSteps"
+import { AssemblyStep } from "utils/classes/assemblySteps"
 
 @Tags("Assembly")
 @Route("Assembly")
 export class AssemblyController extends Controller {
   recipeService: RecipeController
+  recipeStepService: RecipeStepController
   constructor() {
     super()
     this.recipeService = new RecipeController()
+    this.recipeStepService = new RecipeStepController()
   }
   dbToAssembly(assemblyRow: QueryResultRow) {
     const assembly: Assembly = new Assembly()
@@ -102,7 +107,7 @@ assembly_id ,assembly_name, assembly_description, assembly_complete, assembly_pa
       ]
     )
   }
-
+  @Hidden()
   @Put("create-by")
   async createFromRecipe(@Body() recipeId: Guid) {
     const assemblyId = Guid.create()
@@ -111,6 +116,7 @@ assembly_id ,assembly_name, assembly_description, assembly_complete, assembly_pa
     console.log(assembly)
 
     await this.updateOrCreateAssembly(assembly)
+
     return assembly
   }
 }
