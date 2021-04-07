@@ -60,6 +60,16 @@
                   :suffix="$t('liters')"
                 />
               </v-col>
+              <v-col :cols="12" :sm="6">
+                <v-select
+                  :label="$t('recipe_requirement')"
+                  v-model="currentRecipeStep.recipeRequirementId"
+                  item-text="name"
+                  item-value="id"
+                  :items="allRecipes"
+                  clearable
+                ></v-select>
+              </v-col>
               <v-col :cols="12"><v-divider /></v-col>
             </v-row>
           </v-form>
@@ -141,6 +151,8 @@ export default class EditRecipeSteps extends Vue {
       }
       console.log("currentStep", this.currentRecipeStep)
     }
+    // Remove Current Recipe
+    this.allRecipes = this.allRecipes.filter((r) => !r.id.equals(this.currentRecipeStep.recipeId))
   }
 
   @WithLoading

@@ -13,6 +13,8 @@ export const messages = {
     step: "Step",
     create_new: "Create New",
     description: "Description",
+    duration: "Duration",
+    start: "Start",
 
     // Metrics
     seconds: "Seconds",
@@ -55,8 +57,7 @@ export const messages = {
     specific_resource: "Specific Resource",
     resource_requirement_type: "Resource Requirement Type",
     specific_resource_requirement: "Specific Resource Requirement",
-    duration: "Duration",
-    start: "Start",
+    recipe_requirement: "Recipe Requirement",
 
     // maintenance
 

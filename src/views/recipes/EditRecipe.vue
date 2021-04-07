@@ -15,7 +15,7 @@
             <v-col :cols="12" :sm="6">
               <v-text-field :label="$t('description')" v-model="currentRecipe.description"></v-text-field>
             </v-col>
-            <v-col :cols="12" :sm="6">
+            <!-- <v-col :cols="12" :sm="6">
               <v-select
                 multiple
                 :label="$t('recipe_prerequisites')"
@@ -25,7 +25,7 @@
                 :items="allResources"
                 clearable
               ></v-select>
-            </v-col>
+            </v-col> -->
             <v-col :cols="recipeSteps.length > 2 ? 12 : 6" align="center">
               <p>{{ $t("recipe_steps") }}</p>
               <sortable-list
