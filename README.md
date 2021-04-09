@@ -26,3 +26,5 @@ Built with :
 - Express
 - Vuejs
 - Axios
+
+![alt text](https://github.com/magic-cal/BEAMBER/blob/main/src/assets/pplanning-screen.png?raw=true)
