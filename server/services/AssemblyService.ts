@@ -113,21 +113,16 @@ assembly_id ,assembly_name, assembly_description, assembly_complete, assembly_pa
       ]
     )
   }
-  @Hidden()
-  @Put("create-by")
-  async createFromRecipe(@Body() recipeId: Guid, @Body() parentId?: Guid) {
+  async createFromRecipe(recipeId: Guid, parentId?: Guid) {
     const assemblyId = Guid.create()
     const recipe = await this.recipeService.getRecipe(recipeId)
     const assembly = await new Assembly(assemblyId, recipe.name, recipe.description, false, recipeId, parentId)
 
     await this.updateOrCreateAssembly(assembly)
-
-    return assembly
+    return await this.getAssembly(assemblyId)
   }
 
-  @Hidden()
-  @Put("create-by-many")
-  async createFromRecipes(@Body() recipeIds: Guid[]) {
+  async createFromRecipes(recipeIds: Guid[]) {
     const assemblies = recipeIds.map((rid) => this.createFromRecipe(rid))
     return await Promise.all(assemblies)
   }

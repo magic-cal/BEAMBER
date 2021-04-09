@@ -92,6 +92,12 @@ export interface AssemblyStep {
      * @memberof AssemblyStep
      */
     sequence: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AssemblyStep
+     */
+    complete: boolean;
 }
 
 export function AssemblyStepFromJSON(json: any): AssemblyStep {
@@ -115,6 +121,7 @@ export function AssemblyStepFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'duration': json['duration'],
         'capacity': json['capacity'],
         'sequence': json['sequence'],
+        'complete': json['complete'],
     };
 }
 
@@ -138,6 +145,7 @@ export function AssemblyStepToJSON(value?: AssemblyStep | null): any {
         'duration': value.duration,
         'capacity': value.capacity,
         'sequence': value.sequence,
+        'complete': value.complete,
     };
 }
 

@@ -100,6 +100,9 @@ LEFT JOIN assemblies ON (assembly_steps.assembly_step_assembly_id = assemblies.a
 
   async addAssemblyStep(assemblyStep: AssemblyStep) {
     // const fieldParams = assemblyStepToDb(assemblyStep)
+    if (assemblyStep.id.value === Guid.createEmpty().value) {
+      assemblyStep.id = Guid.create()
+    }
     return await sqlToDB(
       `INSERT INTO assembly_steps (
 assembly_step_id,
@@ -143,6 +146,6 @@ assembly_step_sequence
       recipeStep.sequence
     )
     await this.updateOrCreateAssemblyStep(step)
-    return step
+    return await this.getAssemblyStep(assemblyStepId)
   }
 }

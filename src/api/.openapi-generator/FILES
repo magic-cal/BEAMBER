@@ -1,5 +1,6 @@
 apis/AssemblyApi.ts
 apis/AssemblyStepApi.ts
+apis/DataApi.ts
 apis/LeaseApi.ts
 apis/MaintenanceLogApi.ts
 apis/RecipeApi.ts

@@ -9,6 +9,12 @@ import { Body, Controller, Delete, Post, Put, Route, Tags } from "tsoa"
 import { RecipeStep, RecipeStepFilter } from "../../utils/classes/recipeSteps"
 import { AssemblyStep, AssemblyStepFilter } from "../../utils/classes/assemblySteps"
 import { Assembly } from "../../utils/classes/assemblies"
+import { LocalDateTime } from "@js-joda/core"
+
+interface AssembliesAndSteps {
+  assemblies: Assembly[]
+  steps: AssemblyStep[]
+}
 
 @Tags("Schedule")
 @Route("Schedule")
@@ -37,42 +43,40 @@ export class ScheduleService extends Controller {
     if (!recipeId.value) {
       return this.setStatus(422)
     }
-    console.log(recipeId.toString(), "recipeId")
+    let assembliesAndSteps = { assemblies: [], steps: [] } as AssembliesAndSteps
 
-    const assembly = await this.createAssembly(recipeId)
+    assembliesAndSteps = await this.createAssembly(recipeId, assembliesAndSteps)
 
-    const assemblyStepFilter = new AssemblyStepFilter()
-    assemblyStepFilter.assemblyIds = [assembly.id]
-    const assemblySteps = await this.assemblyStepService.getAssemblyStepsByFilter(assemblyStepFilter)
-    console.log("Assembly Steps retrived ", assemblySteps)
-    let currentTime = new Date()
+    let taskTime = LocalDateTime.now()
     await Promise.all(
-      assemblySteps.map((as) => {
-        currentTime = new Date(currentTime.setMinutes(as.duration + this.BUFFER_TIME))
-        return this.addLeaseForAsseblyStep(as, currentTime)
+      assembliesAndSteps.steps.map((as) => {
+        const lease = this.addLeaseForAsseblyStep(as, taskTime)
+        taskTime = taskTime.plusMinutes(as.duration)
+        return lease
       })
     )
   }
 
-  async addLeaseForAsseblyStep(assemblyStep: AssemblyStep, currentTime = new Date()) {
-    console.log("Add Lease ============================", currentTime)
+  async addLeaseForAsseblyStep(assemblyStep: AssemblyStep, currentTime = LocalDateTime.now()) {
     // @TODO: Temp Function
     const leaseId = Guid.create()
     // @TODO: Remove string - Get from Tags
-    const resourceId = assemblyStep.resourceId
-      ? assemblyStep.resourceId
-      : Guid.fromString("afd96580-fdf6-4065-82b1-e426b30b7f01")
+    const resourceId =
+      assemblyStep.resourceId && assemblyStep.resourceId.equals(Guid.createEmpty())
+        ? assemblyStep.resourceId
+        : Guid.fromString("2d029617-ac69-4409-8191-8452f9cc9882")
     const lease = new Lease(
       leaseId,
       assemblyStep.name,
       EnumLeaseType.assemblyStep,
-      currentTime,
-      new Date(currentTime.setMinutes(assemblyStep.duration))
+      new Date(currentTime.toString()),
+      new Date(currentTime.plusMinutes(assemblyStep.duration).toString()),
+      resourceId
     )
     await this.leaseService.updateOrCreateLease(lease)
   }
 
-  async createAssembly(recipeId: Guid, parentId?: Guid, recursiondepth = 0) {
+  async createAssembly(recipeId: Guid, assembliesAndSteps: AssembliesAndSteps, parentId?: Guid, recursiondepth = 0) {
     recursiondepth++
     if (recursiondepth > this.MAX_DEPTH) {
       this.setStatus(508)
@@ -82,24 +86,39 @@ export class ScheduleService extends Controller {
     // If this is not a child, set it as the parent
     parentId = parentId ? parentId : assembly.id
 
-    await this.createAssemblySteps(assembly, parentId)
-    return assembly
+    assembliesAndSteps.assemblies.push(assembly)
+    assembliesAndSteps = await this.createAssemblySteps(assembly, assembliesAndSteps, parentId)
+
+    return assembliesAndSteps
   }
 
-  async createAssemblySteps(assembly: Assembly, parentId?: Guid, recursiondepth = 0) {
+  async createAssemblySteps(
+    assembly: Assembly,
+    assembliesAndSteps: AssembliesAndSteps,
+    parentId?: Guid,
+    recursiondepth = 0
+  ) {
     let recipeSteps: RecipeStep[] = []
     const recipeStepFilter = new RecipeStepFilter()
     if (assembly.recipeId) {
       recipeStepFilter.recipeIds = assembly.recipeId ? [assembly.recipeId] : []
       recipeSteps = await this.recipeStepService.getRecipeStepsByFilter(recipeStepFilter)
     }
-    recipeSteps.forEach(async (rs) => {
+    for (const rs of recipeSteps) {
       // Add new assemblies for steps to be created
       if (rs.recipeRequirementId) {
-        await this.createAssembly(rs.recipeRequirementId, parentId, recursiondepth)
+        assembliesAndSteps = await this.createAssembly(
+          rs.recipeRequirementId,
+          assembliesAndSteps,
+          parentId,
+          recursiondepth
+        )
       }
-      await this.assemblyStepService.createFromRecipeStep(rs, assembly.id, rs.recipeRequirementId)
-    })
+      assembliesAndSteps.steps.push(
+        await this.assemblyStepService.createFromRecipeStep(rs, assembly.id, rs.recipeRequirementId)
+      )
+    }
+    return assembliesAndSteps
   }
 }
 

@@ -367,6 +367,9 @@
 				"sequence": {
 					"type": "number",
 					"format": "double"
+				},
+				"complete": {
+					"type": "boolean"
 				}
 			},
 			"required": [
@@ -377,7 +380,8 @@
 				"assemblyId",
 				"duration",
 				"capacity",
-				"sequence"
+				"sequence",
+				"complete"
 			],
 			"type": "object",
 			"additionalProperties": true,
@@ -1323,6 +1327,27 @@
 						}
 					}
 				]
+			}
+		},
+		"/Data/clear-assemblies": {
+			"post": {
+				"operationId": "ClearAssemblies",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"Data"
+				],
+				"security": [],
+				"parameters": []
 			}
 		},
 		"/maintenanceLog/get": {

@@ -13,6 +13,8 @@ import { AssemblyStepController } from './../services/AssemblyStepService';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { LeaseController } from './../services/LeaseService';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { DataService } from './../services/DataService';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { MaintenanceLogController } from './../services/MaintenanceLogService';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { TagController } from './../services/TagService';
@@ -147,6 +149,7 @@ const models: TsoaRoute.Models = {
             "duration": {"dataType":"double","required":true},
             "capacity": {"dataType":"double","required":true},
             "sequence": {"dataType":"double","required":true},
+            "complete": {"dataType":"boolean","required":true},
         },
         "additionalProperties": true,
     },
@@ -546,28 +549,6 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.put('/Assembly/create-by',
-            function AssemblyController_createFromRecipe(request: any, response: any, next: any) {
-            const args = {
-                    recipeId: {"in":"body","name":"recipeId","required":true,"ref":"Guid"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new AssemblyController();
-
-
-            const promise = controller.createFromRecipe.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, undefined, next);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/AssemblyStep/get',
             function AssemblyStepController_getAssemblyStep(request: any, response: any, next: any) {
             const args = {
@@ -741,6 +722,27 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.updateOrCreateLease.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/Data/clear-assemblies',
+            function DataService_clearAssemblies(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new DataService();
+
+
+            const promise = controller.clearAssemblies.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
