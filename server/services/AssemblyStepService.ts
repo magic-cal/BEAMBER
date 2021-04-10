@@ -3,9 +3,8 @@ import { AssemblyStep, AssemblyStepFilter } from "../../utils/classes/assemblySt
 import Guid from "../../utils/classes/common/guid"
 import { QueryResultRow } from "pg"
 import { Body, Controller, Delete, Hidden, Post, Put, Route, Tags } from "tsoa"
-import { RecipeController } from "./RecipeService"
-import { RecipeStepController } from "./RecipeStepService"
 import { RecipeStep } from "utils/classes/recipeSteps"
+import { RecipeController, RecipeStepController } from "./services"
 
 @Tags("AssemblyStep")
 @Route("AssemblyStep")
