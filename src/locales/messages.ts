@@ -35,6 +35,7 @@ export const messages = {
     current_process: "Current Process",
     requires_clean: "Requires Clean",
     resource_list: "ResourceList",
+    create_resource: "Create Resource",
     tag_list: "TagList",
     tags: "Tags",
     edit_tag: "Edit Tag",

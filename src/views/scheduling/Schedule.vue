@@ -172,3 +172,10 @@ export default class Schedule extends Vue {
   }
 }
 </script>
+
+<style>
+.g-gantt-bar {
+  border-radius: 0 !important;
+  border: 1px solid black;
+}
+</style>

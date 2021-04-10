@@ -1,8 +1,8 @@
 import Guid from "../../utils/classes/common/guid"
 import { EnumLeaseType, Lease } from "../../utils/classes/leases"
-import { Body, Controller, Delete, Post, Put, Route, Tags } from "tsoa"
+import { Body, Controller, Post, Route, Tags } from "tsoa"
 import { RecipeStep, RecipeStepFilter } from "../../utils/classes/recipeSteps"
-import { AssemblyStep, AssemblyStepFilter } from "../../utils/classes/assemblySteps"
+import { AssemblyStep } from "../../utils/classes/assemblySteps"
 import { Assembly } from "../../utils/classes/assemblies"
 import { LocalDateTime } from "@js-joda/core"
 import { LeaseController } from "./LeaseService"
@@ -53,7 +53,7 @@ export class ScheduleService extends Controller {
     await Promise.all(
       assembliesAndSteps.steps.map((as) => {
         const lease = this.addLeaseForAsseblyStep(as, taskTime)
-        taskTime = taskTime.plusMinutes(as.duration)
+        taskTime = taskTime.plusMinutes(as.duration).plusMinutes(this.BUFFER_TIME)
         return lease
       })
     )
@@ -64,9 +64,9 @@ export class ScheduleService extends Controller {
     const leaseId = Guid.create()
     // @TODO: Remove string - Get from Tags
     const resourceId =
-      assemblyStep.resourceId && assemblyStep.resourceId.equals(Guid.createEmpty())
-        ? assemblyStep.resourceId
-        : Guid.fromString("2d029617-ac69-4409-8191-8452f9cc9882")
+      assemblyStep.resourceId?.equals(Guid.createEmpty()) || !assemblyStep.resourceId
+        ? Guid.fromString("2d029617-ac69-4409-8191-8452f9cc9882")
+        : assemblyStep.resourceId
     const lease = new Lease(
       leaseId,
       assemblyStep.name,
@@ -122,6 +122,8 @@ export class ScheduleService extends Controller {
     }
     return assembliesAndSteps
   }
+
+  async findTimeSlot(resourceId: Guid, startTime: LocalDateTime, duration: number) {}
 }
 
 //     // implement for one first
