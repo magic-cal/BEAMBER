@@ -4,7 +4,8 @@ import Guid from "../../utils/classes/common/guid"
 import { QueryResultRow } from "pg"
 import { Body, Controller, Delete, Post, Put, Route, Tags } from "tsoa"
 import { extractBaseFields, genBaseFields, updateBaseFields, validateBaseFields } from "../util/baseDataUtil"
-import { RecipeController, RecipeStepController } from "./services"
+import { RecipeController } from "./RecipeService"
+import { RecipeStepController } from "./RecipeStepService"
 
 @Tags("Assembly")
 @Route("Assembly")

@@ -5,13 +5,11 @@ import { RecipeStep, RecipeStepFilter } from "../../utils/classes/recipeSteps"
 import { AssemblyStep, AssemblyStepFilter } from "../../utils/classes/assemblySteps"
 import { Assembly } from "../../utils/classes/assemblies"
 import { LocalDateTime } from "@js-joda/core"
-import {
-  AssemblyController,
-  AssemblyStepController,
-  LeaseController,
-  RecipeController,
-  RecipeStepController
-} from "./services"
+import { LeaseController } from "./LeaseService"
+import { RecipeController } from "./RecipeService"
+import { RecipeStepController } from "./RecipeStepService"
+import { AssemblyController } from "./AssemblyService"
+import { AssemblyStepController } from "./AssemblyStepService"
 
 interface AssembliesAndSteps {
   assemblies: Assembly[]

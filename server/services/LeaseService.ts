@@ -2,9 +2,9 @@ import { sqlToDB } from "../util/PgDatabase"
 import { EnumLeaseType, Lease, LeaseFilter } from "../../utils/classes/leases"
 import Guid from "../../utils/classes/common/guid"
 import { QueryResultRow } from "pg"
-import { RecipeController } from "./services"
 import { Body, Controller, Delete, Post, Put, Route, Tags } from "tsoa"
 import { extractBaseFields, genBaseFields, updateBaseFields, validateBaseFields } from "../util/baseDataUtil"
+import { RecipeController } from "./RecipeService"
 
 @Tags("Lease")
 @Route("Lease")

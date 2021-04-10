@@ -8,7 +8,7 @@ import { AssemblyStepController } from "./AssemblyStepService"
 import { LeaseController } from "./LeaseService"
 import { RecipeController } from "./RecipeService"
 import { RecipeStepController } from "./RecipeStepService"
-import { AssemblyController } from "./services"
+import { AssemblyController } from "./AssemblyService"
 
 export interface RecipeBreakdownSteps {
   name?: string
