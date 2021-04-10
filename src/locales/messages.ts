@@ -69,6 +69,12 @@ export const messages = {
     type: "Type",
     details: "Details",
 
+    // Leases
+    lease_name: "Name",
+    lease_start_time: "Start Time",
+    lease_end_time: "End Time",
+    lease_type: "Type",
+
     // ENUMS
 
     enum_lease_type_none: "None",

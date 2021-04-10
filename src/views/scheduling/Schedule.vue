@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <v-row class="ml-4">
       <v-col :cols="12" sm="6"> <h1>Schedule</h1> </v-col>
       <v-col :cols="12" sm="6">
@@ -17,6 +17,7 @@
       :chart-end="myChartEnd.toISOString()"
       theme="flare"
       :highlighted-hours="[currentHour]"
+      @contextmenu-bar="onContextmenuBar($event)"
     >
       <g-gantt-row
         v-for="row in rows"
@@ -33,11 +34,21 @@
       </g-gantt-row>
     </g-gantt-chart>
     <v-btn @click="save">SAVE</v-btn>
+    <v-menu
+      v-model="contextMenu.showContextmenu"
+      :position-x="contextMenu.contextmenuX"
+      :position-y="contextMenu.contextmenuY"
+    >
+      <v-list>
+        <v-list-item> {{ $t("lease_name") }}: {{ contextMenu.bar.label }} </v-list-item>
+        <v-list-item> {{ $t("lease_start_time") }}: {{ formatDate(contextMenu.bar.startTime) }} </v-list-item>
+        <v-list-item> {{ $t("lease_end_time") }}: {{ formatDate(contextMenu.bar.endTime) }} </v-list-item>
+      </v-list>
+    </v-menu>
   </div>
 </template>
 
 <script lang="ts">
-import { Lease, QueryResultAny, Resource } from "@/api"
 import api from "@/api/api"
 import { WithLoading } from "@/store/modules/appStore"
 import { LocalDateTime } from "@js-joda/core/dist/js-joda"
@@ -45,7 +56,8 @@ import Vue from "vue"
 import Component from "vue-class-component"
 import { GGanttChart, GGanttRow } from "vue-ganttastic"
 import Guid from "utils/classes/common/guid"
-import { EnumLeaseType, GantBarConfig, GanttBar } from "./../../../utils/classes/leases"
+import { EnumLeaseType, GantBarConfig, GanttBar, GanttContextMenu, Lease } from "./../../../utils/classes/leases"
+import { Resource } from "utils/classes/resources"
 
 export interface GanttRow {
   label: string
@@ -65,6 +77,7 @@ export default class Schedule extends Vue {
   myChartEnd = this.addDays(new Date(new Date().setHours(23, 59, 59)), this.isMobile ? 0 : 4)
   rows: GanttRow[] = []
   currentHour = new Date().getHours()
+  contextMenu = new GanttContextMenu()
 
   @WithLoading
   async mounted() {
@@ -128,6 +141,23 @@ export default class Schedule extends Vue {
     config.color = "#ffff"
     config.opacity = 0.9
     return config
+  }
+
+  onContextmenuBar(e: any) {
+    console.log({ e })
+    e.event.preventDefault()
+    this.contextMenu.contextmenuY = e.event.clientY
+    this.contextMenu.contextmenuX = e.event.clientX
+    this.contextMenu.showContextmenu = true
+    this.contextMenu.bar = e.bar
+    if (this.contextMenu.contextmenuTimeout) {
+      clearTimeout(this.contextMenu.contextmenuTimeout)
+    }
+    this.contextMenu.contextmenuTimeout = window.setTimeout(() => (this.contextMenu.showContextmenu = false), 3000)
+  }
+
+  formatDate(date: Date | string | number) {
+    return new Date(date).toString()
   }
 
   @WithLoading

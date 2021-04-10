@@ -85,6 +85,7 @@ export interface GantBarConfig {
   opacity?: number
   background?: string
   bundle?: string
+  borderRadius?: number
 }
 
 export class GanttBar {
@@ -93,7 +94,7 @@ export class GanttBar {
   endTime: string
   lease: Lease
   ganttBarConfig?: GantBarConfig
-  constructor(lease: Lease, config?: GantBarConfig) {
+  constructor(lease: Lease = new Lease(), config?: GantBarConfig) {
     this.label = lease.name
     this.startTime = lease.startTime.toISOString()
     this.endTime = lease.endTime.toISOString()
@@ -104,5 +105,15 @@ export class GanttBar {
     this.lease.endTime = new Date(this.endTime)
     this.lease.startTime = new Date(this.startTime)
     return this.lease
+  }
+}
+export class GanttContextMenu {
+  contextmenuY = 0
+  contextmenuX = 0
+  showContextmenu = false
+  contextmenuTimeout = 0
+  bar = new GanttBar(new Lease())
+  constructor(bar: GanttBar = new GanttBar()) {
+    this.bar = bar
   }
 }

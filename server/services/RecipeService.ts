@@ -46,14 +46,18 @@ export class RecipeController extends Controller {
 
   async addRecipe(recipe: Recipe) {
     // const fieldParams = recipeToDb(recipe)
+    if (recipe.id.value === Guid.createEmpty().value) {
+      recipe.id = Guid.create()
+    }
     return await sqlToDB(
       `INSERT INTO recipes (
+recipe_id ,
 recipe_name ,
 recipe_description,
 recipe_requirement_id,
 recipe_is_assembly
-) VALUES ($1, $2, $3, $4)`,
-      [recipe.name, recipe.description, null, recipe.readOnly?.isAssembly]
+) VALUES ($1, $2, $3, $4, $5)`,
+      [recipe.id.value, recipe.name, recipe.description, null, recipe.readOnly?.isAssembly]
     )
   }
   @Post("get")
