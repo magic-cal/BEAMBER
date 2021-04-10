@@ -72,7 +72,7 @@ export class DataService extends Controller {
     const recipe = new Recipe(recipeId, recipeBreakdown.name)
     await this.recipeService.updateOrCreateRecipe(recipe)
 
-    for (const rsb of recipeBreakdown.breakdownSteps) {
+    const stepPromises = recipeBreakdown.breakdownSteps.map(async (rsb, index) => {
       const recipeStep = new RecipeStep(
         Guid.create(),
         rsb.name,
@@ -81,9 +81,13 @@ export class DataService extends Controller {
         undefined,
         recipeId,
         undefined,
-        rsb.duration
+        rsb.duration,
+        undefined,
+        undefined,
+        index
       )
-      await this.recipeStepService.updateOrCreateRecipeStep(recipeStep)
-    }
+      return this.recipeStepService.updateOrCreateRecipeStep(recipeStep)
+    })
+    await Promise.all(stepPromises)
   }
 }

@@ -4,10 +4,18 @@ import Guid from "../../utils/classes/common/guid"
 import { QueryResultRow } from "pg"
 import { Body, Controller, Delete, Post, Put, Route, Tags } from "tsoa"
 import { genBaseFields, updateBaseFields, validateBaseFields } from "../util/baseDataUtil"
+import { RecipeStepController } from "./RecipeStepService"
+import { RecipeStepFilter } from "../../utils/classes/recipeSteps"
 
 @Tags("Recipe")
 @Route("Recipe")
 export class RecipeController extends Controller {
+  recipeStepService: RecipeStepController
+
+  constructor() {
+    super()
+    this.recipeStepService = new RecipeStepController()
+  }
   dbToRecipe(recipeResultRow: QueryResultRow) {
     const recipe: Recipe = new Recipe()
     genBaseFields(recipeResultRow, recipe)
@@ -28,21 +36,13 @@ export class RecipeController extends Controller {
     return recipe
   }
 
-  // export async updateResourceRelation(resources: Resource[], recipeId: Guid) {
-  //   // SIMILAR IMPL IN RESOURCE SERVICE
-  //   // const insertionValues = resources.map(resource => (resource.id.value, recipeId.value))
-  //   const insertionValues: string[] = []
-
-  //   await sqlToDB("DELETE FROM resource_recipes WHERE recipe_id = $1", [recipeId.value])
-  //   //@TODO: Update Inserts into resources NOT PRETTY
-  //   await resources.forEach(
-  //     async resource =>
-  //       await sqlToDB("INSERT INTO resource_recipes (resource_id, recipe_id) VALUES ($1,$2)", [
-  //         resource.id.value,
-  //         recipeId.value
-  //       ])
-  //   )
-  // }
+  async deleteRecipeStepsFromRecipe(recipeId: Guid) {
+    // @TODO: Quite DB Intensive - constider a delete by
+    const recipeStepFilter = new RecipeStepFilter()
+    recipeStepFilter.recipeIds = [recipeId]
+    const recipeSteps = await this.recipeStepService.getRecipeStepsByFilter(recipeStepFilter)
+    await Promise.all(recipeSteps.map((rs) => this.recipeStepService.deleteRecipeStep(rs.id)))
+  }
 
   async addRecipe(recipe: Recipe) {
     // const fieldParams = recipeToDb(recipe)
@@ -83,6 +83,7 @@ recipe_is_assembly
 
   @Delete("delete")
   async deleteRecipe(@Body() recipeId: Guid) {
+    await this.deleteRecipeStepsFromRecipe(recipeId)
     const result = await sqlToDB("DELETE FROM recipes WHERE recipe_id = $1", [recipeId.value])
     return !!result.rowCount
   }
