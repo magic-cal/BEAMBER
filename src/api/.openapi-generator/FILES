@@ -22,6 +22,8 @@ models/MaintenanceLog.ts
 models/MaintenanceLogFilter.ts
 models/QueryResultAny.ts
 models/Recipe.ts
+models/RecipeBreakdown.ts
+models/RecipeBreakdownSteps.ts
 models/RecipeFilter.ts
 models/RecipeReadOnly.ts
 models/RecipeStep.ts
