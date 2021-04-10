@@ -16,6 +16,271 @@
 			"type": "object",
 			"additionalProperties": true
 		},
+		"AssemblyStep": {
+			"properties": {
+				"versionNo": {
+					"type": "number",
+					"format": "double"
+				},
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"assemblyId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"assemblyRequirementId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"tagId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"resourceId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"duration": {
+					"type": "number",
+					"format": "double"
+				},
+				"capacity": {
+					"type": "number",
+					"format": "double"
+				},
+				"sequence": {
+					"type": "number",
+					"format": "double"
+				},
+				"complete": {
+					"type": "boolean"
+				}
+			},
+			"required": [
+				"versionNo",
+				"id",
+				"name",
+				"description",
+				"assemblyId",
+				"duration",
+				"capacity",
+				"sequence",
+				"complete"
+			],
+			"type": "object",
+			"additionalProperties": true,
+			"example": {
+				"id": {
+					"value": "d01ac8d3-b823-4f8d-9643-06c6b6d8fb13"
+				},
+				"name": "Name",
+				"description": "Description",
+				"assemblyRequirementId": {
+					"value": "93000dfb-11a7-4be4-91c0-57140564243c"
+				},
+				"tagId": {
+					"value": "de1df70b-0794-4328-8118-c3462b694e67"
+				},
+				"assemblyId": {
+					"value": "8df24173-85fa-415c-ba66-668f65c05822"
+				},
+				"resourceId": {
+					"value": "a9f0cb6a-e804-4782-bbed-b271619c4eff"
+				},
+				"duration": 0,
+				"capacity": 0
+			}
+		},
+		"AssemblyStepFilter": {
+			"properties": {
+				"assemblyIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"type": "object",
+			"additionalProperties": true,
+			"example": {
+				"AssemblyIds": [],
+				"includeDeleted": false
+			}
+		},
+		"FieldDef": {
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"tableID": {
+					"type": "number",
+					"format": "double"
+				},
+				"columnID": {
+					"type": "number",
+					"format": "double"
+				},
+				"dataTypeID": {
+					"type": "number",
+					"format": "double"
+				},
+				"dataTypeSize": {
+					"type": "number",
+					"format": "double"
+				},
+				"dataTypeModifier": {
+					"type": "number",
+					"format": "double"
+				},
+				"format": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"name",
+				"tableID",
+				"columnID",
+				"dataTypeID",
+				"dataTypeSize",
+				"dataTypeModifier",
+				"format"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"QueryResult_any_": {
+			"properties": {
+				"command": {
+					"type": "string"
+				},
+				"rowCount": {
+					"type": "number",
+					"format": "double"
+				},
+				"oid": {
+					"type": "number",
+					"format": "double"
+				},
+				"fields": {
+					"items": {
+						"$ref": "#/definitions/FieldDef"
+					},
+					"type": "array"
+				},
+				"rows": {
+					"items": {
+						"additionalProperties": true
+					},
+					"type": "array"
+				}
+			},
+			"required": [
+				"command",
+				"rowCount",
+				"oid",
+				"fields",
+				"rows"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"EnumLeaseType": {
+			"properties": {
+				"key": {
+					"type": "number",
+					"format": "double"
+				},
+				"value": {
+					"type": "string"
+				},
+				"translationKey": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"key",
+				"value",
+				"translationKey"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"Lease": {
+			"properties": {
+				"versionNo": {
+					"type": "number",
+					"format": "double"
+				},
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"name": {
+					"type": "string"
+				},
+				"resourceId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"endTime": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"startTime": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"leaseType": {
+					"$ref": "#/definitions/EnumLeaseType"
+				},
+				"maintenanceId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"assemblyStepId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"packagingId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"productId": {
+					"$ref": "#/definitions/Guid"
+				}
+			},
+			"required": [
+				"versionNo",
+				"id",
+				"name",
+				"resourceId",
+				"endTime",
+				"startTime",
+				"leaseType"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"LeaseFilter": {
+			"properties": {
+				"LeaseStepIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"type": "object",
+			"additionalProperties": true
+		},
 		"Recipe": {
 			"properties": {
 				"versionNo": {
@@ -93,83 +358,6 @@
 					"default": false
 				}
 			},
-			"type": "object",
-			"additionalProperties": true
-		},
-		"FieldDef": {
-			"properties": {
-				"name": {
-					"type": "string"
-				},
-				"tableID": {
-					"type": "number",
-					"format": "double"
-				},
-				"columnID": {
-					"type": "number",
-					"format": "double"
-				},
-				"dataTypeID": {
-					"type": "number",
-					"format": "double"
-				},
-				"dataTypeSize": {
-					"type": "number",
-					"format": "double"
-				},
-				"dataTypeModifier": {
-					"type": "number",
-					"format": "double"
-				},
-				"format": {
-					"type": "string"
-				}
-			},
-			"required": [
-				"name",
-				"tableID",
-				"columnID",
-				"dataTypeID",
-				"dataTypeSize",
-				"dataTypeModifier",
-				"format"
-			],
-			"type": "object",
-			"additionalProperties": true
-		},
-		"QueryResult_any_": {
-			"properties": {
-				"command": {
-					"type": "string"
-				},
-				"rowCount": {
-					"type": "number",
-					"format": "double"
-				},
-				"oid": {
-					"type": "number",
-					"format": "double"
-				},
-				"fields": {
-					"items": {
-						"$ref": "#/definitions/FieldDef"
-					},
-					"type": "array"
-				},
-				"rows": {
-					"items": {
-						"additionalProperties": true
-					},
-					"type": "array"
-				}
-			},
-			"required": [
-				"command",
-				"rowCount",
-				"oid",
-				"fields",
-				"rows"
-			],
 			"type": "object",
 			"additionalProperties": true
 		},
@@ -273,249 +461,6 @@
 				"RecipeIds": [],
 				"includeDeleted": false
 			}
-		},
-		"Assembly": {
-			"properties": {
-				"versionNo": {
-					"type": "number",
-					"format": "double"
-				},
-				"id": {
-					"$ref": "#/definitions/Guid"
-				},
-				"name": {
-					"type": "string"
-				},
-				"description": {
-					"type": "string"
-				},
-				"complete": {
-					"type": "boolean"
-				},
-				"parentId": {
-					"$ref": "#/definitions/Guid"
-				},
-				"recipeId": {
-					"$ref": "#/definitions/Guid"
-				},
-				"recipeProductId": {
-					"$ref": "#/definitions/Guid"
-				}
-			},
-			"required": [
-				"versionNo",
-				"id",
-				"name",
-				"description",
-				"complete"
-			],
-			"type": "object",
-			"additionalProperties": true
-		},
-		"AssemblyFilter": {
-			"properties": {
-				"AssemblyStepIds": {
-					"items": {
-						"$ref": "#/definitions/Guid"
-					},
-					"type": "array",
-					"default": []
-				},
-				"includeDeleted": {
-					"type": "boolean",
-					"default": false
-				}
-			},
-			"type": "object",
-			"additionalProperties": true
-		},
-		"AssemblyStep": {
-			"properties": {
-				"versionNo": {
-					"type": "number",
-					"format": "double"
-				},
-				"id": {
-					"$ref": "#/definitions/Guid"
-				},
-				"name": {
-					"type": "string"
-				},
-				"description": {
-					"type": "string"
-				},
-				"assemblyId": {
-					"$ref": "#/definitions/Guid"
-				},
-				"assemblyRequirementId": {
-					"$ref": "#/definitions/Guid"
-				},
-				"tagId": {
-					"$ref": "#/definitions/Guid"
-				},
-				"resourceId": {
-					"$ref": "#/definitions/Guid"
-				},
-				"duration": {
-					"type": "number",
-					"format": "double"
-				},
-				"capacity": {
-					"type": "number",
-					"format": "double"
-				},
-				"sequence": {
-					"type": "number",
-					"format": "double"
-				},
-				"complete": {
-					"type": "boolean"
-				}
-			},
-			"required": [
-				"versionNo",
-				"id",
-				"name",
-				"description",
-				"assemblyId",
-				"duration",
-				"capacity",
-				"sequence",
-				"complete"
-			],
-			"type": "object",
-			"additionalProperties": true,
-			"example": {
-				"id": {
-					"value": "d01ac8d3-b823-4f8d-9643-06c6b6d8fb13"
-				},
-				"name": "Name",
-				"description": "Description",
-				"assemblyRequirementId": {
-					"value": "93000dfb-11a7-4be4-91c0-57140564243c"
-				},
-				"tagId": {
-					"value": "de1df70b-0794-4328-8118-c3462b694e67"
-				},
-				"assemblyId": {
-					"value": "8df24173-85fa-415c-ba66-668f65c05822"
-				},
-				"resourceId": {
-					"value": "a9f0cb6a-e804-4782-bbed-b271619c4eff"
-				},
-				"duration": 0,
-				"capacity": 0
-			}
-		},
-		"AssemblyStepFilter": {
-			"properties": {
-				"assemblyIds": {
-					"items": {
-						"$ref": "#/definitions/Guid"
-					},
-					"type": "array",
-					"default": []
-				},
-				"includeDeleted": {
-					"type": "boolean",
-					"default": false
-				}
-			},
-			"type": "object",
-			"additionalProperties": true,
-			"example": {
-				"AssemblyIds": [],
-				"includeDeleted": false
-			}
-		},
-		"EnumLeaseType": {
-			"properties": {
-				"key": {
-					"type": "number",
-					"format": "double"
-				},
-				"value": {
-					"type": "string"
-				},
-				"translationKey": {
-					"type": "string"
-				}
-			},
-			"required": [
-				"key",
-				"value",
-				"translationKey"
-			],
-			"type": "object",
-			"additionalProperties": true
-		},
-		"Lease": {
-			"properties": {
-				"versionNo": {
-					"type": "number",
-					"format": "double"
-				},
-				"id": {
-					"$ref": "#/definitions/Guid"
-				},
-				"name": {
-					"type": "string"
-				},
-				"resourceId": {
-					"$ref": "#/definitions/Guid"
-				},
-				"endTime": {
-					"type": "string",
-					"format": "date-time"
-				},
-				"startTime": {
-					"type": "string",
-					"format": "date-time"
-				},
-				"leaseType": {
-					"$ref": "#/definitions/EnumLeaseType"
-				},
-				"maintenanceId": {
-					"$ref": "#/definitions/Guid"
-				},
-				"assemblyStepId": {
-					"$ref": "#/definitions/Guid"
-				},
-				"packagingId": {
-					"$ref": "#/definitions/Guid"
-				},
-				"productId": {
-					"$ref": "#/definitions/Guid"
-				}
-			},
-			"required": [
-				"versionNo",
-				"id",
-				"name",
-				"resourceId",
-				"endTime",
-				"startTime",
-				"leaseType"
-			],
-			"type": "object",
-			"additionalProperties": true
-		},
-		"LeaseFilter": {
-			"properties": {
-				"LeaseStepIds": {
-					"items": {
-						"$ref": "#/definitions/Guid"
-					},
-					"type": "array",
-					"default": []
-				},
-				"includeDeleted": {
-					"type": "boolean",
-					"default": false
-				}
-			},
-			"type": "object",
-			"additionalProperties": true
 		},
 		"RecipeBreakdownSteps": {
 			"properties": {
@@ -743,6 +688,61 @@
 			},
 			"type": "object",
 			"additionalProperties": true
+		},
+		"Assembly": {
+			"properties": {
+				"versionNo": {
+					"type": "number",
+					"format": "double"
+				},
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"complete": {
+					"type": "boolean"
+				},
+				"parentId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"recipeId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"recipeProductId": {
+					"$ref": "#/definitions/Guid"
+				}
+			},
+			"required": [
+				"versionNo",
+				"id",
+				"name",
+				"description",
+				"complete"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"AssemblyFilter": {
+			"properties": {
+				"AssemblyStepIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"type": "object",
+			"additionalProperties": true
 		}
 	},
 	"info": {
@@ -751,375 +751,6 @@
 		"contact": {}
 	},
 	"paths": {
-		"/Recipe/get": {
-			"post": {
-				"operationId": "GetRecipe",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"schema": {
-							"$ref": "#/definitions/Recipe"
-						}
-					}
-				},
-				"tags": [
-					"Recipe"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "body",
-						"name": "recipeId",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Guid"
-						}
-					}
-				]
-			}
-		},
-		"/Recipe/get-by": {
-			"post": {
-				"operationId": "GetRecipesByFilter",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"schema": {
-							"items": {
-								"$ref": "#/definitions/Recipe"
-							},
-							"type": "array"
-						}
-					}
-				},
-				"tags": [
-					"Recipe"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "body",
-						"name": "filter",
-						"required": false,
-						"schema": {
-							"$ref": "#/definitions/RecipeFilter"
-						}
-					}
-				]
-			}
-		},
-		"/Recipe/delete": {
-			"delete": {
-				"operationId": "DeleteRecipe",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"schema": {
-							"type": "boolean"
-						}
-					}
-				},
-				"tags": [
-					"Recipe"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "body",
-						"name": "recipeId",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Guid"
-						}
-					}
-				]
-			}
-		},
-		"/Recipe/update": {
-			"put": {
-				"operationId": "UpdateOrCreateRecipe",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"schema": {
-							"$ref": "#/definitions/QueryResult_any_"
-						}
-					}
-				},
-				"tags": [
-					"Recipe"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "body",
-						"name": "recipe",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Recipe"
-						}
-					}
-				]
-			}
-		},
-		"/RecipeStep/get": {
-			"post": {
-				"operationId": "GetRecipeStep",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"schema": {
-							"$ref": "#/definitions/RecipeStep"
-						}
-					}
-				},
-				"tags": [
-					"RecipeStep"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "body",
-						"name": "recipeStepId",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Guid"
-						}
-					}
-				]
-			}
-		},
-		"/RecipeStep/get-by": {
-			"post": {
-				"operationId": "GetRecipeStepsByFilter",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"schema": {
-							"items": {
-								"$ref": "#/definitions/RecipeStep"
-							},
-							"type": "array"
-						}
-					}
-				},
-				"tags": [
-					"RecipeStep"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "body",
-						"name": "filter",
-						"required": false,
-						"schema": {
-							"$ref": "#/definitions/RecipeStepFilter"
-						}
-					}
-				]
-			}
-		},
-		"/RecipeStep/delete": {
-			"delete": {
-				"operationId": "DeleteRecipeStep",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"schema": {
-							"type": "boolean"
-						}
-					}
-				},
-				"tags": [
-					"RecipeStep"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "body",
-						"name": "recipeStepId",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Guid"
-						}
-					}
-				]
-			}
-		},
-		"/RecipeStep/update": {
-			"put": {
-				"operationId": "UpdateOrCreateRecipeStep",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"schema": {
-							"$ref": "#/definitions/QueryResult_any_"
-						}
-					}
-				},
-				"tags": [
-					"RecipeStep"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "body",
-						"name": "recipeStep",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/RecipeStep"
-						}
-					}
-				]
-			}
-		},
-		"/Assembly/get": {
-			"post": {
-				"operationId": "GetAssembly",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"schema": {
-							"$ref": "#/definitions/Assembly"
-						}
-					}
-				},
-				"tags": [
-					"Assembly"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "body",
-						"name": "assemblyId",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Guid"
-						}
-					}
-				]
-			}
-		},
-		"/Assembly/get-by": {
-			"post": {
-				"operationId": "GetAssembliesByFilter",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"schema": {
-							"items": {
-								"$ref": "#/definitions/Assembly"
-							},
-							"type": "array"
-						}
-					}
-				},
-				"tags": [
-					"Assembly"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "body",
-						"name": "filter",
-						"required": false,
-						"schema": {
-							"$ref": "#/definitions/AssemblyFilter"
-						}
-					}
-				]
-			}
-		},
-		"/Assembly/delete": {
-			"delete": {
-				"operationId": "DeleteAssembly",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"schema": {
-							"type": "boolean"
-						}
-					}
-				},
-				"tags": [
-					"Assembly"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "body",
-						"name": "assemblyId",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Guid"
-						}
-					}
-				]
-			}
-		},
-		"/Assembly/update": {
-			"put": {
-				"operationId": "UpdateOrCreateAssembly",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"schema": {
-							"$ref": "#/definitions/QueryResult_any_"
-						}
-					}
-				},
-				"tags": [
-					"Assembly"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "body",
-						"name": "assembly",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Assembly"
-						}
-					}
-				]
-			}
-		},
 		"/AssemblyStep/get": {
 			"post": {
 				"operationId": "GetAssemblyStep",
@@ -1361,6 +992,252 @@
 						"required": true,
 						"schema": {
 							"$ref": "#/definitions/Lease"
+						}
+					}
+				]
+			}
+		},
+		"/Recipe/get": {
+			"post": {
+				"operationId": "GetRecipe",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/Recipe"
+						}
+					}
+				},
+				"tags": [
+					"Recipe"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipeId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Recipe/get-by": {
+			"post": {
+				"operationId": "GetRecipesByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Recipe"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"Recipe"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/RecipeFilter"
+						}
+					}
+				]
+			}
+		},
+		"/Recipe/delete": {
+			"delete": {
+				"operationId": "DeleteRecipe",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"Recipe"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipeId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Recipe/update": {
+			"put": {
+				"operationId": "UpdateOrCreateRecipe",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/QueryResult_any_"
+						}
+					}
+				},
+				"tags": [
+					"Recipe"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipe",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Recipe"
+						}
+					}
+				]
+			}
+		},
+		"/RecipeStep/get": {
+			"post": {
+				"operationId": "GetRecipeStep",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/RecipeStep"
+						}
+					}
+				},
+				"tags": [
+					"RecipeStep"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipeStepId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/RecipeStep/get-by": {
+			"post": {
+				"operationId": "GetRecipeStepsByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/RecipeStep"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"RecipeStep"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/RecipeStepFilter"
+						}
+					}
+				]
+			}
+		},
+		"/RecipeStep/delete": {
+			"delete": {
+				"operationId": "DeleteRecipeStep",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"RecipeStep"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipeStepId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/RecipeStep/update": {
+			"put": {
+				"operationId": "UpdateOrCreateRecipeStep",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/QueryResult_any_"
+						}
+					}
+				},
+				"tags": [
+					"RecipeStep"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipeStep",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/RecipeStep"
 						}
 					}
 				]
@@ -1814,6 +1691,129 @@
 								"$ref": "#/definitions/Guid"
 							},
 							"type": "array"
+						}
+					}
+				]
+			}
+		},
+		"/Assembly/get": {
+			"post": {
+				"operationId": "GetAssembly",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/Assembly"
+						}
+					}
+				},
+				"tags": [
+					"Assembly"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "assemblyId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Assembly/get-by": {
+			"post": {
+				"operationId": "GetAssembliesByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Assembly"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"Assembly"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/AssemblyFilter"
+						}
+					}
+				]
+			}
+		},
+		"/Assembly/delete": {
+			"delete": {
+				"operationId": "DeleteAssembly",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"Assembly"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "assemblyId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Assembly/update": {
+			"put": {
+				"operationId": "UpdateOrCreateAssembly",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/QueryResult_any_"
+						}
+					}
+				},
+				"tags": [
+					"Assembly"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "assembly",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Assembly"
 						}
 					}
 				]
