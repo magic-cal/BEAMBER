@@ -517,6 +517,43 @@
 			"type": "object",
 			"additionalProperties": true
 		},
+		"RecipeBreakdownSteps": {
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"duration": {
+					"type": "number",
+					"format": "double"
+				}
+			},
+			"type": "object",
+			"additionalProperties": true
+		},
+		"RecipeBreakdown": {
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"breakdownSteps": {
+					"items": {
+						"$ref": "#/definitions/RecipeBreakdownSteps"
+					},
+					"type": "array"
+				}
+			},
+			"required": [
+				"breakdownSteps"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
 		"MaintenanceLog": {
 			"properties": {
 				"versionNo": {
@@ -1348,6 +1385,33 @@
 				],
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/Data/create-recipes": {
+			"post": {
+				"operationId": "CreateRecipesFromSteps",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Data"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipeBreakdown",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/RecipeBreakdown"
+						}
+					}
+				]
 			}
 		},
 		"/maintenanceLog/get": {

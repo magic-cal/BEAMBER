@@ -11,6 +11,8 @@ export * from './MaintenanceLog';
 export * from './MaintenanceLogFilter';
 export * from './QueryResultAny';
 export * from './Recipe';
+export * from './RecipeBreakdown';
+export * from './RecipeBreakdownSteps';
 export * from './RecipeFilter';
 export * from './RecipeReadOnly';
 export * from './RecipeStep';

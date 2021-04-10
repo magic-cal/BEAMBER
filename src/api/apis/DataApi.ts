@@ -14,6 +14,15 @@
 
 
 import * as runtime from '../runtime';
+import {
+    RecipeBreakdown,
+    RecipeBreakdownFromJSON,
+    RecipeBreakdownToJSON,
+} from '../models';
+
+export interface CreateRecipesFromStepsRequest {
+    recipeBreakdown: RecipeBreakdown;
+}
 
 /**
  * 
@@ -42,6 +51,36 @@ export class DataApi extends runtime.BaseAPI {
     async clearAssemblies(): Promise<boolean> {
         const response = await this.clearAssembliesRaw();
         return await response.value();
+    }
+
+    /**
+     */
+    async createRecipesFromStepsRaw(requestParameters: CreateRecipesFromStepsRequest): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.recipeBreakdown === null || requestParameters.recipeBreakdown === undefined) {
+            throw new runtime.RequiredError('recipeBreakdown','Required parameter requestParameters.recipeBreakdown was null or undefined when calling createRecipesFromSteps.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/Data/create-recipes`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: RecipeBreakdownToJSON(requestParameters.recipeBreakdown),
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async createRecipesFromSteps(requestParameters: CreateRecipesFromStepsRequest): Promise<void> {
+        await this.createRecipesFromStepsRaw(requestParameters);
     }
 
 }

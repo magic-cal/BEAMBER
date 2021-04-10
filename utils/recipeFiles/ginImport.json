@@ -1,0 +1,51 @@
+{
+  "name": "Gin Import",
+  "breakdownSteps": [
+    {
+      "duration": 120,
+      "name": "Sterilise",
+      "description": "Sterilise a clean mason jar or glass bottle with boiling water."
+    },
+    {
+      "duration": 120,
+      "name": "Add botanicals",
+      "description": "Add your botanicals to the jar, minus any fresh peel. "
+    },
+    { "duration": 120, "name": "Add Vodka", "description": "Top up with vodka. " },
+    {
+      "duration": 1440,
+      "name": "Leave for 24 hours",
+      "description": "Leave to infuse in a cool dark place for 24 hours."
+    },
+    {
+      "duration": 120,
+      "name": "Add to Taste",
+      "description": "Taste the infusion – it should have taken on some lovely juniper ginnyness already. Add your fresh peel, along with any extra botanicals whose flavour you want to boost."
+    },
+    {
+      "duration": 1440,
+      "name": "Leave 24 hours",
+      "description": "Leave for up to another 24 hours, giving the bottle a gentle shake at least once. "
+    },
+    {
+      "duration": 120,
+      "name": "Check",
+      "description": "Beware of leaving it too long and over-infusing the mixture – think of it a bit like brewing tea!"
+    },
+    {
+      "duration": 120,
+      "name": "Taste & Strain",
+      "description": "Taste the gin again and if you’re happy, filter out all the botanicals using a sieve. If there’s still some sediment left, use some muslin or a coffee filter to strain again."
+    },
+    {
+      "duration": 2880,
+      "name": "Leave for days",
+      "description": "Leave the liquid to sit for a couple of days and then filter out any remaining sediment – and put through a water filter jug if you want to make it even clearer.*"
+    },
+    {
+      "duration": 30,
+      "name": "Bottle",
+      "description": "Bottle your gin – feel free to create your own label if you want – and you’re ready to try your creation out on your nearest and dearest! "
+    }
+  ]
+}

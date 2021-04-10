@@ -200,6 +200,26 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "RecipeBreakdownSteps": {
+        "dataType": "refObject",
+        "properties": {
+            "name": {"dataType":"string"},
+            "description": {"dataType":"string"},
+            "duration": {"dataType":"double"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "RecipeBreakdown": {
+        "dataType": "refObject",
+        "properties": {
+            "name": {"dataType":"string"},
+            "description": {"dataType":"string"},
+            "breakdownSteps": {"dataType":"array","array":{"ref":"RecipeBreakdownSteps"},"required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "MaintenanceLog": {
         "dataType": "refObject",
         "properties": {
@@ -743,6 +763,28 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.clearAssemblies.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/Data/create-recipes',
+            function DataService_createRecipesFromSteps(request: any, response: any, next: any) {
+            const args = {
+                    recipeBreakdown: {"in":"body","name":"recipeBreakdown","required":true,"ref":"RecipeBreakdown"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new DataService();
+
+
+            const promise = controller.createRecipesFromSteps.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
