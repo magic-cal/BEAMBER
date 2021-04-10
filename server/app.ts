@@ -1,6 +1,5 @@
 import express, { Response, Request, NextFunction } from "express"
 import dotenv from "dotenv"
-import bodyParser from "body-parser"
 import cors from "cors"
 import swaggerUi from "swagger-ui-express"
 import * as config from "../utils/swagger.json"
@@ -12,8 +11,9 @@ dotenv.config()
 const app = express()
 
 app.set("port", process.env.PORT || 3000)
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
 app.use(cors())
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(config, { customSiteTitle: "Amber Docs" }))

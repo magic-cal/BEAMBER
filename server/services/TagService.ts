@@ -84,7 +84,8 @@ export class TagController extends Controller {
   @Example<Tag>({
     id: Guid.create(),
     name: "Mash Tun",
-    description: "Mash Tun"
+    description: "Mash Tun",
+    capacity: 0
   })
   /**
    * Create a Tag or Update

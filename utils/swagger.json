@@ -281,86 +281,6 @@
 			"type": "object",
 			"additionalProperties": true
 		},
-		"Recipe": {
-			"properties": {
-				"versionNo": {
-					"type": "number",
-					"format": "double"
-				},
-				"id": {
-					"$ref": "#/definitions/Guid"
-				},
-				"name": {
-					"type": "string"
-				},
-				"description": {
-					"type": "string"
-				},
-				"requirementIds": {
-					"items": {
-						"$ref": "#/definitions/Guid"
-					},
-					"type": "array"
-				},
-				"readOnly": {
-					"properties": {
-						"isComplete": {
-							"type": "boolean"
-						},
-						"isScheduled": {
-							"type": "boolean"
-						},
-						"isAssembly": {
-							"type": "boolean"
-						},
-						"endTime": {
-							"type": "number",
-							"format": "double"
-						},
-						"startTime": {
-							"type": "number",
-							"format": "double"
-						}
-					},
-					"required": [
-						"isComplete",
-						"isScheduled",
-						"isAssembly",
-						"endTime",
-						"startTime"
-					],
-					"type": "object",
-					"x-nullable": true
-				}
-			},
-			"required": [
-				"versionNo",
-				"id",
-				"name",
-				"description",
-				"requirementIds",
-				"readOnly"
-			],
-			"type": "object",
-			"additionalProperties": true
-		},
-		"RecipeFilter": {
-			"properties": {
-				"RecipeStepIds": {
-					"items": {
-						"$ref": "#/definitions/Guid"
-					},
-					"type": "array",
-					"default": []
-				},
-				"includeDeleted": {
-					"type": "boolean",
-					"default": false
-				}
-			},
-			"type": "object",
-			"additionalProperties": true
-		},
 		"RecipeStep": {
 			"properties": {
 				"versionNo": {
@@ -461,6 +381,86 @@
 				"RecipeIds": [],
 				"includeDeleted": false
 			}
+		},
+		"Recipe": {
+			"properties": {
+				"versionNo": {
+					"type": "number",
+					"format": "double"
+				},
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"requirementIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array"
+				},
+				"readOnly": {
+					"properties": {
+						"isComplete": {
+							"type": "boolean"
+						},
+						"isScheduled": {
+							"type": "boolean"
+						},
+						"isAssembly": {
+							"type": "boolean"
+						},
+						"endTime": {
+							"type": "number",
+							"format": "double"
+						},
+						"startTime": {
+							"type": "number",
+							"format": "double"
+						}
+					},
+					"required": [
+						"isComplete",
+						"isScheduled",
+						"isAssembly",
+						"endTime",
+						"startTime"
+					],
+					"type": "object",
+					"x-nullable": true
+				}
+			},
+			"required": [
+				"versionNo",
+				"id",
+				"name",
+				"description",
+				"requirementIds",
+				"readOnly"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"RecipeFilter": {
+			"properties": {
+				"RecipeStepIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"type": "object",
+			"additionalProperties": true
 		},
 		"RecipeBreakdownSteps": {
 			"properties": {
@@ -577,12 +577,17 @@
 				},
 				"description": {
 					"type": "string"
+				},
+				"capacity": {
+					"type": "number",
+					"format": "double"
 				}
 			},
 			"required": [
 				"id",
 				"name",
-				"description"
+				"description",
+				"capacity"
 			],
 			"type": "object",
 			"additionalProperties": true,
@@ -997,129 +1002,6 @@
 				]
 			}
 		},
-		"/Recipe/get": {
-			"post": {
-				"operationId": "GetRecipe",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"schema": {
-							"$ref": "#/definitions/Recipe"
-						}
-					}
-				},
-				"tags": [
-					"Recipe"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "body",
-						"name": "recipeId",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Guid"
-						}
-					}
-				]
-			}
-		},
-		"/Recipe/get-by": {
-			"post": {
-				"operationId": "GetRecipesByFilter",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"schema": {
-							"items": {
-								"$ref": "#/definitions/Recipe"
-							},
-							"type": "array"
-						}
-					}
-				},
-				"tags": [
-					"Recipe"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "body",
-						"name": "filter",
-						"required": false,
-						"schema": {
-							"$ref": "#/definitions/RecipeFilter"
-						}
-					}
-				]
-			}
-		},
-		"/Recipe/delete": {
-			"delete": {
-				"operationId": "DeleteRecipe",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"schema": {
-							"type": "boolean"
-						}
-					}
-				},
-				"tags": [
-					"Recipe"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "body",
-						"name": "recipeId",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Guid"
-						}
-					}
-				]
-			}
-		},
-		"/Recipe/update": {
-			"put": {
-				"operationId": "UpdateOrCreateRecipe",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"schema": {
-							"$ref": "#/definitions/QueryResult_any_"
-						}
-					}
-				},
-				"tags": [
-					"Recipe"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "body",
-						"name": "recipe",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Recipe"
-						}
-					}
-				]
-			}
-		},
 		"/RecipeStep/get": {
 			"post": {
 				"operationId": "GetRecipeStep",
@@ -1238,6 +1120,129 @@
 						"required": true,
 						"schema": {
 							"$ref": "#/definitions/RecipeStep"
+						}
+					}
+				]
+			}
+		},
+		"/Recipe/get": {
+			"post": {
+				"operationId": "GetRecipe",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/Recipe"
+						}
+					}
+				},
+				"tags": [
+					"Recipe"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipeId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Recipe/get-by": {
+			"post": {
+				"operationId": "GetRecipesByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Recipe"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"Recipe"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/RecipeFilter"
+						}
+					}
+				]
+			}
+		},
+		"/Recipe/delete": {
+			"delete": {
+				"operationId": "DeleteRecipe",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"Recipe"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipeId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Recipe/update": {
+			"put": {
+				"operationId": "UpdateOrCreateRecipe",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/QueryResult_any_"
+						}
+					}
+				},
+				"tags": [
+					"Recipe"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipe",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Recipe"
 						}
 					}
 				]

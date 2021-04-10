@@ -64,11 +64,13 @@ export class Tag {
   id: Guid
   name: string
   description: string
+  capacity: number
 
-  constructor(id: Guid = Guid.createEmpty(), name = "", description = "") {
+  constructor(id: Guid = Guid.createEmpty(), name = "", description = "", capacity = 0) {
     this.id = id
     this.name = name
     this.description = description
+    this.capacity = capacity
   }
 }
 

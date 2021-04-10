@@ -44,6 +44,12 @@ export interface Tag {
      * @memberof Tag
      */
     description: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof Tag
+     */
+    capacity: number;
 }
 
 export function TagFromJSON(json: any): Tag {
@@ -59,6 +65,7 @@ export function TagFromJSONTyped(json: any, ignoreDiscriminator: boolean): Tag {
         'id': GuidFromJSON(json['id']),
         'name': json['name'],
         'description': json['description'],
+        'capacity': json['capacity'],
     };
 }
 
@@ -74,6 +81,7 @@ export function TagToJSON(value?: Tag | null): any {
         'id': GuidToJSON(value.id),
         'name': value.name,
         'description': value.description,
+        'capacity': value.capacity,
     };
 }
 
