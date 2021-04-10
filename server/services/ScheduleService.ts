@@ -1,15 +1,17 @@
 import Guid from "../../utils/classes/common/guid"
 import { EnumLeaseType, Lease } from "../../utils/classes/leases"
-import { LeaseController } from "./LeaseService"
-import { RecipeController } from "./RecipeService"
-import { RecipeStepController } from "./RecipeStepService"
-import { AssemblyController } from "./AssemblyService"
-import { AssemblyStepController } from "./AssemblyStepService"
 import { Body, Controller, Delete, Post, Put, Route, Tags } from "tsoa"
 import { RecipeStep, RecipeStepFilter } from "../../utils/classes/recipeSteps"
 import { AssemblyStep, AssemblyStepFilter } from "../../utils/classes/assemblySteps"
 import { Assembly } from "../../utils/classes/assemblies"
 import { LocalDateTime } from "@js-joda/core"
+import {
+  AssemblyController,
+  AssemblyStepController,
+  LeaseController,
+  RecipeController,
+  RecipeStepController
+} from "./services"
 
 interface AssembliesAndSteps {
   assemblies: Assembly[]
@@ -19,8 +21,10 @@ interface AssembliesAndSteps {
 @Tags("Schedule")
 @Route("Schedule")
 export class ScheduleService extends Controller {
+  // Class Variables
   MAX_DEPTH = 20
   BUFFER_TIME = 5
+
   leaseService: LeaseController
   recipeService: RecipeController
   recipeStepService: RecipeStepController
