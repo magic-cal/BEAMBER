@@ -64,7 +64,7 @@ export class MaintenanceLogApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/maintenanceLog/delete`,
+            path: `/MaintenanceLog/delete`,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -95,7 +95,7 @@ export class MaintenanceLogApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/maintenanceLog/get`,
+            path: `/MaintenanceLog/get`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -122,7 +122,7 @@ export class MaintenanceLogApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/maintenanceLog/get-by`,
+            path: `/MaintenanceLog/get-by`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -153,7 +153,7 @@ export class MaintenanceLogApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/maintenanceLog/update`,
+            path: `/MaintenanceLog/update`,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,

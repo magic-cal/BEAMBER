@@ -1,5 +1,6 @@
 apis/AssemblyApi.ts
 apis/AssemblyStepApi.ts
+apis/BusinessHourApi.ts
 apis/DataApi.ts
 apis/LeaseApi.ts
 apis/MaintenanceLogApi.ts
@@ -14,6 +15,9 @@ models/Assembly.ts
 models/AssemblyFilter.ts
 models/AssemblyStep.ts
 models/AssemblyStepFilter.ts
+models/BusinessHour.ts
+models/BusinessHourFilter.ts
+models/EnumDay.ts
 models/EnumLeaseType.ts
 models/FieldDef.ts
 models/Lease.ts

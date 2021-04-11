@@ -1,5 +1,6 @@
 export * from './AssemblyApi';
 export * from './AssemblyStepApi';
+export * from './BusinessHourApi';
 export * from './DataApi';
 export * from './LeaseApi';
 export * from './MaintenanceLogApi';

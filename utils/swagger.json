@@ -428,6 +428,85 @@
 				"includeDeleted": false
 			}
 		},
+		"EnumDay": {
+			"properties": {
+				"key": {
+					"type": "number",
+					"format": "double"
+				},
+				"value": {
+					"type": "string"
+				},
+				"translationKey": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"key",
+				"value",
+				"translationKey"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"BusinessHour": {
+			"properties": {
+				"versionNo": {
+					"type": "number",
+					"format": "double"
+				},
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"day": {
+					"$ref": "#/definitions/EnumDay"
+				},
+				"startTime": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"endTime": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"tagId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"isOpen": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"required": [
+				"versionNo",
+				"id",
+				"day"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"BusinessHourFilter": {
+			"properties": {
+				"onlyBusinessHours": {
+					"type": "boolean",
+					"default": false
+				},
+				"dateStart": {
+					"type": "boolean",
+					"default": false
+				},
+				"dateEnd": {
+					"type": "boolean",
+					"default": false
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"type": "object",
+			"additionalProperties": true
+		},
 		"EnumLeaseType": {
 			"properties": {
 				"key": {
@@ -1248,6 +1327,129 @@
 				]
 			}
 		},
+		"/BusinessHour/get": {
+			"post": {
+				"operationId": "GetBusinessHour",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/BusinessHour"
+						}
+					}
+				},
+				"tags": [
+					"BusinessHour"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "businessHourId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/BusinessHour/get-by": {
+			"post": {
+				"operationId": "GetBusinessHoursByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/BusinessHour"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"BusinessHour"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/BusinessHourFilter"
+						}
+					}
+				]
+			}
+		},
+		"/BusinessHour/delete": {
+			"delete": {
+				"operationId": "DeleteBusinessHour",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"BusinessHour"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "businessHourId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/BusinessHour/update": {
+			"put": {
+				"operationId": "UpdateOrCreateBusinessHour",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/QueryResult_any_"
+						}
+					}
+				},
+				"tags": [
+					"BusinessHour"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "businessHour",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/BusinessHour"
+						}
+					}
+				]
+			}
+		},
 		"/Lease/get": {
 			"post": {
 				"operationId": "GetLease",
@@ -1419,7 +1621,7 @@
 				]
 			}
 		},
-		"/maintenanceLog/get": {
+		"/MaintenanceLog/get": {
 			"post": {
 				"operationId": "GetMaintenanceLog",
 				"produces": [
@@ -1449,7 +1651,7 @@
 				]
 			}
 		},
-		"/maintenanceLog/get-by": {
+		"/MaintenanceLog/get-by": {
 			"post": {
 				"operationId": "GetMaintenanceLogsByFilter",
 				"produces": [
@@ -1482,7 +1684,7 @@
 				]
 			}
 		},
-		"/maintenanceLog/delete": {
+		"/MaintenanceLog/delete": {
 			"delete": {
 				"operationId": "DeleteMaintenanceLog",
 				"produces": [
@@ -1512,7 +1714,7 @@
 				]
 			}
 		},
-		"/maintenanceLog/update": {
+		"/MaintenanceLog/update": {
 			"put": {
 				"operationId": "UpdateOrCreateMaintenanceLog",
 				"produces": [
@@ -1542,7 +1744,7 @@
 				]
 			}
 		},
-		"/tag/get": {
+		"/Tag/get": {
 			"post": {
 				"operationId": "GetTag",
 				"produces": [
@@ -1572,7 +1774,7 @@
 				]
 			}
 		},
-		"/tag/get-by": {
+		"/Tag/get-by": {
 			"post": {
 				"operationId": "GetTagsByFilter",
 				"produces": [
@@ -1605,7 +1807,7 @@
 				]
 			}
 		},
-		"/tag/delete": {
+		"/Tag/delete": {
 			"delete": {
 				"operationId": "DeleteTag",
 				"produces": [
@@ -1635,7 +1837,7 @@
 				]
 			}
 		},
-		"/tag/update": {
+		"/Tag/update": {
 			"put": {
 				"operationId": "UpdateOrCreateTag",
 				"produces": [
@@ -1672,7 +1874,7 @@
 				]
 			}
 		},
-		"/resource/get": {
+		"/Resource/get": {
 			"post": {
 				"operationId": "GetResource",
 				"produces": [
@@ -1702,7 +1904,7 @@
 				]
 			}
 		},
-		"/resource/get-by": {
+		"/Resource/get-by": {
 			"post": {
 				"operationId": "GetResourcesByFilter",
 				"produces": [
@@ -1735,7 +1937,7 @@
 				]
 			}
 		},
-		"/resource/delete": {
+		"/Resource/delete": {
 			"delete": {
 				"operationId": "DeleteResource",
 				"produces": [
@@ -1765,7 +1967,7 @@
 				]
 			}
 		},
-		"/resource/update": {
+		"/Resource/update": {
 			"put": {
 				"operationId": "UpdateOrCreateResource",
 				"produces": [

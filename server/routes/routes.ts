@@ -11,6 +11,8 @@ import { AssemblyController } from './../services/AssemblyService';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AssemblyStepController } from './../services/AssemblyStepService';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { BusinessHourController } from './../services/BusinessHoursService';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { LeaseController } from './../services/LeaseService';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { DataService } from './../services/DataService';
@@ -158,6 +160,41 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "assemblyIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
+            "includeDeleted": {"dataType":"boolean","default":false},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "EnumDay": {
+        "dataType": "refObject",
+        "properties": {
+            "key": {"dataType":"double","required":true},
+            "value": {"dataType":"string","required":true},
+            "translationKey": {"dataType":"string","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "BusinessHour": {
+        "dataType": "refObject",
+        "properties": {
+            "versionNo": {"dataType":"double","required":true},
+            "id": {"ref":"Guid","required":true},
+            "day": {"ref":"EnumDay","required":true},
+            "startTime": {"dataType":"datetime"},
+            "endTime": {"dataType":"datetime"},
+            "tagId": {"ref":"Guid"},
+            "isOpen": {"dataType":"boolean","default":false},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "BusinessHourFilter": {
+        "dataType": "refObject",
+        "properties": {
+            "onlyBusinessHours": {"dataType":"boolean","default":false},
+            "dateStart": {"dataType":"boolean","default":false},
+            "dateEnd": {"dataType":"boolean","default":false},
             "includeDeleted": {"dataType":"boolean","default":false},
         },
         "additionalProperties": true,
@@ -658,6 +695,94 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/BusinessHour/get',
+            function BusinessHourController_getBusinessHour(request: any, response: any, next: any) {
+            const args = {
+                    businessHourId: {"in":"body","name":"businessHourId","required":true,"ref":"Guid"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new BusinessHourController();
+
+
+            const promise = controller.getBusinessHour.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/BusinessHour/get-by',
+            function BusinessHourController_getBusinessHoursByFilter(request: any, response: any, next: any) {
+            const args = {
+                    filter: {"in":"body","name":"filter","ref":"BusinessHourFilter"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new BusinessHourController();
+
+
+            const promise = controller.getBusinessHoursByFilter.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/BusinessHour/delete',
+            function BusinessHourController_deleteBusinessHour(request: any, response: any, next: any) {
+            const args = {
+                    businessHourId: {"in":"body","name":"businessHourId","required":true,"ref":"Guid"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new BusinessHourController();
+
+
+            const promise = controller.deleteBusinessHour.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/BusinessHour/update',
+            function BusinessHourController_updateOrCreateBusinessHour(request: any, response: any, next: any) {
+            const args = {
+                    businessHour: {"in":"body","name":"businessHour","required":true,"ref":"BusinessHour"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new BusinessHourController();
+
+
+            const promise = controller.updateOrCreateBusinessHour.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/Lease/get',
             function LeaseController_getLease(request: any, response: any, next: any) {
             const args = {
@@ -789,7 +914,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/maintenanceLog/get',
+        app.post('/MaintenanceLog/get',
             function MaintenanceLogController_getMaintenanceLog(request: any, response: any, next: any) {
             const args = {
                     maintenanceLogId: {"in":"body","name":"maintenanceLogId","required":true,"ref":"Guid"},
@@ -811,7 +936,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/maintenanceLog/get-by',
+        app.post('/MaintenanceLog/get-by',
             function MaintenanceLogController_getMaintenanceLogsByFilter(request: any, response: any, next: any) {
             const args = {
                     filter: {"in":"body","name":"filter","ref":"MaintenanceLogFilter"},
@@ -833,7 +958,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.delete('/maintenanceLog/delete',
+        app.delete('/MaintenanceLog/delete',
             function MaintenanceLogController_deleteMaintenanceLog(request: any, response: any, next: any) {
             const args = {
                     maintenanceLogId: {"in":"body","name":"maintenanceLogId","required":true,"ref":"Guid"},
@@ -855,7 +980,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.put('/maintenanceLog/update',
+        app.put('/MaintenanceLog/update',
             function MaintenanceLogController_updateOrCreateMaintenanceLog(request: any, response: any, next: any) {
             const args = {
                     maintenanceLog: {"in":"body","name":"maintenanceLog","required":true,"ref":"MaintenanceLog"},
@@ -877,7 +1002,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/tag/get',
+        app.post('/Tag/get',
             function TagController_getTag(request: any, response: any, next: any) {
             const args = {
                     tagId: {"in":"body","name":"tagId","required":true,"ref":"Guid"},
@@ -899,7 +1024,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/tag/get-by',
+        app.post('/Tag/get-by',
             function TagController_getTagsByFilter(request: any, response: any, next: any) {
             const args = {
                     filter: {"in":"body","name":"filter","ref":"TagFilter"},
@@ -921,7 +1046,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.delete('/tag/delete',
+        app.delete('/Tag/delete',
             function TagController_deleteTag(request: any, response: any, next: any) {
             const args = {
                     tagId: {"in":"body","name":"tagId","required":true,"ref":"Guid"},
@@ -943,7 +1068,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.put('/tag/update',
+        app.put('/Tag/update',
             function TagController_updateOrCreateTag(request: any, response: any, next: any) {
             const args = {
                     tag: {"in":"body","name":"tag","required":true,"ref":"Tag"},
@@ -965,7 +1090,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/resource/get',
+        app.post('/Resource/get',
             function ResourceController_getResource(request: any, response: any, next: any) {
             const args = {
                     resourceId: {"in":"body","name":"resourceId","required":true,"ref":"Guid"},
@@ -987,7 +1112,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/resource/get-by',
+        app.post('/Resource/get-by',
             function ResourceController_getResourcesByFilter(request: any, response: any, next: any) {
             const args = {
                     filter: {"in":"body","name":"filter","ref":"ResourceFilter"},
@@ -1009,7 +1134,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.delete('/resource/delete',
+        app.delete('/Resource/delete',
             function ResourceController_deleteResource(request: any, response: any, next: any) {
             const args = {
                     resourceId: {"in":"body","name":"resourceId","required":true,"ref":"Guid"},
@@ -1031,7 +1156,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.put('/resource/update',
+        app.put('/Resource/update',
             function ResourceController_updateOrCreateResource(request: any, response: any, next: any) {
             const args = {
                     resource: {"in":"body","name":"resource","required":true,"ref":"Resource"},

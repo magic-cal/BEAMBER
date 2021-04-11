@@ -61,7 +61,7 @@ export class ResourceApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/resource/delete`,
+            path: `/Resource/delete`,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -92,7 +92,7 @@ export class ResourceApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/resource/get`,
+            path: `/Resource/get`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -119,7 +119,7 @@ export class ResourceApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/resource/get-by`,
+            path: `/Resource/get-by`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -150,7 +150,7 @@ export class ResourceApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/resource/update`,
+            path: `/Resource/update`,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,

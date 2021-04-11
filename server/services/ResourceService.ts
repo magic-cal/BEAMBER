@@ -18,7 +18,7 @@ export async function updateTagRelation(tags: Tag[], resourceId: Guid) {
 }
 
 @Tags("Resource")
-@Route("resource")
+@Route("Resource")
 export class ResourceController extends Controller {
   private tagService: TagController
   constructor() {

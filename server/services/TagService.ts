@@ -10,7 +10,7 @@ interface FieldParams {
 }
 
 @Tags("Tag")
-@Route("tag")
+@Route("Tag")
 export class TagController extends Controller {
   dbToTag(tagResultRow: QueryResultRow) {
     const tag: Tag = new Tag()

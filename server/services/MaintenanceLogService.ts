@@ -5,7 +5,7 @@ import { QueryResultRow } from "pg"
 import { Body, Controller, Delete, Post, Put, Route, Tags } from "tsoa"
 
 @Tags("MaintenanceLog")
-@Route("maintenanceLog")
+@Route("MaintenanceLog")
 export class MaintenanceLogController extends Controller {
   dbToMaintenanceLog(maintenanceLogResultRow: QueryResultRow) {
     const maintenanceLog: MaintenanceLog = new MaintenanceLog()

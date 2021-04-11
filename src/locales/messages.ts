@@ -82,6 +82,15 @@ export const messages = {
     enum_lease_type_assembly_step: "Assembly Step",
     enum_lease_type_product: "Product",
     enum_lease_type_maintenance: "Maintenance",
-    enum_lease_type_packaging: "Packaging"
+    enum_lease_type_packaging: "Packaging",
+
+    enum_day_none: "None",
+    enum_day_monday: "Monday",
+    enum_day_tuesday: "Tuesday",
+    enum_day_wednesday: "Wednesday",
+    enum_day_thursday: "Thursday",
+    enum_day_friday: "Friday",
+    enum_day_saturday: "Saturday",
+    enum_day_sunday: "Sunday"
   }
 }
