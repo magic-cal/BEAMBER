@@ -16,7 +16,7 @@ export class MaintenanceLog extends AmberApiFields {
   resourceId: Guid
   type: string
   details: string
-  timestamp: string
+  timestamp: string //@TODO: Make a Date
 
   constructor(
     id = Guid.createEmpty(),

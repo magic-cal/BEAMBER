@@ -3,7 +3,6 @@
     <v-row>
       <v-col align="center">
         <h1>Amber</h1>
-        <h1>{{ $t("hello_world") }}</h1>
       </v-col>
     </v-row>
     <v-container>

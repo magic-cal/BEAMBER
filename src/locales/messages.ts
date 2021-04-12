@@ -72,6 +72,7 @@ export const messages = {
 
     // Settings
     edit_business_hours: "Edit Business Hours",
+    add_business_hours: "Add Business Hours",
     business_hours: "Business Hours",
     opening_hours: "Opening Hours",
     holiday_hours: "Holiday Hours",
