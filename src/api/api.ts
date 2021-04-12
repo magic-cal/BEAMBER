@@ -1,4 +1,5 @@
 import { LeaseApi, ResourceApi, TagApi, RecipeApi, RecipeStepApi, MaintenanceLogApi, AssemblyApi } from "@/api/index"
+import { BusinessHourApi } from "./apis/BusinessHourApi"
 
 // Please Sort Alphabetically
 class Api {
@@ -9,6 +10,7 @@ class Api {
   recipeStepApi: RecipeStepApi
   resourceApi: ResourceApi
   tagApi: TagApi
+  businessHourApi: BusinessHourApi
   constructor() {
     this.assemblyApi = new AssemblyApi()
     this.leaseApi = new LeaseApi()
@@ -17,6 +19,7 @@ class Api {
     this.recipeStepApi = new RecipeStepApi()
     this.resourceApi = new ResourceApi()
     this.tagApi = new TagApi()
+    this.businessHourApi = new BusinessHourApi()
   }
 }
 

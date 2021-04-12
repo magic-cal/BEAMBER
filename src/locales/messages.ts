@@ -70,6 +70,16 @@ export const messages = {
     type: "Type",
     details: "Details",
 
+    // Settings
+    edit_business_hours: "Edit Business Hours",
+    business_hours: "Business Hours",
+    opening_hours: "Opening Hours",
+    holiday_hours: "Holiday Hours",
+    open: "Open",
+    closed: "Closed",
+    start_time: "Start Time",
+    end_time: "End Time",
+
     // Leases
     lease_name: "Name",
     lease_start_time: "Start Time",

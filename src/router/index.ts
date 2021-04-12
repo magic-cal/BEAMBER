@@ -12,6 +12,7 @@ import ManageMaintenanceLog from "@/views/resources/ManageMaintenanceLog.vue"
 import EditMaintenanceLog from "@/views/resources/EditMaintenanceLog.vue"
 import GanttTest from "@/views/dev/GanttTest.vue"
 import Schedule from "@/views/scheduling/Schedule.vue"
+import EditBusinessHours from "@/views/settings/EditBusinessHours.vue"
 
 Vue.use(VueRouter)
 
@@ -112,6 +113,14 @@ export const routes: Array<RouteConfig> = [
     path: "/schedule",
     name: "Schedule",
     component: Schedule
+    // props: (route) => ({
+    //   resourceId: route.params["resourceId"]
+    // })
+  },
+  {
+    path: "/business-hours",
+    name: "EditBusinessHours",
+    component: EditBusinessHours
     // props: (route) => ({
     //   resourceId: route.params["resourceId"]
     // })

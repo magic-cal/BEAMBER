@@ -102,9 +102,9 @@ business_hour_id, business_hour_tag_id, business_hour_day, business_hour_start_t
 
 // business_hour_id = $1, business_hour_tag_id = $2, business_hour_day = $3, business_hour_start_time = $4, business_hour_end_time = $5, business_hour_open = $6, version_no = $7
 
-id
-tagId
-day
-startTime
-endTime
-isOpen
+// id
+// tagId
+// day
+// startTime
+// endTime
+// isOpen

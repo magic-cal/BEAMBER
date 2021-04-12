@@ -473,14 +473,14 @@
 					"$ref": "#/definitions/Guid"
 				},
 				"isOpen": {
-					"type": "boolean",
-					"default": false
+					"type": "boolean"
 				}
 			},
 			"required": [
 				"versionNo",
 				"id",
-				"day"
+				"day",
+				"isOpen"
 			],
 			"type": "object",
 			"additionalProperties": true

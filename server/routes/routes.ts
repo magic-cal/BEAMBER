@@ -184,7 +184,7 @@ const models: TsoaRoute.Models = {
             "startTime": {"dataType":"datetime"},
             "endTime": {"dataType":"datetime"},
             "tagId": {"ref":"Guid"},
-            "isOpen": {"dataType":"boolean","default":false},
+            "isOpen": {"dataType":"boolean","required":true},
         },
         "additionalProperties": true,
     },
