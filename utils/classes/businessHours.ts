@@ -51,12 +51,18 @@ export class BusinessHour extends AmberApiFields {
   id: Guid
   day: EnumDay // If present - Opening hours - otherwise - Special Day
   // dayInt?: number // If present - Opening hours - otherwise - Special Day
-  startTime?: Date = undefined
-  endTime?: Date = undefined
+  startTime?: Date
+  endTime?: Date
   tagId?: Guid = undefined
   isOpen: boolean
 
-  constructor(id: Guid = Guid.createEmpty(), dayInt = 0, isOpen = false, startTime?: Date, endTime?: Date) {
+  constructor(
+    id: Guid = Guid.createEmpty(),
+    dayInt = 0,
+    isOpen = false,
+    startTime: Date | undefined = undefined,
+    endTime: Date | undefined = undefined
+  ) {
     super()
     this.id = id
     // this.dayInt = dayInt

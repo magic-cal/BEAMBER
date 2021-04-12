@@ -14,9 +14,11 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col :cols="12" :sm="6"> <v-text-field :label="$t('type')" v-model="currentMaintenanceLog.type" /> </v-col>
           <v-col :cols="12" :sm="6">
-            <a-date :label="$t('timestamp')" v-model="currentMaintenanceLog.timestamp" />
+            <v-text-field :label="$t('type')" v-model="currentMaintenanceLog.type" required />
+          </v-col>
+          <v-col :cols="12" :sm="6">
+            <a-date :label="$t('timestamp')" v-model="currentMaintenanceLog.timestamp" required />
           </v-col>
           <v-col :cols="12" :sm="6">
             <v-textarea :label="$t('details')" v-model="currentMaintenanceLog.details" />

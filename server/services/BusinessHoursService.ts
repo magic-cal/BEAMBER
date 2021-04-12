@@ -12,11 +12,15 @@ export class BusinessHourController extends Controller {
     const businessHour: BusinessHour = new BusinessHour()
     genBaseFields(businessHourRow, businessHour)
     businessHour.id = Guid.fromString(businessHourRow.business_hour_id)
-    businessHour.tagId ? Guid.fromString(businessHourRow.business_hour_tag_id) : undefined
+    businessHour.tagId = businessHour.tagId ? Guid.fromString(businessHourRow.business_hour_tag_id) : undefined
     // businessHour.dayInt = businessHourRow.business_hour_day
     businessHour.day = EnumDay.getByKey(businessHourRow.business_hour_day ?? 0)
-    businessHour.startTime = new Date(businessHourRow.business_hour_start_time)
-    businessHour.endTime = new Date(businessHourRow.business_hour_end_time)
+    businessHour.startTime = businessHourRow.business_hour_start_time
+      ? new Date(businessHourRow.business_hour_start_time)
+      : businessHourRow.business_hour_start_time
+    businessHour.endTime = businessHourRow.business_hour_end_time
+      ? new Date(businessHourRow.business_hour_end_time)
+      : businessHourRow.business_hour_end_time
     businessHour.isOpen = businessHourRow.business_hour_is_open
     return businessHour
   }
@@ -28,13 +32,13 @@ export class BusinessHourController extends Controller {
     }
     return await sqlToDB(
       `INSERT INTO business_hours (
-business_hour_id, business_hour_tag_id, business_hour_day, business_hour_start_time, business_hour_end_time, business_hour_open, version_no) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+business_hour_id, business_hour_tag_id, business_hour_day, business_hour_start_time, business_hour_end_time, business_hour_is_open, version_no) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
       [
         businessHour.id.value,
         businessHour.tagId?.value,
         businessHour.day.key,
-        businessHour.startTime?.toISOString,
-        businessHour.endTime?.toISOString,
+        businessHour.startTime?.toISOString() ?? null,
+        businessHour.endTime?.toISOString() ?? null,
         businessHour.isOpen,
         ...extractBaseFields(businessHour)
       ]
@@ -83,13 +87,13 @@ business_hour_id, business_hour_tag_id, business_hour_day, business_hour_start_t
     businessHour = updateBaseFields(businessHour)
     // @TODO: Look at validation Updates
     return await sqlToDB(
-      "UPDATE business_hours SET business_hour_tag_id = $2, business_hour_day = $3, business_hour_start_time = $4, business_hour_end_time = $5, business_hour_open = $6, version_no = $7  WHERE business_hour_id = $1;",
+      "UPDATE business_hours SET business_hour_tag_id = $2, business_hour_day = $3, business_hour_start_time = $4, business_hour_end_time = $5, business_hour_is_open = $6, version_no = $7  WHERE business_hour_id = $1;",
       [
         businessHour.id.value,
         businessHour.tagId?.value,
         businessHour.day.key,
-        businessHour.startTime?.toISOString,
-        businessHour.endTime?.toISOString,
+        businessHour.startTime?.toISOString() ?? null,
+        businessHour.endTime?.toISOString() ?? null,
         businessHour.isOpen,
         ...extractBaseFields(businessHour)
       ]
@@ -100,7 +104,7 @@ business_hour_id, business_hour_tag_id, business_hour_day, business_hour_start_t
   }
 }
 
-// business_hour_id = $1, business_hour_tag_id = $2, business_hour_day = $3, business_hour_start_time = $4, business_hour_end_time = $5, business_hour_open = $6, version_no = $7
+// business_hour_id = $1, business_hour_tag_id = $2, business_hour_day = $3, business_hour_start_time = $4, business_hour_end_time = $5, business_hour_is_open = $6, version_no = $7
 
 // id
 // tagId

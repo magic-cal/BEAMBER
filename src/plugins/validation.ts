@@ -168,9 +168,41 @@ export class RuleSet {
 
       return true
     }
-    Object.assign(required, {
-      showRequiredIndicator: showRequiredIndicator
-    })
+    return required
+  }
+
+  public requiredConditional(isRequired: boolean): ValidationRule {
+    const required = (v: any): boolean | string => {
+      if (!isRequired) {
+        return true
+      }
+
+      if (v === null || v === undefined) {
+        return i18n.t("validation_required").toString()
+      }
+
+      // Required arrays must contain at least one value.
+      if (Array.isArray(v) && v.length === 0) {
+        return i18n.t("validation_required").toString()
+      }
+
+      // Required strings
+      if (typeof v === "string" && v.trim().length == 0) {
+        return i18n.t("validation_required").toString()
+      }
+
+      // Required Guid's
+      if (Guid.isGuid(v) && v.toString() === Guid.EMPTY) {
+        return i18n.t("validation_required").toString()
+      }
+
+      // Required booleans
+      if (typeof v === "boolean" && v === false) {
+        return i18n.t("validation_required").toString()
+      }
+
+      return true
+    }
     return required
   }
 
@@ -282,33 +314,39 @@ export class RuleSet {
   //     }
   //   }
 
-  //   dateBeforeOrEqual(earliestDate: LocalDate, dateDescription?: string): ValidationRule {
-  //     return (v: any): boolean | string => {
-  //       const strVal = String(v)
-  //       const date = api.tenantService.parseDate(strVal)
-  //       if (date.isAfter(earliestDate)) {
-  //         if (!dateDescription) {
-  //           dateDescription = earliestDate.toString()
-  //         }
-  //         return messages.validation_date_after_date_given + " " + dateDescription
-  //       }
-  //       return true
-  //     }
-  //   }
+  dateBeforeOrEqual(earliestDate?: Date, dateDescription?: string): ValidationRule {
+    return (v: any): boolean | string => {
+      if (!v || !earliestDate) {
+        return true
+      }
+      const strVal = String(v)
+      const date = new Date(strVal)
+      if (date > earliestDate) {
+        if (!dateDescription) {
+          dateDescription = earliestDate.toLocaleString()
+        }
+        return i18n.t("validation_date_after_date_given") + " " + dateDescription
+      }
+      return true
+    }
+  }
 
-  //   dateAfterOrEqual(earliestDate: LocalDate, dateDescription?: string): ValidationRule {
-  //     return (v: any): boolean | string => {
-  //       const strVal = String(v)
-  //       const date = api.tenantService.parseDate(strVal)
-  //       if (date.isBefore(earliestDate)) {
-  //         if (!dateDescription) {
-  //           dateDescription = earliestDate.toString()
-  //         }
-  //         return messages.validation_date_before_date_given + " " + dateDescription
-  //       }
-  //       return true
-  //     }
-  //   }
+  dateAfterOrEqual(earliestDate: Date, dateDescription?: string): ValidationRule {
+    return (v: any): boolean | string => {
+      if (!v || !earliestDate) {
+        return true
+      }
+      const strVal = String(v)
+      const date = new Date(strVal)
+      if (date < earliestDate) {
+        if (!dateDescription) {
+          dateDescription = earliestDate.toLocaleString()
+        }
+        return i18n.t("validation_date_before_date_given") + " " + dateDescription
+      }
+      return true
+    }
+  }
 
   public postCode(): ValidationRule {
     return (v: any): boolean | string => {

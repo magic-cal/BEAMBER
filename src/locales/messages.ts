@@ -15,6 +15,8 @@ export const messages = {
     description: "Description",
     duration: "Duration",
     start: "Start",
+    cancel: "Cancel",
+    ok: "Ok",
 
     // Metrics
     seconds: "Seconds",
@@ -25,6 +27,8 @@ export const messages = {
     validation_not_number: "Not a number",
     validation_negative: "Negative not allowed",
     validation_required: "Required Value",
+    validation_date_before_date_given: "Date Before ",
+    validation_date_after_date_given: "Date After ",
 
     // Home
     amber: "Amber",
