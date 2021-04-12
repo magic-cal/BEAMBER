@@ -57,7 +57,6 @@ export default class BmDate extends Vue {
       return ""
     }
 
-    // Use the tenants date formatter to show the ISO 8601 date in a preferable format.
     return LocalDate.parse(this.date).toString()
   }
 
