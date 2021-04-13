@@ -56,7 +56,7 @@ export default class BmTime extends Vue {
   public valueWatch(val: Date) {
     // Remove Extra Precision causing update issues
     this.time = val ? val.toLocaleTimeString() : null
-    this.date = val ? val.toLocaleDateString() : null
+    this.date = val ? val.toLocaleDateString() : "01-01-1970"
   }
 
   public textFieldChanged(val: Date | null) {
@@ -71,7 +71,7 @@ export default class BmTime extends Vue {
     if (!val) {
       this.$emit("input", undefined)
     } else {
-      this.$emit("input", new Date(this.date + val))
+      this.$emit("input", new Date(this.date + " " + val))
     }
   }
 

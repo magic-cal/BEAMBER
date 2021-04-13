@@ -147,7 +147,7 @@ export default class EditBusinessHours extends Vue {
   allBusinessHours: BusinessHour[] = []
   editingId: Guid | null = null
   valid = true
-  panel = [1]
+  panel = [0]
 
   EnumDay = EnumDay
 
