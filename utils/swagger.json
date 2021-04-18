@@ -4,17 +4,25 @@
 		"application/json"
 	],
 	"definitions": {
+		"UUID": {
+			"type": "string",
+			"description": "Stringified UUIDv4.\r\nSee [RFC 4112](https://tools.ietf.org/html/rfc4122)",
+			"pattern": "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}"
+		},
 		"Guid": {
 			"properties": {
 				"value": {
-					"type": "string"
+					"$ref": "#/definitions/UUID"
 				}
 			},
 			"required": [
 				"value"
 			],
 			"type": "object",
-			"additionalProperties": true
+			"additionalProperties": true,
+			"example": {
+				"value": "2d029617-ac69-4409-8191-8452f9cc9882"
+			}
 		},
 		"RecipeStep": {
 			"properties": {
@@ -748,7 +756,11 @@
 				}
 			},
 			"type": "object",
-			"additionalProperties": true
+			"additionalProperties": true,
+			"example": {
+				"resourceIds": [],
+				"includeDeleted": false
+			}
 		},
 		"ResourceReadonly": {
 			"properties": {
@@ -826,7 +838,11 @@
 				}
 			},
 			"type": "object",
-			"additionalProperties": true
+			"additionalProperties": true,
+			"example": {
+				"tagIds": [],
+				"includeDeleted": false
+			}
 		}
 	},
 	"info": {

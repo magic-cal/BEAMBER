@@ -1,7 +1,19 @@
-export default class Guid {
-  public readonly value: string
+/**
+ * Stringified UUIDv4.
+ * See [RFC 4112](https://tools.ietf.org/html/rfc4122)
+ * @pattern [0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}
+ */
+export type UUID = string
 
-  private constructor(guid: string) {
+/**
+  @example {
+    "value": "2d029617-ac69-4409-8191-8452f9cc9882"
+  }
+ */
+export default class Guid {
+  public readonly value: UUID
+
+  private constructor(guid: UUID) {
     if (!guid) {
       throw new TypeError("Invalid argument; `value` has no value.")
     }
@@ -17,7 +29,7 @@ export default class Guid {
 
   public static EMPTY = "00000000-0000-0000-0000-000000000000"
 
-  public static fromString(guid: string): Guid {
+  public static fromString(guid: UUID): Guid {
     if (this.isGuid(guid)) {
       return Guid.parse(guid)
     }
@@ -36,15 +48,15 @@ export default class Guid {
     return new Guid("emptyguid")
   }
 
-  public static parse(guid: string): Guid {
+  public static parse(guid: UUID): Guid {
     return new Guid(guid)
   }
 
-  public static raw(): string {
+  public static raw(): UUID {
     return Guid.generateGuidString()
   }
 
-  private static gen(count: number): string {
+  private static gen(count: number): UUID {
     let out = ""
     for (let i = 0; i < count; i++) {
       // tslint:disable-next-line:no-bitwise
@@ -58,7 +70,7 @@ export default class Guid {
   }
 
   public equals(other: Guid): boolean {
-    // Comparing string `value` against provided `guid` will auto-call
+    // Comparing UUID `value` against provided `guid` will auto-call
     // toString on `guid` for comparison
     return Guid.isGuid(other) && this.value === other.toString()
   }
@@ -67,7 +79,7 @@ export default class Guid {
     return this.value === Guid.EMPTY
   }
 
-  public toString(): string {
+  public toString(): UUID {
     return this.value
   }
 

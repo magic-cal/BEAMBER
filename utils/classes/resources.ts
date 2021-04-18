@@ -74,11 +74,23 @@ export class Tag {
   }
 }
 
+/**
+  @example {
+   "resourceIds": [],
+   "includeDeleted": false
+  }
+ */
 export class TagFilter {
   resourceIds: Guid[] = []
   includeDeleted = false
 }
 
+/**
+  @example {
+   "tagIds": [],
+   "includeDeleted": false
+  }
+ */
 export class ResourceFilter {
   tagIds: Guid[] = []
   includeDeleted = false
