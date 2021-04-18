@@ -1,6 +1,7 @@
 {
   "entryFile": "./server/app.ts",
   "controllerPathGlobs": ["server/services/*.ts"],
+  "noImplicitAdditionalProperties": "silently-remove-extras",
   "spec": {
     "outputDirectory": "./utils",
     "specVersion": 2,

@@ -19,7 +19,7 @@
 				"value"
 			],
 			"type": "object",
-			"additionalProperties": true,
+			"additionalProperties": false,
 			"example": {
 				"value": "2d029617-ac69-4409-8191-8452f9cc9882"
 			}
@@ -84,7 +84,7 @@
 				"sequence"
 			],
 			"type": "object",
-			"additionalProperties": true,
+			"additionalProperties": false,
 			"example": {
 				"id": {
 					"value": "d01ac8d3-b823-4f8d-9643-06c6b6d8fb13"
@@ -125,7 +125,7 @@
 				}
 			},
 			"type": "object",
-			"additionalProperties": true,
+			"additionalProperties": false,
 			"example": {
 				"RecipeIds": [],
 				"includeDeleted": false
@@ -170,7 +170,7 @@
 				"format"
 			],
 			"type": "object",
-			"additionalProperties": true
+			"additionalProperties": false
 		},
 		"QueryResult_any_": {
 			"properties": {
@@ -206,7 +206,7 @@
 				"rows"
 			],
 			"type": "object",
-			"additionalProperties": true
+			"additionalProperties": false
 		},
 		"Recipe": {
 			"properties": {
@@ -270,7 +270,7 @@
 				"readOnly"
 			],
 			"type": "object",
-			"additionalProperties": true
+			"additionalProperties": false
 		},
 		"RecipeFilter": {
 			"properties": {
@@ -287,7 +287,7 @@
 				}
 			},
 			"type": "object",
-			"additionalProperties": true
+			"additionalProperties": false
 		},
 		"Assembly": {
 			"properties": {
@@ -326,7 +326,7 @@
 				"complete"
 			],
 			"type": "object",
-			"additionalProperties": true
+			"additionalProperties": false
 		},
 		"AssemblyFilter": {
 			"properties": {
@@ -343,7 +343,7 @@
 				}
 			},
 			"type": "object",
-			"additionalProperties": true
+			"additionalProperties": false
 		},
 		"AssemblyStep": {
 			"properties": {
@@ -403,7 +403,7 @@
 				"complete"
 			],
 			"type": "object",
-			"additionalProperties": true,
+			"additionalProperties": false,
 			"example": {
 				"id": {
 					"value": "d01ac8d3-b823-4f8d-9643-06c6b6d8fb13"
@@ -443,7 +443,7 @@
 				}
 			},
 			"type": "object",
-			"additionalProperties": true,
+			"additionalProperties": false,
 			"example": {
 				"AssemblyIds": [],
 				"includeDeleted": false
@@ -468,7 +468,7 @@
 				"translationKey"
 			],
 			"type": "object",
-			"additionalProperties": true
+			"additionalProperties": false
 		},
 		"BusinessHour": {
 			"properties": {
@@ -505,7 +505,7 @@
 				"isOpen"
 			],
 			"type": "object",
-			"additionalProperties": true
+			"additionalProperties": false
 		},
 		"BusinessHourFilter": {
 			"properties": {
@@ -527,7 +527,7 @@
 				}
 			},
 			"type": "object",
-			"additionalProperties": true
+			"additionalProperties": false
 		},
 		"EnumLeaseType": {
 			"properties": {
@@ -548,7 +548,7 @@
 				"translationKey"
 			],
 			"type": "object",
-			"additionalProperties": true
+			"additionalProperties": false
 		},
 		"Lease": {
 			"properties": {
@@ -600,7 +600,7 @@
 				"leaseType"
 			],
 			"type": "object",
-			"additionalProperties": true
+			"additionalProperties": false
 		},
 		"LeaseFilter": {
 			"properties": {
@@ -617,7 +617,7 @@
 				}
 			},
 			"type": "object",
-			"additionalProperties": true
+			"additionalProperties": false
 		},
 		"RecipeBreakdownSteps": {
 			"properties": {
@@ -633,7 +633,7 @@
 				}
 			},
 			"type": "object",
-			"additionalProperties": true
+			"additionalProperties": false
 		},
 		"RecipeBreakdown": {
 			"properties": {
@@ -654,7 +654,7 @@
 				"breakdownSteps"
 			],
 			"type": "object",
-			"additionalProperties": true
+			"additionalProperties": false
 		},
 		"MaintenanceLog": {
 			"properties": {
@@ -688,7 +688,7 @@
 				"timestamp"
 			],
 			"type": "object",
-			"additionalProperties": true,
+			"additionalProperties": false,
 			"example": {
 				"id": {
 					"value": "0a0796d0-92a2-46c2-bd51-4fc8b63b7b0f"
@@ -723,7 +723,7 @@
 				}
 			},
 			"type": "object",
-			"additionalProperties": true
+			"additionalProperties": false
 		},
 		"Tag": {
 			"properties": {
@@ -749,7 +749,7 @@
 				"capacity"
 			],
 			"type": "object",
-			"additionalProperties": true,
+			"additionalProperties": false,
 			"example": {
 				"id": {
 					"value": "0a0796d0-92a2-46c2-bd51-4fc8b63b7b0s"
@@ -773,7 +773,7 @@
 				}
 			},
 			"type": "object",
-			"additionalProperties": true,
+			"additionalProperties": false,
 			"example": {
 				"resourceIds": [],
 				"includeDeleted": false
@@ -789,7 +789,7 @@
 				"tagList"
 			],
 			"type": "object",
-			"additionalProperties": true
+			"additionalProperties": false
 		},
 		"Resource": {
 			"properties": {
@@ -839,7 +839,7 @@
 				"active"
 			],
 			"type": "object",
-			"additionalProperties": true
+			"additionalProperties": false
 		},
 		"ResourceFilter": {
 			"properties": {
@@ -856,7 +856,7 @@
 				}
 			},
 			"type": "object",
-			"additionalProperties": true,
+			"additionalProperties": false,
 			"example": {
 				"tagIds": [],
 				"includeDeleted": false
