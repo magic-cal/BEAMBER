@@ -31,7 +31,7 @@ import * as express from 'express';
 const models: TsoaRoute.Models = {
     "UUID": {
         "dataType": "refAlias",
-        "type": {"dataType":"string","validators":{"pattern":{"value":"[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}"}}},
+        "type": {"dataType":"string","validators":{"pattern":{"value":"[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"}}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Guid": {
@@ -45,7 +45,7 @@ const models: TsoaRoute.Models = {
     "RecipeStep": {
         "dataType": "refObject",
         "properties": {
-            "versionNo": {"dataType":"double","required":true},
+            "versionNo": {"dataType":"integer","required":true,"validators":{"minimum":{"errorMsg":"Minimum version cannot be negative","value":0}}},
             "id": {"ref":"Guid","required":true},
             "name": {"dataType":"string","required":true},
             "description": {"dataType":"string","required":true},
@@ -53,9 +53,9 @@ const models: TsoaRoute.Models = {
             "tagId": {"ref":"Guid"},
             "recipeId": {"ref":"Guid","required":true},
             "resourceId": {"ref":"Guid"},
-            "duration": {"dataType":"double","required":true},
-            "capacity": {"dataType":"double","required":true},
-            "start": {"dataType":"double","required":true},
+            "duration": {"dataType":"integer","required":true,"validators":{"minimum":{"errorMsg":"Minimum duration cannot be negative","value":0}}},
+            "capacity": {"dataType":"integer","required":true,"validators":{"minimum":{"errorMsg":"Minimum capacity cannot be negative","value":0}}},
+            "start": {"dataType":"integer","required":true,"validators":{"minimum":{"errorMsg":"Minimum start cannot be negative","value":0}}},
             "sequence": {"dataType":"double","required":true},
         },
         "additionalProperties": true,
@@ -99,7 +99,7 @@ const models: TsoaRoute.Models = {
     "Recipe": {
         "dataType": "refObject",
         "properties": {
-            "versionNo": {"dataType":"double","required":true},
+            "versionNo": {"dataType":"integer","required":true,"validators":{"minimum":{"errorMsg":"Minimum version cannot be negative","value":0}}},
             "id": {"ref":"Guid","required":true},
             "name": {"dataType":"string","required":true},
             "description": {"dataType":"string","required":true},
@@ -121,7 +121,7 @@ const models: TsoaRoute.Models = {
     "Assembly": {
         "dataType": "refObject",
         "properties": {
-            "versionNo": {"dataType":"double","required":true},
+            "versionNo": {"dataType":"integer","required":true,"validators":{"minimum":{"errorMsg":"Minimum version cannot be negative","value":0}}},
             "id": {"ref":"Guid","required":true},
             "name": {"dataType":"string","required":true},
             "description": {"dataType":"string","required":true},
@@ -145,7 +145,7 @@ const models: TsoaRoute.Models = {
     "AssemblyStep": {
         "dataType": "refObject",
         "properties": {
-            "versionNo": {"dataType":"double","required":true},
+            "versionNo": {"dataType":"integer","required":true,"validators":{"minimum":{"errorMsg":"Minimum version cannot be negative","value":0}}},
             "id": {"ref":"Guid","required":true},
             "name": {"dataType":"string","required":true},
             "description": {"dataType":"string","required":true},
@@ -153,8 +153,8 @@ const models: TsoaRoute.Models = {
             "assemblyRequirementId": {"ref":"Guid"},
             "tagId": {"ref":"Guid"},
             "resourceId": {"ref":"Guid"},
-            "duration": {"dataType":"double","required":true},
-            "capacity": {"dataType":"double","required":true},
+            "duration": {"dataType":"integer","required":true,"validators":{"minimum":{"errorMsg":"Minimum duration cannot be negative","value":0}}},
+            "capacity": {"dataType":"integer","required":true,"validators":{"minimum":{"errorMsg":"Minimum capacity cannot be negative","value":0}}},
             "sequence": {"dataType":"double","required":true},
             "complete": {"dataType":"boolean","required":true},
         },
@@ -183,7 +183,7 @@ const models: TsoaRoute.Models = {
     "BusinessHour": {
         "dataType": "refObject",
         "properties": {
-            "versionNo": {"dataType":"double","required":true},
+            "versionNo": {"dataType":"integer","required":true,"validators":{"minimum":{"errorMsg":"Minimum version cannot be negative","value":0}}},
             "id": {"ref":"Guid","required":true},
             "day": {"ref":"EnumDay","required":true},
             "startTime": {"dataType":"datetime"},
@@ -218,7 +218,7 @@ const models: TsoaRoute.Models = {
     "Lease": {
         "dataType": "refObject",
         "properties": {
-            "versionNo": {"dataType":"double","required":true},
+            "versionNo": {"dataType":"integer","required":true,"validators":{"minimum":{"errorMsg":"Minimum version cannot be negative","value":0}}},
             "id": {"ref":"Guid","required":true},
             "name": {"dataType":"string","required":true},
             "resourceId": {"ref":"Guid","required":true},
@@ -265,7 +265,7 @@ const models: TsoaRoute.Models = {
     "MaintenanceLog": {
         "dataType": "refObject",
         "properties": {
-            "versionNo": {"dataType":"double","required":true},
+            "versionNo": {"dataType":"integer","required":true,"validators":{"minimum":{"errorMsg":"Minimum version cannot be negative","value":0}}},
             "id": {"ref":"Guid","required":true},
             "resourceId": {"ref":"Guid","required":true},
             "type": {"dataType":"string","required":true},
@@ -291,7 +291,7 @@ const models: TsoaRoute.Models = {
             "id": {"ref":"Guid","required":true},
             "name": {"dataType":"string","required":true},
             "description": {"dataType":"string","required":true},
-            "capacity": {"dataType":"double","required":true},
+            "capacity": {"dataType":"integer","required":true,"validators":{"minimum":{"errorMsg":"Minimum Capacity cannot be negative","value":0}}},
         },
         "additionalProperties": true,
     },
@@ -316,7 +316,7 @@ const models: TsoaRoute.Models = {
     "Resource": {
         "dataType": "refObject",
         "properties": {
-            "versionNo": {"dataType":"double","required":true},
+            "versionNo": {"dataType":"integer","required":true,"validators":{"minimum":{"errorMsg":"Minimum version cannot be negative","value":0}}},
             "id": {"ref":"Guid","required":true},
             "name": {"dataType":"string","required":true},
             "tags": {"dataType":"array","array":{"ref":"Tag"},"required":true},

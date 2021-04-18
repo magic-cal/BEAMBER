@@ -21,8 +21,12 @@ import Guid from "./common/guid"
     "value": "a9f0cb6a-e804-4782-bbed-b271619c4eff"
   },
   "duration": 0,
-  "capacity": 0
+  "capacity": 0,
+  "version": 1,
+  "sequence": 0 
   }
+
+
  */
 export class AssemblyStep extends AmberApiFields {
   id: Guid
@@ -32,7 +36,15 @@ export class AssemblyStep extends AmberApiFields {
   assemblyRequirementId?: Guid
   tagId?: Guid
   resourceId?: Guid
+  /**
+   * @minimum 0 Minimum duration cannot be negative
+   * @isInt
+   */
   duration: number
+  /**
+   * @minimum 0 Minimum capacity cannot be negative
+   * @isInt
+   */
   capacity: number
   sequence: number
   complete: boolean

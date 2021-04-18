@@ -6,8 +6,8 @@
 	"definitions": {
 		"UUID": {
 			"type": "string",
-			"description": "Stringified UUIDv4.\r\nSee [RFC 4112](https://tools.ietf.org/html/rfc4122)",
-			"pattern": "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}"
+			"description": "Stringified Guid",
+			"pattern": "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"
 		},
 		"Guid": {
 			"properties": {
@@ -27,8 +27,9 @@
 		"RecipeStep": {
 			"properties": {
 				"versionNo": {
-					"type": "number",
-					"format": "double"
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
 				},
 				"id": {
 					"$ref": "#/definitions/Guid"
@@ -52,16 +53,19 @@
 					"$ref": "#/definitions/Guid"
 				},
 				"duration": {
-					"type": "number",
-					"format": "double"
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
 				},
 				"capacity": {
-					"type": "number",
-					"format": "double"
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
 				},
 				"start": {
-					"type": "number",
-					"format": "double"
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
 				},
 				"sequence": {
 					"type": "number",
@@ -101,7 +105,9 @@
 				},
 				"duration": 0,
 				"capacity": 0,
-				"start": 0
+				"start": 0,
+				"versionNo": 1,
+				"sequence": 0
 			}
 		},
 		"RecipeStepFilter": {
@@ -205,8 +211,9 @@
 		"Recipe": {
 			"properties": {
 				"versionNo": {
-					"type": "number",
-					"format": "double"
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
 				},
 				"id": {
 					"$ref": "#/definitions/Guid"
@@ -285,8 +292,9 @@
 		"Assembly": {
 			"properties": {
 				"versionNo": {
-					"type": "number",
-					"format": "double"
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
 				},
 				"id": {
 					"$ref": "#/definitions/Guid"
@@ -340,8 +348,9 @@
 		"AssemblyStep": {
 			"properties": {
 				"versionNo": {
-					"type": "number",
-					"format": "double"
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
 				},
 				"id": {
 					"$ref": "#/definitions/Guid"
@@ -365,12 +374,14 @@
 					"$ref": "#/definitions/Guid"
 				},
 				"duration": {
-					"type": "number",
-					"format": "double"
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
 				},
 				"capacity": {
-					"type": "number",
-					"format": "double"
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
 				},
 				"sequence": {
 					"type": "number",
@@ -412,7 +423,9 @@
 					"value": "a9f0cb6a-e804-4782-bbed-b271619c4eff"
 				},
 				"duration": 0,
-				"capacity": 0
+				"capacity": 0,
+				"version": 1,
+				"sequence": 0
 			}
 		},
 		"AssemblyStepFilter": {
@@ -460,8 +473,9 @@
 		"BusinessHour": {
 			"properties": {
 				"versionNo": {
-					"type": "number",
-					"format": "double"
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
 				},
 				"id": {
 					"$ref": "#/definitions/Guid"
@@ -539,8 +553,9 @@
 		"Lease": {
 			"properties": {
 				"versionNo": {
-					"type": "number",
-					"format": "double"
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
 				},
 				"id": {
 					"$ref": "#/definitions/Guid"
@@ -644,8 +659,9 @@
 		"MaintenanceLog": {
 			"properties": {
 				"versionNo": {
-					"type": "number",
-					"format": "double"
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
 				},
 				"id": {
 					"$ref": "#/definitions/Guid"
@@ -721,8 +737,9 @@
 					"type": "string"
 				},
 				"capacity": {
-					"type": "number",
-					"format": "double"
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
 				}
 			},
 			"required": [
@@ -777,8 +794,9 @@
 		"Resource": {
 			"properties": {
 				"versionNo": {
-					"type": "number",
-					"format": "double"
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
 				},
 				"id": {
 					"$ref": "#/definitions/Guid"

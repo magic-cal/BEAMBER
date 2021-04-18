@@ -22,7 +22,9 @@ import Guid from "./common/guid"
   },
   "duration": 0,
   "capacity": 0,
-  "start": 0
+  "start": 0,
+  "versionNo": 1,
+  "sequence": 0
   }
  */
 export class RecipeStep extends AmberApiFields {
@@ -33,8 +35,20 @@ export class RecipeStep extends AmberApiFields {
   tagId?: Guid
   recipeId: Guid
   resourceId?: Guid
+  /**
+   * @minimum 0 Minimum duration cannot be negative
+   * @isInt
+   */
   duration: number
+  /**
+   * @minimum 0 Minimum capacity cannot be negative
+   * @isInt
+   */
   capacity: number
+  /**
+   * @minimum 0 Minimum start cannot be negative
+   * @isInt
+   */
   start: number
   sequence: number
 

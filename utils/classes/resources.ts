@@ -64,6 +64,10 @@ export class Tag {
   id: Guid
   name: string
   description: string
+  /**
+   * @minimum 0 Minimum Capacity cannot be negative
+   * @isInt
+   */
   capacity: number
 
   constructor(id: Guid = Guid.createEmpty(), name = "", description = "", capacity = 0) {
