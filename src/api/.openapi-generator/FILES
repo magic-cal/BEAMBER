@@ -30,6 +30,7 @@ models/RecipeBreakdown.ts
 models/RecipeBreakdownSteps.ts
 models/RecipeFilter.ts
 models/RecipeReadOnly.ts
+models/RecipeSchedule.ts
 models/RecipeStep.ts
 models/RecipeStepFilter.ts
 models/Resource.ts

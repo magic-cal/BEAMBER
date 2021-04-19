@@ -861,6 +861,24 @@
 				"tagIds": [],
 				"includeDeleted": false
 			}
+		},
+		"RecipeSchedule": {
+			"properties": {
+				"recipeIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"startTime": {
+					"type": "string",
+					"format": "date-time",
+					"default": "2021-04-19T10:09:45.502Z"
+				}
+			},
+			"type": "object",
+			"additionalProperties": false
 		}
 	},
 	"info": {
@@ -2040,6 +2058,9 @@
 				"responses": {
 					"204": {
 						"description": "No content"
+					},
+					"422": {
+						"description": "No Recipe Was Selected"
 					}
 				},
 				"tags": [
@@ -2049,13 +2070,10 @@
 				"parameters": [
 					{
 						"in": "body",
-						"name": "recipeIds",
+						"name": "recipeSchedule",
 						"required": true,
 						"schema": {
-							"items": {
-								"$ref": "#/definitions/Guid"
-							},
-							"type": "array"
+							"$ref": "#/definitions/RecipeSchedule"
 						}
 					}
 				]

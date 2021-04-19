@@ -56,6 +56,14 @@ export class RecipeFilter {
   includeDeleted = false
 }
 
+export class RecipeSchedule {
+  recipeIds: Guid[] = []
+  startTime?: Date
+  contstructor(recipeIds = []) {
+    this.recipeIds = recipeIds
+  }
+}
+
 // const i = recipe: {
 //   id: { value: "91fb0e54-a48a-4d14-84d8-f0e171740406" },
 //   name: "string",

@@ -15,13 +15,13 @@
 
 import * as runtime from '../runtime';
 import {
-    Guid,
-    GuidFromJSON,
-    GuidToJSON,
+    RecipeSchedule,
+    RecipeScheduleFromJSON,
+    RecipeScheduleToJSON,
 } from '../models';
 
 export interface ScheduleRecipesRequest {
-    recipeIds: Array<Guid>;
+    recipeSchedule: RecipeSchedule;
 }
 
 /**
@@ -32,8 +32,8 @@ export class ScheduleApi extends runtime.BaseAPI {
     /**
      */
     async scheduleRecipesRaw(requestParameters: ScheduleRecipesRequest): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.recipeIds === null || requestParameters.recipeIds === undefined) {
-            throw new runtime.RequiredError('recipeIds','Required parameter requestParameters.recipeIds was null or undefined when calling scheduleRecipes.');
+        if (requestParameters.recipeSchedule === null || requestParameters.recipeSchedule === undefined) {
+            throw new runtime.RequiredError('recipeSchedule','Required parameter requestParameters.recipeSchedule was null or undefined when calling scheduleRecipes.');
         }
 
         const queryParameters: any = {};
@@ -47,7 +47,7 @@ export class ScheduleApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.recipeIds.map(GuidToJSON),
+            body: RecipeScheduleToJSON(requestParameters.recipeSchedule),
         });
 
         return new runtime.VoidApiResponse(response);

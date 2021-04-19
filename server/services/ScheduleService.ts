@@ -1,6 +1,6 @@
 import Guid from "../../utils/classes/common/guid"
 import { EnumLeaseType, Lease } from "../../utils/classes/leases"
-import { Body, Controller, Post, Route, Tags } from "tsoa"
+import { Body, Controller, Post, Route, Tags, Response } from "tsoa"
 import { RecipeStep, RecipeStepFilter } from "../../utils/classes/recipeSteps"
 import { AssemblyStep } from "../../utils/classes/assemblySteps"
 import { Assembly } from "../../utils/classes/assemblies"
@@ -10,6 +10,7 @@ import { RecipeController } from "./RecipeService"
 import { RecipeStepController } from "./RecipeStepService"
 import { AssemblyController } from "./AssemblyService"
 import { AssemblyStepController } from "./AssemblyStepService"
+import { RecipeSchedule } from "utils/classes/recipes"
 
 interface AssembliesAndSteps {
   assemblies: Assembly[]
@@ -37,10 +38,11 @@ export class ScheduleService extends Controller {
     this.assemblyStepService = new AssemblyStepController()
   }
 
+  @Response(422, "No Recipe Was Selected")
   @Post("recipes")
-  async scheduleRecipes(@Body() recipeIds: Guid[]) {
+  async scheduleRecipes(@Body() recipeSchedule: RecipeSchedule) {
     // @TODO: Fix GUID Implentation -- faulty
-    recipeIds = recipeIds.map((id) => Guid.fromString(id.value))
+    const recipeIds = recipeSchedule.recipeIds.map((id) => Guid.fromString(id.value))
     const recipeId = recipeIds[0]!
     if (!recipeId.value) {
       return this.setStatus(422)

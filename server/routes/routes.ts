@@ -338,6 +338,15 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "RecipeSchedule": {
+        "dataType": "refObject",
+        "properties": {
+            "recipeIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
+            "startTime": {"dataType":"datetime","default":"2021-04-19T10:09:51.362Z"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const validationService = new ValidationService(models);
 
@@ -1186,7 +1195,7 @@ export function RegisterRoutes(app: express.Router) {
         app.post('/Schedule/recipes',
             function ScheduleService_scheduleRecipes(request: any, response: any, next: any) {
             const args = {
-                    recipeIds: {"in":"body","name":"recipeIds","required":true,"dataType":"array","array":{"ref":"Guid"}},
+                    recipeSchedule: {"in":"body","name":"recipeSchedule","required":true,"ref":"RecipeSchedule"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

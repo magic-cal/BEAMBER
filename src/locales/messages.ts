@@ -14,6 +14,7 @@ export const messages = {
     create_new: "Create New",
     description: "Description",
     duration: "Duration",
+    recipe: "Recipe",
     start: "Start",
     cancel: "Cancel",
     ok: "Ok",
@@ -63,6 +64,7 @@ export const messages = {
     resource_requirement_type: "Resource Requirement Type",
     specific_resource_requirement: "Specific Resource Requirement",
     recipe_requirement: "Recipe Requirement",
+    schedule_recipes: "Schedule Recipes",
 
     // maintenance
 
