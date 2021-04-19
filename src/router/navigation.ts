@@ -41,7 +41,7 @@ export const navigationItems: NavigationItem[] = [
     id: null,
     name: "Settings",
     icon: "mdi-cog",
-    pathName: "EditBusinessHours"
+    pathName: "Settings"
   }
   // {
   //   id: null,

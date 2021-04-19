@@ -18,6 +18,7 @@ export const messages = {
     start: "Start",
     cancel: "Cancel",
     ok: "Ok",
+    settings: "Settings",
 
     // Metrics
     seconds: "Seconds",
@@ -86,6 +87,7 @@ export const messages = {
     closed: "Closed",
     start_time: "Start Time",
     end_time: "End Time",
+    reset_data: "Reset Data",
 
     // Leases
     lease_name: "Name",

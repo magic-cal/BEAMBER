@@ -4,13 +4,15 @@ import { Body, Controller, Post, Route, Tags, Response } from "tsoa"
 import { RecipeStep, RecipeStepFilter } from "../../utils/classes/recipeSteps"
 import { AssemblyStep } from "../../utils/classes/assemblySteps"
 import { Assembly } from "../../utils/classes/assemblies"
-import { LocalDateTime } from "@js-joda/core"
+import { LocalDateTime, LocalTime } from "@js-joda/core"
 import { LeaseController } from "./LeaseService"
 import { RecipeController } from "./RecipeService"
 import { RecipeStepController } from "./RecipeStepService"
 import { AssemblyController } from "./AssemblyService"
 import { AssemblyStepController } from "./AssemblyStepService"
 import { RecipeSchedule } from "utils/classes/recipes"
+import { BusinessHour, EnumDay } from "../../utils/classes/businessHours"
+import { BusinessHourController } from "./BusinessHoursService"
 
 interface AssembliesAndSteps {
   assemblies: Assembly[]
@@ -23,12 +25,17 @@ export class ScheduleService extends Controller {
   // Class Variables
   MAX_DEPTH = 20
   BUFFER_TIME = 5
+  allLeases: Lease[] = []
+  allBusinessHours: BusinessHour[] = []
+  holidayBusinessHours: BusinessHour[] = []
+  dailyBusinessHours: BusinessHour[] = []
 
   leaseService: LeaseController
   recipeService: RecipeController
   recipeStepService: RecipeStepController
   assemblyService: AssemblyController
   assemblyStepService: AssemblyStepController
+  businessHourService: BusinessHourController
   constructor() {
     super()
     this.leaseService = new LeaseController()
@@ -36,6 +43,7 @@ export class ScheduleService extends Controller {
     this.recipeStepService = new RecipeStepController()
     this.assemblyService = new AssemblyController()
     this.assemblyStepService = new AssemblyStepController()
+    this.businessHourService = new BusinessHourController()
   }
 
   @Response(422, "No Recipe Was Selected")
@@ -47,11 +55,18 @@ export class ScheduleService extends Controller {
     if (!recipeId.value) {
       return this.setStatus(422)
     }
+
+    this.allBusinessHours = await this.businessHourService.getBusinessHoursByFilter()
+    this.allLeases = await this.leaseService.getLeasesByFilter()
+
+    this.dailyBusinessHours = this.allBusinessHours.filter((bh) => bh.day.key !== EnumDay.none.key)
+    this.holidayBusinessHours = this.allBusinessHours.filter((bh) => bh.day.key === EnumDay.none.key)
+
     let assembliesAndSteps = { assemblies: [], steps: [] } as AssembliesAndSteps
 
     assembliesAndSteps = await this.createAssembly(recipeId, assembliesAndSteps)
 
-    let taskTime = LocalDateTime.now()
+    let taskTime = LocalDateTime.parse((recipeSchedule.startTime ?? new Date()).toISOString())
     await Promise.all(
       assembliesAndSteps.steps.map((as) => {
         const lease = this.addLeaseForAsseblyStep(as, taskTime)
@@ -78,6 +93,7 @@ export class ScheduleService extends Controller {
       resourceId
     )
     await this.leaseService.updateOrCreateLease(lease)
+    this.allLeases.push(lease)
   }
 
   async createAssembly(recipeId: Guid, assembliesAndSteps: AssembliesAndSteps, parentId?: Guid, recursiondepth = 0) {
@@ -125,7 +141,74 @@ export class ScheduleService extends Controller {
     return assembliesAndSteps
   }
 
-  async findTimeSlot(resourceId: Guid, startTime: LocalDateTime, duration: number) {}
+  async findResourceTimeSlot(resourceIds: Guid[], startTime: LocalDateTime, duration: number) {
+    const leases = this.allLeases.filter((lease) => resourceIds.some((rid) => lease.resourceId.equals(rid)))
+  }
+
+  getDayFromDate(date: Date) {
+    const day = date.getDay()
+    if (day === 0) {
+      // Skew sunday to ENUM Sunday
+      return 7
+    } else {
+      return day
+    }
+  }
+
+  isBusinessOpen(date: LocalDateTime) {
+    const day = date.dayOfWeek().value() !== 0 ? date.dayOfWeek().value() : 7 // Display Sunday
+    const businessHours = this.dailyBusinessHours.filter((dbh) => dbh.day.key === day)
+
+    // Assumed always closed unless open
+    const isOpen = businessHours.some((bh) => {
+      if (!bh.startTime && !bh.endTime && bh.isOpen) {
+        return true // Is Open ALL DAY
+      }
+      if (!bh.startTime || !bh.endTime) {
+        return false
+      }
+
+      const startTime = this.getTimeFromDate(bh.startTime)
+      const endTime = this.getTimeFromDate(bh.endTime)
+      const queryTime = date.toLocalTime()
+      if (startTime.isBefore(queryTime) && endTime.isAfter(queryTime)) {
+        return bh.isOpen // Return is closed
+      }
+    })
+
+    return isOpen
+
+    // @TODO: IMplement Holiday Hours
+    // isClosed = this.holidayBusinessHours.some((bh) => {
+    //   if (!bh.startTime && !bh.endTime && !bh.isOpen) {
+    //     return true // Is closed All day
+    //   }
+    //   if (!bh.startTime || !bh.endTime) {
+    //     return false
+    //   }
+
+    //   const startTime = this.getTimeFromDate(bh.startTime)
+    //   const endTime = this.getTimeFromDate(bh.endTime)
+    //   const queryTime = this.getTimeFromDate(date)
+    //   if (startTime.isBefore(queryTime) && endTime.isAfter(queryTime)) {
+    //     return !bh.isOpen // Return is closed
+    //   }
+    // })
+  }
+
+  getBuisinessNextOpen(date: LocalDateTime) {
+    const day = date.dayOfWeek().value() !== 0 ? date.dayOfWeek().value() : 7 // Display Sunday
+    const businessHours = this.dailyBusinessHours.filter((dbh) => dbh.day.key === day)
+
+    businessHours.sort((a, b) => (a.startTime && b.startTime ? (b.startTime! < a.startTime ? 1 : -1) : 0))
+
+    // businessHours.filter((bh) => bh.isOpen && this.isBusinessOpen())
+  }
+  //
+
+  getTimeFromDate(date: Date) {
+    return LocalTime.parse(date.toLocaleTimeString())
+  }
 }
 
 //     // implement for one first

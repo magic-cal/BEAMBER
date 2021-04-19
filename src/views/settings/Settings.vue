@@ -116,6 +116,18 @@
                   </v-col>
                 </v-expansion-panel-content>
               </v-expansion-panel>
+              <v-expansion-panel>
+                <v-expansion-panel-header
+                  ><h2>{{ $t("reset_data") }}</h2></v-expansion-panel-header
+                >
+                <v-expansion-panel-content>
+                  <v-row>
+                    <v-col>
+                      <v-btn @click="resetData">{{ $t("reset_data") }}</v-btn>
+                    </v-col>
+                  </v-row>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
             </v-expansion-panels>
           </v-row>
         </v-container>
@@ -138,16 +150,19 @@ import { Component, Prop } from "vue-property-decorator"
 import { WithLoading } from "@/store/modules/appStore"
 import { BusinessHour, EnumDay } from "@/../utils/classes/businessHours"
 import Guid from "@/../utils/classes/common/guid"
+import { RecipeBreakdown } from "@/api/models"
 
 @Component
-export default class EditBusinessHours extends Vue {
+export default class Settings extends Vue {
   // @Prop({ type: String, required: false, default: () => null })
   // private businessHourId!: string | null
 
   allBusinessHours: BusinessHour[] = []
   editingId: Guid | null = null
+  recipeBreakdown = ""
+  advancedImport = false
   valid = true
-  panel = [0]
+  panel = []
 
   EnumDay = EnumDay
 
@@ -196,6 +211,18 @@ export default class EditBusinessHours extends Vue {
   async deleteBusinessHour(businessHour: BusinessHour) {
     await api.businessHourApi.deleteBusinessHour({ businessHourId: businessHour.id })
     await this.loadPrerequisites()
+  }
+
+  async resetData() {
+    await api.dataApi.clearAssemblies()
+    this.$router.push({
+      name: "Home"
+    })
+  }
+
+  async createRecipesFromSteps() {
+    const recipeBreakdown = JSON.parse(this.recipeBreakdown) as RecipeBreakdown
+    await api.dataApi.createRecipesFromSteps({ recipeBreakdown: recipeBreakdown })
   }
 
   async back() {

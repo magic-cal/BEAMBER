@@ -11,6 +11,7 @@
     </v-row>
 
     <g-gantt-chart
+      class="pb-12"
       push-on-overlap
       grid
       :chart-start="myChartStart.toISOString()"
@@ -33,7 +34,17 @@
         </template>
       </g-gantt-row>
     </g-gantt-chart>
-    <v-btn @click="save">SAVE</v-btn>
+
+    <v-footer fixed
+      ><v-row>
+        <v-col>
+          <v-btn @click="back">{{ $t("back") }}</v-btn></v-col
+        >
+        <v-col align="right"
+          ><v-btn @click="save">{{ $t("save") }}</v-btn></v-col
+        ></v-row
+      ></v-footer
+    >
     <v-menu
       v-model="contextMenu.showContextmenu"
       :position-x="contextMenu.contextmenuX"
@@ -169,6 +180,10 @@ export default class Schedule extends Vue {
     console.log(leases, "leases")
     await Promise.all(leases)
     await this.loadPrerequisites()
+  }
+
+  async back() {
+    this.$router.back()
   }
 }
 </script>
