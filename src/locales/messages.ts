@@ -88,6 +88,7 @@ export const messages = {
     start_time: "Start Time",
     end_time: "End Time",
     reset_data: "Reset Data",
+    holiday_hours_desc: "All holiday hours will override normal business hours, priority is given to being open",
 
     // Leases
     lease_name: "Name",

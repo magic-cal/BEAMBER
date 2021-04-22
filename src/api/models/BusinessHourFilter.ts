@@ -27,16 +27,16 @@ export interface BusinessHourFilter {
     onlyBusinessHours?: boolean;
     /**
      * 
-     * @type {boolean}
+     * @type {Date}
      * @memberof BusinessHourFilter
      */
-    dateStart?: boolean;
+    dateStart?: Date;
     /**
      * 
-     * @type {boolean}
+     * @type {Date}
      * @memberof BusinessHourFilter
      */
-    dateEnd?: boolean;
+    dateEnd?: Date;
     /**
      * 
      * @type {boolean}
@@ -56,8 +56,8 @@ export function BusinessHourFilterFromJSONTyped(json: any, ignoreDiscriminator: 
     return {
         
         'onlyBusinessHours': !exists(json, 'onlyBusinessHours') ? undefined : json['onlyBusinessHours'],
-        'dateStart': !exists(json, 'dateStart') ? undefined : json['dateStart'],
-        'dateEnd': !exists(json, 'dateEnd') ? undefined : json['dateEnd'],
+        'dateStart': !exists(json, 'dateStart') ? undefined : (new Date(json['dateStart'])),
+        'dateEnd': !exists(json, 'dateEnd') ? undefined : (new Date(json['dateEnd'])),
         'includeDeleted': !exists(json, 'includeDeleted') ? undefined : json['includeDeleted'],
     };
 }
@@ -72,8 +72,8 @@ export function BusinessHourFilterToJSON(value?: BusinessHourFilter | null): any
     return {
         
         'onlyBusinessHours': value.onlyBusinessHours,
-        'dateStart': value.dateStart,
-        'dateEnd': value.dateEnd,
+        'dateStart': value.dateStart === undefined ? undefined : (value.dateStart.toISOString()),
+        'dateEnd': value.dateEnd === undefined ? undefined : (value.dateEnd.toISOString()),
         'includeDeleted': value.includeDeleted,
     };
 }

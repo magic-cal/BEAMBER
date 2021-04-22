@@ -29,8 +29,7 @@
                             :label="$t('start_time')"
                             v-model="wbh.startTime"
                             :disabled="wbh.id !== editingId"
-                            clearable
-                            :rules="[$ruleSet.requiredConditional(!!wbh.endTime)]"
+                            :rules="[$ruleSet.required()]"
                           />
                         </v-col>
                         <v-col :cols="12" :sm="4">
@@ -38,8 +37,7 @@
                             :label="$t('end_time')"
                             v-model="wbh.endTime"
                             :disabled="wbh.id !== editingId"
-                            clearable
-                            :rules="[$ruleSet.requiredConditional(!!wbh.startTime)]"
+                            :rules="[$ruleSet.required()]"
                           />
                         </v-col>
                         <v-col :cols="12" :sm="2">
@@ -66,54 +64,53 @@
               </v-expansion-panel>
               <v-expansion-panel>
                 <v-expansion-panel-header
-                  ><h2>{{ $t("holiday_hours") }}</h2></v-expansion-panel-header
-                >
+                  ><h2>{{ $t("holiday_hours") }}</h2>
+                </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                  <v-col align="center">
-                    <v-btn @click="addBusinessHours(true, EnumDay.none, false)" icon outlined color="primary">
-                      <v-icon>mdi-plus</v-icon></v-btn
-                    ></v-col
-                  >
-                  <v-col :cols="12">
-                    <v-row v-for="wbh in getBusinessHours(EnumDay.none)" :key="wbh.id.value">
-                      <v-col :cols="12" :sm="4">
-                        <a-timestamp
-                          :label="$t('start_time')"
-                          v-model="wbh.startTime"
-                          :disabled="wbh.id !== editingId"
-                          clearable
-                          :rules="[
-                            $ruleSet.requiredConditional(!!wbh.endTime),
-                            $ruleSet.dateBeforeOrEqual(wbh.endTime, $t('end_time'))
-                          ]"
-                        />
-                      </v-col>
-                      <v-col :cols="12" :sm="4">
-                        <a-timestamp
-                          :label="$t('end_time')"
-                          v-model="wbh.endTime"
-                          :disabled="wbh.id !== editingId"
-                          clearable
-                          :rules="[
-                            $ruleSet.requiredConditional(!!wbh.startTime),
-                            $ruleSet.dateAfterOrEqual(wbh.startTime, $t('start_time'))
-                          ]"
-                        />
-                      </v-col>
-                      <v-col :cols="12" :sm="2">
-                        <v-switch :label="$t('open')" v-model="wbh.isOpen" :disabled="wbh.id !== editingId"></v-switch>
-                      </v-col>
-                      <v-col :cols="12" :sm="2" v-if="wbh.id === editingId">
-                        <v-btn icon @click="updateBusinessHour(wbh)" class="mx-1"
-                          ><v-icon>mdi-content-save</v-icon>
-                        </v-btn>
-                        <v-btn icon @click="deleteBusinessHour(wbh)" class="mx-1"><v-icon>mdi-delete</v-icon> </v-btn>
-                      </v-col>
-                      <v-col :cols="12" :sm="2" v-else>
-                        <v-btn icon @click="editingId = wbh.id"><v-icon>mdi-square-edit-outline</v-icon></v-btn>
-                      </v-col>
-                    </v-row>
-                  </v-col>
+                  <v-form v-model="valid">
+                    <p>{{ $t("holiday_hours_desc") }}</p>
+                    <v-col align="center">
+                      <v-btn @click="addBusinessHours(true, EnumDay.none, false)" icon outlined color="primary">
+                        <v-icon>mdi-plus</v-icon></v-btn
+                      ></v-col
+                    >
+                    <v-col :cols="12">
+                      <v-row v-for="wbh in getBusinessHours(EnumDay.none)" :key="wbh.id.value">
+                        <v-col :cols="12" :sm="4">
+                          <a-timestamp
+                            :label="$t('start_time')"
+                            v-model="wbh.startTime"
+                            :disabled="wbh.id !== editingId"
+                            :rules="[$ruleSet.required(), $ruleSet.dateBeforeOrEqual(wbh.endTime, $t('end_time'))]"
+                          />
+                        </v-col>
+                        <v-col :cols="12" :sm="4">
+                          <a-timestamp
+                            :label="$t('end_time')"
+                            v-model="wbh.endTime"
+                            :disabled="wbh.id !== editingId"
+                            :rules="[$ruleSet.required(), $ruleSet.dateAfterOrEqual(wbh.startTime, $t('start_time'))]"
+                          />
+                        </v-col>
+                        <v-col :cols="12" :sm="2">
+                          <v-switch
+                            :label="$t('open')"
+                            v-model="wbh.isOpen"
+                            :disabled="wbh.id !== editingId"
+                          ></v-switch>
+                        </v-col>
+                        <v-col :cols="12" :sm="2" v-if="wbh.id === editingId">
+                          <v-btn icon :disabled="!valid" @click="updateBusinessHour(wbh)" class="mx-1"
+                            ><v-icon>mdi-content-save</v-icon>
+                          </v-btn>
+                          <v-btn icon @click="deleteBusinessHour(wbh)" class="mx-1"><v-icon>mdi-delete</v-icon> </v-btn>
+                        </v-col>
+                        <v-col :cols="12" :sm="2" v-else>
+                          <v-btn icon @click="editingId = wbh.id"><v-icon>mdi-square-edit-outline</v-icon></v-btn>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                  </v-form>
                 </v-expansion-panel-content>
               </v-expansion-panel>
               <v-expansion-panel>
@@ -173,11 +170,11 @@ export default class Settings extends Vue {
 
   async loadPrerequisites() {
     this.allBusinessHours = await api.businessHourApi.getBusinessHoursByFilter({})
-    for (const day of this.daysOfTheWeek) {
-      if (!this.getBusinessHours(day).length) {
-        this.addBusinessHours(false, day, true)
-      }
-    }
+    // for (const day of this.daysOfTheWeek) {
+    //   if (!this.getBusinessHours(day).length) {
+    //     this.addBusinessHours(false, day, true)
+    //   }
+    // }
     this.editingId = null
   }
 
@@ -215,9 +212,9 @@ export default class Settings extends Vue {
 
   async resetData() {
     await api.dataApi.clearAssemblies()
-    this.$router.push({
-      name: "Home"
-    })
+    // this.$router.push({
+    //   name: "Home"
+    // })
   }
 
   async createRecipesFromSteps() {

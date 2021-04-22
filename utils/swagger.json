@@ -514,12 +514,12 @@
 					"default": false
 				},
 				"dateStart": {
-					"type": "boolean",
-					"default": false
+					"type": "string",
+					"format": "date-time"
 				},
 				"dateEnd": {
-					"type": "boolean",
-					"default": false
+					"type": "string",
+					"format": "date-time"
 				},
 				"includeDeleted": {
 					"type": "boolean",
@@ -873,8 +873,7 @@
 				},
 				"startTime": {
 					"type": "string",
-					"format": "date-time",
-					"default": "2021-04-19T10:09:45.502Z"
+					"format": "date-time"
 				}
 			},
 			"type": "object",

@@ -60,8 +60,8 @@ export class BusinessHour extends AmberApiFields {
     id: Guid = Guid.createEmpty(),
     dayInt = 0,
     isOpen = false,
-    startTime: Date | undefined = undefined,
-    endTime: Date | undefined = undefined
+    startTime: Date | undefined = undefined, // Should not be Undefined in BE. FE ONLY
+    endTime: Date | undefined = undefined // Should not be Undefined in BE. FE ONLY
   ) {
     super()
     this.id = id
@@ -74,8 +74,8 @@ export class BusinessHour extends AmberApiFields {
 }
 
 export class BusinessHourFilter {
-  onlyBusinessHours = false
-  dateStart = false
-  dateEnd = false
-  includeDeleted = false
+  onlyBusinessHours? = false
+  dateStart?: Date
+  dateEnd?: Date
+  includeDeleted? = false
 }

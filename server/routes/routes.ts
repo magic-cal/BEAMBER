@@ -198,8 +198,8 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "onlyBusinessHours": {"dataType":"boolean","default":false},
-            "dateStart": {"dataType":"boolean","default":false},
-            "dateEnd": {"dataType":"boolean","default":false},
+            "dateStart": {"dataType":"datetime"},
+            "dateEnd": {"dataType":"datetime"},
             "includeDeleted": {"dataType":"boolean","default":false},
         },
         "additionalProperties": false,
@@ -342,7 +342,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "recipeIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
-            "startTime": {"dataType":"datetime","default":"2021-04-19T10:09:51.362Z"},
+            "startTime": {"dataType":"datetime"},
         },
         "additionalProperties": false,
     },

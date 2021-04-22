@@ -4,7 +4,7 @@ import { Body, Controller, Post, Route, Tags, Response } from "tsoa"
 import { RecipeStep, RecipeStepFilter } from "../../utils/classes/recipeSteps"
 import { AssemblyStep } from "../../utils/classes/assemblySteps"
 import { Assembly } from "../../utils/classes/assemblies"
-import { LocalDateTime, LocalTime } from "@js-joda/core"
+import { LocalDateTime, LocalTime, nativeJs } from "@js-joda/core"
 import { LeaseController } from "./LeaseService"
 import { RecipeController } from "./RecipeService"
 import { RecipeStepController } from "./RecipeStepService"
@@ -25,6 +25,7 @@ export class ScheduleService extends Controller {
   // Class Variables
   MAX_DEPTH = 20
   BUFFER_TIME = 5
+  MAX_BUSINESS_HOURS_DAYS = 7 // Number of days that the search will look for the next open day
   allLeases: Lease[] = []
   allBusinessHours: BusinessHour[] = []
   holidayBusinessHours: BusinessHour[] = []
@@ -52,11 +53,12 @@ export class ScheduleService extends Controller {
     // @TODO: Fix GUID Implentation -- faulty
     const recipeIds = recipeSchedule.recipeIds.map((id) => Guid.fromString(id.value))
     const recipeId = recipeIds[0]!
+    const date = recipeSchedule.startTime ? new Date(recipeSchedule.startTime) : new Date()
     if (!recipeId.value) {
       return this.setStatus(422)
     }
 
-    this.allBusinessHours = await this.businessHourService.getBusinessHoursByFilter()
+    this.allBusinessHours = await this.businessHourService.getBusinessHoursByFilter({ dateStart: date })
     this.allLeases = await this.leaseService.getLeasesByFilter()
 
     this.dailyBusinessHours = this.allBusinessHours.filter((bh) => bh.day.key !== EnumDay.none.key)
@@ -66,9 +68,13 @@ export class ScheduleService extends Controller {
 
     assembliesAndSteps = await this.createAssembly(recipeId, assembliesAndSteps)
 
-    let taskTime = LocalDateTime.parse((recipeSchedule.startTime ?? new Date()).toISOString())
+    let taskTime = LocalDateTime.from(nativeJs(date))
     await Promise.all(
       assembliesAndSteps.steps.map((as) => {
+        if (!this.isBusinessOpen(taskTime)) {
+          // Set the time to the next start
+          taskTime = this.getBuisinessNextOpen(taskTime)
+        }
         const lease = this.addLeaseForAsseblyStep(as, taskTime)
         taskTime = taskTime.plusMinutes(as.duration).plusMinutes(this.BUFFER_TIME)
         return lease
@@ -158,6 +164,17 @@ export class ScheduleService extends Controller {
   isBusinessOpen(date: LocalDateTime) {
     const day = date.dayOfWeek().value() !== 0 ? date.dayOfWeek().value() : 7 // Display Sunday
     const businessHours = this.dailyBusinessHours.filter((dbh) => dbh.day.key === day)
+    const holidayHours = this.holidayBusinessHours.filter((hbh) => {
+      const start = LocalDateTime.from(nativeJs(hbh.startTime!))
+      const end = LocalDateTime.from(nativeJs(hbh.endTime!))
+
+      return !start.isAfter(date) && !end.isBefore(date)
+    })
+
+    if (holidayHours.length) {
+      // If a holiday is defined, and one states it is open, it must be open, otherwise it is closed
+      return holidayHours.some((hh) => hh.isOpen)
+    }
 
     // Assumed always closed unless open
     const isOpen = businessHours.some((bh) => {
@@ -177,37 +194,41 @@ export class ScheduleService extends Controller {
     })
 
     return isOpen
-
-    // @TODO: IMplement Holiday Hours
-    // isClosed = this.holidayBusinessHours.some((bh) => {
-    //   if (!bh.startTime && !bh.endTime && !bh.isOpen) {
-    //     return true // Is closed All day
-    //   }
-    //   if (!bh.startTime || !bh.endTime) {
-    //     return false
-    //   }
-
-    //   const startTime = this.getTimeFromDate(bh.startTime)
-    //   const endTime = this.getTimeFromDate(bh.endTime)
-    //   const queryTime = this.getTimeFromDate(date)
-    //   if (startTime.isBefore(queryTime) && endTime.isAfter(queryTime)) {
-    //     return !bh.isOpen // Return is closed
-    //   }
-    // })
   }
 
   getBuisinessNextOpen(date: LocalDateTime) {
-    const day = date.dayOfWeek().value() !== 0 ? date.dayOfWeek().value() : 7 // Display Sunday
-    const businessHours = this.dailyBusinessHours.filter((dbh) => dbh.day.key === day)
+    for (let i = 0; i < this.MAX_BUSINESS_HOURS_DAYS; i++) {
+      const currentDate = date.plusDays(i)
+      const day = currentDate.dayOfWeek().value() !== 0 ? currentDate.dayOfWeek().value() : 7 // Display Sunday
+      const businessHours = this.dailyBusinessHours.filter((dbh) => dbh.day.key === day)
+      const holidayHours = this.holidayBusinessHours.filter((hbh) => {
+        const start = LocalDateTime.from(nativeJs(hbh.startTime!))
+        const end = LocalDateTime.from(nativeJs(hbh.endTime!))
+        return !!start.isBefore(currentDate) && end.isAfter(currentDate)
+      })
 
-    businessHours.sort((a, b) => (a.startTime && b.startTime ? (b.startTime! < a.startTime ? 1 : -1) : 0))
+      const foundHourOpen = [...holidayHours, ...businessHours]
+        .sort((a, b) => (a.startTime && b.startTime ? (b.startTime < a.startTime ? 1 : -1) : 0))
+        .find((sh) => sh.isOpen && this.isBusinessOpen(this.setDateTimeToTime(currentDate, sh.startTime!))) // Find the first open Time Today
 
-    // businessHours.filter((bh) => bh.isOpen && this.isBusinessOpen())
+      if (foundHourOpen) {
+        return this.setDateTimeToTime(currentDate, foundHourOpen.startTime!)
+      }
+    }
+    throw Error("Could not find an opening time for the Business within max days limit")
   }
-  //
 
   getTimeFromDate(date: Date) {
-    return LocalTime.parse(date.toLocaleTimeString())
+    return LocalTime.from(nativeJs(date))
+  }
+
+  setDateTimeToTime(dateTime: LocalDateTime, time: Date) {
+    //@TODO: Remove this implementation of time
+    const timeFormatted = LocalDateTime.from(nativeJs(time))
+    return dateTime
+      .withHour(timeFormatted.hour())
+      .withMinute(timeFormatted.minute())
+      .withSecond(timeFormatted.second())
   }
 }
 
