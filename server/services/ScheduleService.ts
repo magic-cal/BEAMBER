@@ -53,7 +53,7 @@ export class ScheduleService extends Controller {
     // @TODO: Fix GUID Implentation -- faulty
     const recipeIds = recipeSchedule.recipeIds.map((id) => Guid.fromString(id.value))
     const recipeId = recipeIds[0]!
-    const date = recipeSchedule.startTime ? new Date(recipeSchedule.startTime) : new Date()
+    const date = recipeSchedule.startTime ? new Date(recipeSchedule.startTime.toISOString()) : new Date()
     if (!recipeId.value) {
       return this.setStatus(422)
     }
@@ -61,8 +61,12 @@ export class ScheduleService extends Controller {
     this.allBusinessHours = await this.businessHourService.getBusinessHoursByFilter({ dateStart: date })
     this.allLeases = await this.leaseService.getLeasesByFilter()
 
-    this.dailyBusinessHours = this.allBusinessHours.filter((bh) => bh.day.key !== EnumDay.none.key)
-    this.holidayBusinessHours = this.allBusinessHours.filter((bh) => bh.day.key === EnumDay.none.key)
+    this.dailyBusinessHours = this.allBusinessHours.filter(
+      (bh) => bh.day.key !== EnumDay.none.key && bh.startTime && bh.endTime
+    ) // Filter out null dates
+    this.holidayBusinessHours = this.allBusinessHours.filter(
+      (bh) => bh.day.key === EnumDay.none.key && bh.startTime && bh.endTime
+    ) // Filter out null dates
 
     let assembliesAndSteps = { assemblies: [], steps: [] } as AssembliesAndSteps
 
@@ -88,7 +92,7 @@ export class ScheduleService extends Controller {
     // @TODO: Remove string - Get from Tags
     const resourceId =
       assemblyStep.resourceId?.equals(Guid.createEmpty()) || !assemblyStep.resourceId
-        ? Guid.fromString("2d029617-ac69-4409-8191-8452f9cc9882")
+        ? Guid.fromString("cb5e6f94-2249-47e5-a398-263b80e32307")
         : assemblyStep.resourceId
     const lease = new Lease(
       leaseId,
@@ -129,6 +133,7 @@ export class ScheduleService extends Controller {
     if (assembly.recipeId) {
       recipeStepFilter.recipeIds = assembly.recipeId ? [assembly.recipeId] : []
       recipeSteps = await this.recipeStepService.getRecipeStepsByFilter(recipeStepFilter)
+      recipeSteps = recipeSteps.sort((a, b) => a.sequence - b.sequence)
     }
     for (const rs of recipeSteps) {
       // Add new assemblies for steps to be created
@@ -178,17 +183,10 @@ export class ScheduleService extends Controller {
 
     // Assumed always closed unless open
     const isOpen = businessHours.some((bh) => {
-      if (!bh.startTime && !bh.endTime && bh.isOpen) {
-        return true // Is Open ALL DAY
-      }
-      if (!bh.startTime || !bh.endTime) {
-        return false
-      }
-
-      const startTime = this.getTimeFromDate(bh.startTime)
-      const endTime = this.getTimeFromDate(bh.endTime)
+      const startTime = this.getTimeFromDate(bh.startTime!)
+      const endTime = this.getTimeFromDate(bh.endTime!)
       const queryTime = date.toLocalTime()
-      if (startTime.isBefore(queryTime) && endTime.isAfter(queryTime)) {
+      if (!startTime.isAfter(queryTime) && !endTime.isBefore(queryTime)) {
         return bh.isOpen // Return is closed
       }
     })
@@ -204,11 +202,12 @@ export class ScheduleService extends Controller {
       const holidayHours = this.holidayBusinessHours.filter((hbh) => {
         const start = LocalDateTime.from(nativeJs(hbh.startTime!))
         const end = LocalDateTime.from(nativeJs(hbh.endTime!))
-        return !!start.isBefore(currentDate) && end.isAfter(currentDate)
+        return !start.isAfter(currentDate) && !end.isBefore(currentDate)
       })
 
       const foundHourOpen = [...holidayHours, ...businessHours]
-        .sort((a, b) => (a.startTime && b.startTime ? (b.startTime < a.startTime ? 1 : -1) : 0))
+        .sort((a, b) => this.getTimeFromDate(b.startTime!).compareTo(this.getTimeFromDate(a.startTime!)))
+        .filter((sh) => (i === 0 ? this.getTimeFromDate(sh.startTime!).isAfter(currentDate.toLocalTime()) : true))
         .find((sh) => sh.isOpen && this.isBusinessOpen(this.setDateTimeToTime(currentDate, sh.startTime!))) // Find the first open Time Today
 
       if (foundHourOpen) {
@@ -225,10 +224,11 @@ export class ScheduleService extends Controller {
   setDateTimeToTime(dateTime: LocalDateTime, time: Date) {
     //@TODO: Remove this implementation of time
     const timeFormatted = LocalDateTime.from(nativeJs(time))
-    return dateTime
+    dateTime = dateTime
       .withHour(timeFormatted.hour())
       .withMinute(timeFormatted.minute())
       .withSecond(timeFormatted.second())
+    return dateTime
   }
 }
 
