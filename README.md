@@ -1,7 +1,6 @@
 # Amber
 
-Main: [![Build Status](https://travis-ci.com/magic-cal/BEAMBER.svg?branch=main)](https://travis-ci.com/magic-cal/BEAMBER) Dev: [![Build Status](https://travis-ci.com/magic-cal/BEAMBER.svg?branch=dev)](https://travis-ci.com/magic-cal/BEAMBER) Vulnerabilities: [![Known Vulnerabilities](https://snyk.io/test/github/magic-cal/BEAMBER/badge.svg)](https://snyk.io/test/github/magic-cal/BEAMBER)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/6d8c9f95ffc947bbaccf704e295b2416)](https://www.codacy.com/gh/magic-cal/BEAMBER/dashboard?utm_source=github.com&utm_medium=referral&utm_content=magic-cal/BEAMBER&utm_campaign=Badge_Grade)
+Main: [![Build Status](https://travis-ci.com/magic-cal/BEAMBER.svg?branch=main)](https://travis-ci.com/magic-cal/BEAMBER) [![Known Vulnerabilities](https://snyk.io/test/github/magic-cal/BEAMBER/badge.svg)](https://snyk.io/test/github/magic-cal/BEAMBER) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/6d8c9f95ffc947bbaccf704e295b2416)](https://www.codacy.com/gh/magic-cal/BEAMBER/dashboard?utm_source=github.com&utm_medium=referral&utm_content=magic-cal/BEAMBER&utm_campaign=Badge_Grade)
 
 A resource scheduling system for breweries and distilleries
 
