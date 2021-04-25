@@ -1,17 +1,17 @@
 <template>
   <div class="home">
-    <!-- <v-row>
+    <v-row>
       <v-col align="center">
         <h1>Amber</h1>
       </v-col>
-    </v-row> -->
+    </v-row>
     <v-container>
       <v-row>
         <v-col align="center">
-          <v-btn :to="{ name: 'ResourceList' }">ResourceList</v-btn>
+          <v-btn :to="{ name: 'ResourceList' }">{{ $t("resource_list") }}</v-btn>
         </v-col>
         <v-col align="center">
-          <v-btn :to="{ name: 'TagList' }">TagList</v-btn>
+          <v-btn :to="{ name: 'TagList' }">{{ $t("tag_list") }}</v-btn>
         </v-col>
         <!-- <v-col align="center">
           <v-btn>Hi</v-btn>
@@ -53,8 +53,10 @@ export default class Home extends Vue {
     const filter = new ResourceFilter()
     // @TODO: Make this All Vessels but better
     filter.tagIds = [Guid.fromString("10ed5a49-1668-402a-b0b5-b54818a3dec2")]
-    this.resourceList = (await api.getResources()).filter(resource => resource.tags.some(tag => tag.name === "Vessel"))
-    this.resourceList.forEach(r => (r.maintananceRequired = Math.random() < 0.1))
+    this.resourceList = (await api.resourceApi.getResourcesByFilter({})).filter((resource) =>
+      resource.tags.some((tag) => tag.name === "Vessel")
+    )
+    this.resourceList.forEach((r) => (r.maintananceRequired = Math.random() < 0.1))
   }
 }
 </script>

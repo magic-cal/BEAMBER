@@ -1,0 +1,2091 @@
+{
+	"basePath": "/",
+	"consumes": [
+		"application/json"
+	],
+	"definitions": {
+		"UUID": {
+			"type": "string",
+			"description": "Stringified Guid",
+			"pattern": "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"
+		},
+		"Guid": {
+			"properties": {
+				"value": {
+					"$ref": "#/definitions/UUID"
+				}
+			},
+			"required": [
+				"value"
+			],
+			"type": "object",
+			"additionalProperties": false,
+			"example": {
+				"value": "2d029617-ac69-4409-8191-8452f9cc9882"
+			}
+		},
+		"RecipeStep": {
+			"properties": {
+				"versionNo": {
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
+				},
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"recipeRequirementId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"tagId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"recipeId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"resourceId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"duration": {
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
+				},
+				"capacity": {
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
+				},
+				"start": {
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
+				},
+				"sequence": {
+					"type": "number",
+					"format": "double"
+				}
+			},
+			"required": [
+				"versionNo",
+				"id",
+				"name",
+				"description",
+				"recipeId",
+				"duration",
+				"capacity",
+				"start",
+				"sequence"
+			],
+			"type": "object",
+			"additionalProperties": false,
+			"example": {
+				"id": {
+					"value": "d01ac8d3-b823-4f8d-9643-06c6b6d8fb13"
+				},
+				"name": "Name",
+				"description": "Description",
+				"recipeRequirementId": {
+					"value": "93000dfb-11a7-4be4-91c0-57140564243c"
+				},
+				"tagId": {
+					"value": "de1df70b-0794-4328-8118-c3462b694e67"
+				},
+				"recipeId": {
+					"value": "8df24173-85fa-415c-ba66-668f65c05822"
+				},
+				"resourceId": {
+					"value": "a9f0cb6a-e804-4782-bbed-b271619c4eff"
+				},
+				"duration": 0,
+				"capacity": 0,
+				"start": 0,
+				"versionNo": 1,
+				"sequence": 0
+			}
+		},
+		"RecipeStepFilter": {
+			"properties": {
+				"recipeIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"type": "object",
+			"additionalProperties": false,
+			"example": {
+				"RecipeIds": [],
+				"includeDeleted": false
+			}
+		},
+		"FieldDef": {
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"tableID": {
+					"type": "number",
+					"format": "double"
+				},
+				"columnID": {
+					"type": "number",
+					"format": "double"
+				},
+				"dataTypeID": {
+					"type": "number",
+					"format": "double"
+				},
+				"dataTypeSize": {
+					"type": "number",
+					"format": "double"
+				},
+				"dataTypeModifier": {
+					"type": "number",
+					"format": "double"
+				},
+				"format": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"name",
+				"tableID",
+				"columnID",
+				"dataTypeID",
+				"dataTypeSize",
+				"dataTypeModifier",
+				"format"
+			],
+			"type": "object",
+			"additionalProperties": false
+		},
+		"QueryResult_any_": {
+			"properties": {
+				"command": {
+					"type": "string"
+				},
+				"rowCount": {
+					"type": "number",
+					"format": "double"
+				},
+				"oid": {
+					"type": "number",
+					"format": "double"
+				},
+				"fields": {
+					"items": {
+						"$ref": "#/definitions/FieldDef"
+					},
+					"type": "array"
+				},
+				"rows": {
+					"items": {
+						"additionalProperties": true
+					},
+					"type": "array"
+				}
+			},
+			"required": [
+				"command",
+				"rowCount",
+				"oid",
+				"fields",
+				"rows"
+			],
+			"type": "object",
+			"additionalProperties": false
+		},
+		"Recipe": {
+			"properties": {
+				"versionNo": {
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
+				},
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"requirementIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array"
+				},
+				"readOnly": {
+					"properties": {
+						"isComplete": {
+							"type": "boolean"
+						},
+						"isScheduled": {
+							"type": "boolean"
+						},
+						"isAssembly": {
+							"type": "boolean"
+						},
+						"endTime": {
+							"type": "number",
+							"format": "double"
+						},
+						"startTime": {
+							"type": "number",
+							"format": "double"
+						}
+					},
+					"required": [
+						"isComplete",
+						"isScheduled",
+						"isAssembly",
+						"endTime",
+						"startTime"
+					],
+					"type": "object",
+					"x-nullable": true
+				}
+			},
+			"required": [
+				"versionNo",
+				"id",
+				"name",
+				"description",
+				"requirementIds",
+				"readOnly"
+			],
+			"type": "object",
+			"additionalProperties": false
+		},
+		"RecipeFilter": {
+			"properties": {
+				"RecipeStepIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"type": "object",
+			"additionalProperties": false
+		},
+		"Assembly": {
+			"properties": {
+				"versionNo": {
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
+				},
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"complete": {
+					"type": "boolean"
+				},
+				"parentId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"recipeId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"recipeProductId": {
+					"$ref": "#/definitions/Guid"
+				}
+			},
+			"required": [
+				"versionNo",
+				"id",
+				"name",
+				"description",
+				"complete"
+			],
+			"type": "object",
+			"additionalProperties": false
+		},
+		"AssemblyFilter": {
+			"properties": {
+				"AssemblyStepIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"type": "object",
+			"additionalProperties": false
+		},
+		"AssemblyStep": {
+			"properties": {
+				"versionNo": {
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
+				},
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"assemblyId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"assemblyRequirementId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"tagId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"resourceId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"duration": {
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
+				},
+				"capacity": {
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
+				},
+				"sequence": {
+					"type": "number",
+					"format": "double"
+				},
+				"complete": {
+					"type": "boolean"
+				}
+			},
+			"required": [
+				"versionNo",
+				"id",
+				"name",
+				"description",
+				"assemblyId",
+				"duration",
+				"capacity",
+				"sequence",
+				"complete"
+			],
+			"type": "object",
+			"additionalProperties": false,
+			"example": {
+				"id": {
+					"value": "d01ac8d3-b823-4f8d-9643-06c6b6d8fb13"
+				},
+				"name": "Name",
+				"description": "Description",
+				"assemblyRequirementId": {
+					"value": "93000dfb-11a7-4be4-91c0-57140564243c"
+				},
+				"tagId": {
+					"value": "de1df70b-0794-4328-8118-c3462b694e67"
+				},
+				"assemblyId": {
+					"value": "8df24173-85fa-415c-ba66-668f65c05822"
+				},
+				"resourceId": {
+					"value": "a9f0cb6a-e804-4782-bbed-b271619c4eff"
+				},
+				"duration": 0,
+				"capacity": 0,
+				"version": 1,
+				"sequence": 0
+			}
+		},
+		"AssemblyStepFilter": {
+			"properties": {
+				"assemblyIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"type": "object",
+			"additionalProperties": false,
+			"example": {
+				"AssemblyIds": [],
+				"includeDeleted": false
+			}
+		},
+		"EnumDay": {
+			"properties": {
+				"key": {
+					"type": "number",
+					"format": "double"
+				},
+				"value": {
+					"type": "string"
+				},
+				"translationKey": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"key",
+				"value",
+				"translationKey"
+			],
+			"type": "object",
+			"additionalProperties": false
+		},
+		"BusinessHour": {
+			"properties": {
+				"versionNo": {
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
+				},
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"day": {
+					"$ref": "#/definitions/EnumDay"
+				},
+				"startTime": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"endTime": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"tagId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"isOpen": {
+					"type": "boolean"
+				}
+			},
+			"required": [
+				"versionNo",
+				"id",
+				"day",
+				"isOpen"
+			],
+			"type": "object",
+			"additionalProperties": false
+		},
+		"BusinessHourFilter": {
+			"properties": {
+				"onlyBusinessHours": {
+					"type": "boolean",
+					"default": false
+				},
+				"dateStart": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"dateEnd": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"type": "object",
+			"additionalProperties": false
+		},
+		"EnumLeaseType": {
+			"properties": {
+				"key": {
+					"type": "number",
+					"format": "double"
+				},
+				"value": {
+					"type": "string"
+				},
+				"translationKey": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"key",
+				"value",
+				"translationKey"
+			],
+			"type": "object",
+			"additionalProperties": false
+		},
+		"Lease": {
+			"properties": {
+				"versionNo": {
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
+				},
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"name": {
+					"type": "string"
+				},
+				"resourceId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"endTime": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"startTime": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"leaseType": {
+					"$ref": "#/definitions/EnumLeaseType"
+				},
+				"maintenanceId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"assemblyStepId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"packagingId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"productId": {
+					"$ref": "#/definitions/Guid"
+				}
+			},
+			"required": [
+				"versionNo",
+				"id",
+				"name",
+				"resourceId",
+				"endTime",
+				"startTime",
+				"leaseType"
+			],
+			"type": "object",
+			"additionalProperties": false
+		},
+		"LeaseFilter": {
+			"properties": {
+				"LeaseStepIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"type": "object",
+			"additionalProperties": false
+		},
+		"RecipeBreakdownSteps": {
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"duration": {
+					"type": "number",
+					"format": "double"
+				}
+			},
+			"type": "object",
+			"additionalProperties": false
+		},
+		"RecipeBreakdown": {
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"breakdownSteps": {
+					"items": {
+						"$ref": "#/definitions/RecipeBreakdownSteps"
+					},
+					"type": "array"
+				}
+			},
+			"required": [
+				"breakdownSteps"
+			],
+			"type": "object",
+			"additionalProperties": false
+		},
+		"MaintenanceLog": {
+			"properties": {
+				"versionNo": {
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
+				},
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"resourceId": {
+					"$ref": "#/definitions/Guid"
+				},
+				"type": {
+					"type": "string"
+				},
+				"details": {
+					"type": "string"
+				},
+				"timestamp": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"versionNo",
+				"id",
+				"resourceId",
+				"type",
+				"details",
+				"timestamp"
+			],
+			"type": "object",
+			"additionalProperties": false,
+			"example": {
+				"id": {
+					"value": "0a0796d0-92a2-46c2-bd51-4fc8b63b7b0f"
+				},
+				"resourceId": {
+					"value": "e96861e5-0123-4bd3-98c3-3f3ece24349c"
+				},
+				"type": "",
+				"details": "",
+				"timestamp": 0
+			}
+		},
+		"MaintenanceLogFilter": {
+			"properties": {
+				"maintenanceLogStepIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"resourceIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"type": "object",
+			"additionalProperties": false
+		},
+		"Tag": {
+			"properties": {
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"capacity": {
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
+				}
+			},
+			"required": [
+				"id",
+				"name",
+				"description",
+				"capacity"
+			],
+			"type": "object",
+			"additionalProperties": false,
+			"example": {
+				"id": {
+					"value": "0a0796d0-92a2-46c2-bd51-4fc8b63b7b0s"
+				},
+				"name": "Kettle",
+				"description": "Kettle Tag"
+			}
+		},
+		"TagFilter": {
+			"properties": {
+				"resourceIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"type": "object",
+			"additionalProperties": false,
+			"example": {
+				"resourceIds": [],
+				"includeDeleted": false
+			}
+		},
+		"ResourceReadonly": {
+			"properties": {
+				"tagList": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"tagList"
+			],
+			"type": "object",
+			"additionalProperties": false
+		},
+		"Resource": {
+			"properties": {
+				"versionNo": {
+					"type": "integer",
+					"format": "int32",
+					"minimum": 0
+				},
+				"id": {
+					"$ref": "#/definitions/Guid"
+				},
+				"name": {
+					"type": "string"
+				},
+				"tags": {
+					"items": {
+						"$ref": "#/definitions/Tag"
+					},
+					"type": "array"
+				},
+				"readOnly": {
+					"$ref": "#/definitions/ResourceReadonly"
+				},
+				"capacity": {
+					"type": "number",
+					"format": "double"
+				},
+				"currentStep": {
+					"$ref": "#/definitions/Guid"
+				},
+				"maintananceRequired": {
+					"type": "boolean"
+				},
+				"active": {
+					"type": "boolean"
+				}
+			},
+			"required": [
+				"versionNo",
+				"id",
+				"name",
+				"tags",
+				"readOnly",
+				"capacity",
+				"currentStep",
+				"maintananceRequired",
+				"active"
+			],
+			"type": "object",
+			"additionalProperties": false
+		},
+		"ResourceFilter": {
+			"properties": {
+				"tagIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"includeDeleted": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"type": "object",
+			"additionalProperties": false,
+			"example": {
+				"tagIds": [],
+				"includeDeleted": false
+			}
+		},
+		"RecipeSchedule": {
+			"properties": {
+				"recipeIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"startTime": {
+					"type": "string",
+					"format": "date-time"
+				}
+			},
+			"type": "object",
+			"additionalProperties": false
+		}
+	},
+	"info": {
+		"title": "amber",
+		"version": "2.0.0",
+		"contact": {}
+	},
+	"paths": {
+		"/RecipeStep/get": {
+			"post": {
+				"operationId": "GetRecipeStep",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/RecipeStep"
+						}
+					}
+				},
+				"tags": [
+					"RecipeStep"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipeStepId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/RecipeStep/get-by": {
+			"post": {
+				"operationId": "GetRecipeStepsByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/RecipeStep"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"RecipeStep"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/RecipeStepFilter"
+						}
+					}
+				]
+			}
+		},
+		"/RecipeStep/delete": {
+			"delete": {
+				"operationId": "DeleteRecipeStep",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"RecipeStep"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipeStepId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/RecipeStep/update": {
+			"put": {
+				"operationId": "UpdateOrCreateRecipeStep",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/QueryResult_any_"
+						}
+					}
+				},
+				"tags": [
+					"RecipeStep"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipeStep",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/RecipeStep"
+						}
+					}
+				]
+			}
+		},
+		"/Recipe/get": {
+			"post": {
+				"operationId": "GetRecipe",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/Recipe"
+						}
+					}
+				},
+				"tags": [
+					"Recipe"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipeId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Recipe/get-by": {
+			"post": {
+				"operationId": "GetRecipesByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Recipe"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"Recipe"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/RecipeFilter"
+						}
+					}
+				]
+			}
+		},
+		"/Recipe/delete": {
+			"delete": {
+				"operationId": "DeleteRecipe",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"Recipe"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipeId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Recipe/update": {
+			"put": {
+				"operationId": "UpdateOrCreateRecipe",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/QueryResult_any_"
+						}
+					}
+				},
+				"tags": [
+					"Recipe"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipe",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Recipe"
+						}
+					}
+				]
+			}
+		},
+		"/Assembly/get": {
+			"post": {
+				"operationId": "GetAssembly",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/Assembly"
+						}
+					}
+				},
+				"tags": [
+					"Assembly"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "assemblyId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Assembly/get-by": {
+			"post": {
+				"operationId": "GetAssembliesByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Assembly"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"Assembly"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/AssemblyFilter"
+						}
+					}
+				]
+			}
+		},
+		"/Assembly/delete": {
+			"delete": {
+				"operationId": "DeleteAssembly",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"Assembly"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "assemblyId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Assembly/update": {
+			"put": {
+				"operationId": "UpdateOrCreateAssembly",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/QueryResult_any_"
+						}
+					}
+				},
+				"tags": [
+					"Assembly"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "assembly",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Assembly"
+						}
+					}
+				]
+			}
+		},
+		"/AssemblyStep/get": {
+			"post": {
+				"operationId": "GetAssemblyStep",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/AssemblyStep"
+						}
+					}
+				},
+				"tags": [
+					"AssemblyStep"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "assemblyStepId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/AssemblyStep/get-by": {
+			"post": {
+				"operationId": "GetAssemblyStepsByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/AssemblyStep"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"AssemblyStep"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/AssemblyStepFilter"
+						}
+					}
+				]
+			}
+		},
+		"/AssemblyStep/delete": {
+			"delete": {
+				"operationId": "DeleteAssemblyStep",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"AssemblyStep"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "assemblyStepId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/AssemblyStep/update": {
+			"put": {
+				"operationId": "UpdateOrCreateAssemblyStep",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/QueryResult_any_"
+						}
+					}
+				},
+				"tags": [
+					"AssemblyStep"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "assemblyStep",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/AssemblyStep"
+						}
+					}
+				]
+			}
+		},
+		"/BusinessHour/get": {
+			"post": {
+				"operationId": "GetBusinessHour",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/BusinessHour"
+						}
+					}
+				},
+				"tags": [
+					"BusinessHour"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "businessHourId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/BusinessHour/get-by": {
+			"post": {
+				"operationId": "GetBusinessHoursByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/BusinessHour"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"BusinessHour"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/BusinessHourFilter"
+						}
+					}
+				]
+			}
+		},
+		"/BusinessHour/delete": {
+			"delete": {
+				"operationId": "DeleteBusinessHour",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"BusinessHour"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "businessHourId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/BusinessHour/update": {
+			"put": {
+				"operationId": "UpdateOrCreateBusinessHour",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/QueryResult_any_"
+						}
+					}
+				},
+				"tags": [
+					"BusinessHour"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "businessHour",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/BusinessHour"
+						}
+					}
+				]
+			}
+		},
+		"/Lease/get": {
+			"post": {
+				"operationId": "GetLease",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/Lease"
+						}
+					}
+				},
+				"tags": [
+					"Lease"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "leaseId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Lease/get-by": {
+			"post": {
+				"operationId": "GetLeasesByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Lease"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"Lease"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/LeaseFilter"
+						}
+					}
+				]
+			}
+		},
+		"/Lease/delete": {
+			"delete": {
+				"operationId": "DeleteLease",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"Lease"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "leaseId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Lease/update": {
+			"put": {
+				"operationId": "UpdateOrCreateLease",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/QueryResult_any_"
+						}
+					}
+				},
+				"tags": [
+					"Lease"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "lease",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Lease"
+						}
+					}
+				]
+			}
+		},
+		"/Data/clear-assemblies": {
+			"post": {
+				"operationId": "ClearAssemblies",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"Data"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/Data/create-recipes": {
+			"post": {
+				"operationId": "CreateRecipesFromSteps",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Data"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipeBreakdown",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/RecipeBreakdown"
+						}
+					}
+				]
+			}
+		},
+		"/MaintenanceLog/get": {
+			"post": {
+				"operationId": "GetMaintenanceLog",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/MaintenanceLog"
+						}
+					}
+				},
+				"tags": [
+					"MaintenanceLog"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "maintenanceLogId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/MaintenanceLog/get-by": {
+			"post": {
+				"operationId": "GetMaintenanceLogsByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/MaintenanceLog"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"MaintenanceLog"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/MaintenanceLogFilter"
+						}
+					}
+				]
+			}
+		},
+		"/MaintenanceLog/delete": {
+			"delete": {
+				"operationId": "DeleteMaintenanceLog",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"MaintenanceLog"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "maintenanceLogId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/MaintenanceLog/update": {
+			"put": {
+				"operationId": "UpdateOrCreateMaintenanceLog",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/QueryResult_any_"
+						}
+					}
+				},
+				"tags": [
+					"MaintenanceLog"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "maintenanceLog",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/MaintenanceLog"
+						}
+					}
+				]
+			}
+		},
+		"/Tag/get": {
+			"post": {
+				"operationId": "GetTag",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/Tag"
+						}
+					}
+				},
+				"tags": [
+					"Tag"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "tagId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Tag/get-by": {
+			"post": {
+				"operationId": "GetTagsByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Tag"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"Tag"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/TagFilter"
+						}
+					}
+				]
+			}
+		},
+		"/Tag/delete": {
+			"delete": {
+				"operationId": "DeleteTag",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"Tag"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "tagId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Tag/update": {
+			"put": {
+				"operationId": "UpdateOrCreateTag",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/QueryResult_any_"
+						},
+						"examples": {
+							"application/json": {
+								"name": "Mash Tun",
+								"description": "Mash Tun",
+								"capacity": 0
+							}
+						}
+					}
+				},
+				"tags": [
+					"Tag"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "tag",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Tag"
+						}
+					}
+				]
+			}
+		},
+		"/Resource/get": {
+			"post": {
+				"operationId": "GetResource",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/Resource"
+						}
+					}
+				},
+				"tags": [
+					"Resource"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "resourceId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Resource/get-by": {
+			"post": {
+				"operationId": "GetResourcesByFilter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Resource"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"Resource"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/ResourceFilter"
+						}
+					}
+				]
+			}
+		},
+		"/Resource/delete": {
+			"delete": {
+				"operationId": "DeleteResource",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"tags": [
+					"Resource"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "resourceId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Guid"
+						}
+					}
+				]
+			}
+		},
+		"/Resource/update": {
+			"put": {
+				"operationId": "UpdateOrCreateResource",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"additionalProperties": true
+						}
+					}
+				},
+				"tags": [
+					"Resource"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "resource",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Resource"
+						}
+					}
+				]
+			}
+		},
+		"/Schedule/recipes": {
+			"post": {
+				"operationId": "ScheduleRecipes",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					},
+					"422": {
+						"description": "No Recipe Was Selected"
+					}
+				},
+				"tags": [
+					"Schedule"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "recipeSchedule",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/RecipeSchedule"
+						}
+					}
+				]
+			}
+		}
+	},
+	"produces": [
+		"application/json"
+	],
+	"swagger": "2.0",
+	"securityDefinitions": {},
+	"host": "localhost:3000",
+	"schemes": [
+		"http"
+	]
+}

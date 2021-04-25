@@ -1,10 +1,10 @@
 // src/plugins/vuetify.js
 
-import Vue from "vue";
-import Vuetify from "vuetify";
-import "vuetify/dist/vuetify.min.css";
+import Vue from "vue"
+import Vuetify from "vuetify"
+import "vuetify/dist/vuetify.min.css"
 
-Vue.use(Vuetify);
+Vue.use(Vuetify)
 
 const vuetify = new Vuetify({
   theme: {
@@ -48,10 +48,10 @@ const vuetify = new Vuetify({
         infoMedium: "#003A56",
         successMedium: "#006E00",
 
-        switch: "#27AE60",
-      },
-    },
-  },
-});
+        switch: "#27AE60"
+      }
+    }
+  }
+})
 
-export default vuetify;
+export default vuetify

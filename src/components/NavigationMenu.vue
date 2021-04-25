@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="drawer" absolute temporary @input="$emit('input', $event)">
+  <v-navigation-drawer :value="drawer" absolute temporary @input="$emit('input', $event)">
     <v-list nav dense>
       <v-list-item-group>
         <template v-for="menuItem in navigationMenuItems">
@@ -18,7 +18,7 @@
 <script lang="ts">
 import Vue from "vue"
 import { Component, Model } from "vue-property-decorator"
-import { navigationItems } from "@/router/navigation.ts"
+import { navigationItems } from "@/router/navigation"
 @Component
 export default class NavigationMenu extends Vue {
   @Model("input", { type: Boolean, required: true })

@@ -14,13 +14,16 @@
     </v-row>
     <v-footer fixed
       ><v-row>
-        <v-col align="right"><v-btn @click="createNew">Create New</v-btn></v-col></v-row
+        <v-col align="right"
+          ><v-btn @click="createNew">{{ $t("create_new") }}</v-btn></v-col
+        ></v-row
       ></v-footer
     >
   </v-container>
 </template>
 
 <script lang="ts">
+// import api from "@/api/api"
 import api from "@/api/api"
 import { WithLoading } from "@/store/modules/appStore"
 import { Tag } from "utils/classes/resources"
@@ -32,13 +35,13 @@ export default class ListTags extends Vue {
 
   headers = [
     {
-      text: "Tag Name",
+      text: this.$t("tag_name"),
       align: "start",
       sortable: true,
       value: "name"
     },
     {
-      text: "Tag Description",
+      text: this.$t("tag_description"),
       align: "start",
       sortable: false,
       value: "description"
@@ -60,7 +63,7 @@ export default class ListTags extends Vue {
 
   @WithLoading
   async created() {
-    this.tags = await api.getTags()
+    this.tags = await api.tagApi.getTagsByFilter({})
   }
 }
 </script>

@@ -11,19 +11,22 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
+    "resolveJsonModule": true,
+    "typeRoots": ["utils/types"],
     "types": [
-      "webpack-env"
+      "webpack-env",
     ],
     "paths": {
       "@/*": [
-        "src/*"
-      ]
+        "src/*",
+      ],
     },
     "lib": [
       "esnext",
       "dom",
       "dom.iterable",
-      "scripthost"
+      "scripthost",
+      "ES6",
     ]
   },
   "include": [
@@ -33,7 +36,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-  ],
+, "string.d.ts"  ],
   "exclude": [
     "node_modules",
     "dist"

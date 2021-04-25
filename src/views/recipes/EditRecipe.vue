@@ -5,99 +5,60 @@
         <v-container>
           <v-row>
             <v-col
-              ><h1>{{ recipeId ? "Edit Recipe: " + currentRecipe.name : "Create Recipe" }}</h1>
+              ><h1>{{ recipeId ? $t("edit_recipe") + ": " + currentRecipe.name : $t("create_recipe") }}</h1>
             </v-col>
           </v-row>
           <v-row>
             <v-col :cols="12" :sm="6">
-              <v-text-field label="Name" v-model="currentRecipe.name"></v-text-field>
+              <v-text-field :label="$t('name')" v-model="currentRecipe.name"></v-text-field>
             </v-col>
             <v-col :cols="12" :sm="6">
-              <v-text-field label="Description" v-model="currentRecipe.description"></v-text-field>
+              <v-text-field :label="$t('description')" v-model="currentRecipe.description"></v-text-field>
             </v-col>
-            <v-col :cols="12" :sm="6">
+            <!-- <v-col :cols="12" :sm="6">
               <v-select
                 multiple
-                label="Recipe Prerequisites"
+                :label="$t('recipe_prerequisites')"
                 v-model="currentRecipe.requirementIds"
                 item-text="name"
                 item-value="id"
                 :items="allResources"
                 clearable
               ></v-select>
-            </v-col>
-            <v-col :cols="recipeSteps.length > 2 ? 12 : 6">
-              <sortable-list :items="recipeSteps" :text="i => i.name" :value="i => i.id"></sortable-list>
+            </v-col> -->
+            <v-col :cols="recipeSteps.length > 2 ? 12 : 6" align="center">
+              <p>{{ $t("recipe_steps") }}</p>
+              <sortable-list
+                @edit="editStep"
+                @reorder="reorder"
+                :items="recipeSteps"
+                :text="(i) => i.name"
+                :value="(i) => i.id"
+                with-edit
+                show-index
+              ></sortable-list>
+              <v-btn @click="addStep"> {{ $t("add_recipe_step") }} <v-icon>mdi-plus</v-icon></v-btn>
             </v-col>
             <!-- @TODO: Recipes May Require a popup for reordering -->
           </v-row>
         </v-container>
         <v-footer
           ><v-row>
-            <v-col> <v-btn @click="deleteRecipe" v-if="recipeId"> Delete </v-btn></v-col>
+            <v-col>
+              <v-btn @click="deleteRecipe" v-if="recipeId">{{ $t("delete") }}</v-btn></v-col
+            >
             <v-col align="right"
-              ><v-btn @click="update">{{ recipeId ? "Update" : "Create" }}</v-btn></v-col
+              ><v-btn @click="update">{{ $t(recipeId ? "update" : "create") }}</v-btn></v-col
             ></v-row
           ></v-footer
         >
       </v-card>
 
-      <v-card class="mt-6">
-        <v-container>
-          <v-row>
-            <v-col
-              ><h1>Recipe Steps</h1>
-              <p>***Just Stubs***</p></v-col
-            >
-            <v-col :cols="12"><v-btn @click.prevent.stop="addRecipeStep">Add Step</v-btn> </v-col>
-          </v-row>
-          <v-row v-for="(recipeStep, key) in recipeSteps" :key="recipeStep.id.value">
-            <v-col :cols="12"
-              ><h3>Step : {{ key + 1 }}</h3>
-            </v-col>
-            <v-col :cols="12" :sm="6">
-              <v-text-field label="Name" v-model="recipeStep.name"></v-text-field>
-            </v-col>
-            <v-col :cols="12" :sm="6">
-              <v-text-field label="Description" v-model="recipeStep.description"></v-text-field>
-            </v-col>
-            <v-col :cols="12" :sm="6">
-              <v-select
-                label="Resource Type"
-                v-model="recipeStep.tagId"
-                item-text="name"
-                item-value="id"
-                :items="allTags"
-                clearable
-                :disabled="!!recipeStep.requirementIds"
-              ></v-select>
-            </v-col>
-            <v-col :cols="12" :sm="6">
-              <v-select
-                label="Specific Resource"
-                v-model="recipeStep.requirementIds"
-                item-text="name"
-                item-value="id"
-                :items="allResources"
-                clearable
-                :disabled="!!recipeStep.tagId"
-              ></v-select>
-            </v-col>
-            <v-col :cols="12"><v-divider /></v-col>
-          </v-row>
-        </v-container>
-        <v-footer
-          ><v-row>
-            <v-col> <v-btn disabled @click="deleteRecipe" v-if="recipeId"> Delete </v-btn></v-col>
-            <v-col align="right"
-              ><v-btn disabled @click="update">{{ recipeId ? "Update" : "Create" }}</v-btn></v-col
-            ></v-row
-          ></v-footer
-        >
-      </v-card>
       <v-footer fixed outlined
         ><v-row>
-          <v-col> <v-btn @click="back">Back</v-btn></v-col>
+          <v-col>
+            <v-btn @click="back">{{ $t("back") }}</v-btn></v-col
+          >
         </v-row></v-footer
       >
     </v-container>
@@ -105,15 +66,16 @@
 </template>
 
 <script lang="ts">
-import api from "@/api/api"
-import Vue from "vue"
-import { Component, Prop } from "vue-property-decorator"
-import { WithLoading } from "@/store/modules/appStore"
-import { Recipe, RecipeStep } from "@/../utils/classes/recipes"
 import Guid from "@/../utils/classes/common/guid"
-import { Resource, Tag } from "utils/classes/resources"
+import { Recipe } from "@/../utils/classes/recipes"
+import { RecipeStep } from "@/../utils/classes/recipeSteps"
+import api from "@/api/api"
 import SortableList from "@/components/SortableList.vue"
+import { WithLoading } from "@/store/modules/appStore"
+import { Resource, Tag } from "utils/classes/resources"
+import Vue from "vue"
 import { Drag, DropList } from "vue-easy-dnd"
+import { Component, Prop } from "vue-property-decorator"
 
 @Component({ components: { SortableList, DropList, Drag } })
 export default class EditRecipes extends Vue {
@@ -130,44 +92,52 @@ export default class EditRecipes extends Vue {
   @WithLoading
   async mounted() {
     console.log("mounted", this.recipeId)
-    this.allTags = await api.getTags()
-    this.allResources = await api.getResources()
+    this.allTags = await api.tagApi.getTagsByFilter({})
+    this.allResources = await api.resourceApi.getResourcesByFilter({})
     if (this.recipeId) {
-      this.currentRecipe = await api.getRecipe(Guid.fromString(this.recipeId))
+      this.currentRecipe = await api.recipeApi.getRecipe({ recipeId: Guid.fromString(this.recipeId) })
       console.log(this.currentRecipe)
       // @TODO: Add The Tags
     }
+    this.recipeSteps = await api.recipeStepApi.getRecipeStepsByFilter({
+      filter: { recipeIds: [this.currentRecipe.id] }
+    })
+    this.recipeSteps.sort((a, b) => a.sequence - b.sequence)
+    console.log("this.recipeSteps", this.recipeSteps)
+  }
 
-    //@TODO: Remove Temp Assignment
-    const rs1 = new RecipeStep(
-      Guid.create(),
-      "Load Hops",
-      "Add 1KG of Hops to the Fermenter",
-      this.currentRecipe.id,
-      Guid.fromString("ce6d8ee2-dbd9-4007-a609-82a39d7c0747")
-    )
-    const rs2 = new RecipeStep(
-      Guid.create(),
-      "Stir Hops with water",
-      "Mix water and hops for 20 mins",
-      this.currentRecipe.id,
-      Guid.fromString("ce6d8ee2-dbd9-4007-a609-82a39d7c0747")
-    )
-    this.recipeSteps.push(...[rs1, rs2])
+  editStep(stepId: Guid) {
+    console.log("stepId", stepId)
+    this.$router.push({
+      name: "EditRecipeStep",
+      params: { recipeStepId: stepId.value }
+    })
+  }
+
+  addStep() {
+    this.$router.push({
+      name: "AddRecipeStep",
+      params: { recipeId: this.currentRecipe.id.value }
+    })
+  }
+
+  @WithLoading
+  async reorder() {
+    this.recipeSteps.forEach((rs, index) => (rs.sequence = index))
+    // @TODO: Make this a BE call to update all steps
+    await Promise.all(this.recipeSteps.map((rs) => api.recipeStepApi.updateOrCreateRecipeStep({ recipeStep: rs })))
   }
 
   @WithLoading
   async update() {
     console.log("this.currentRecipe", this.currentRecipe)
-    await api.updateOrCreateRecipe(this.currentRecipe)
-    // this.currentRecipe.requirementIds.forEach(id => console.log(id, id.equals(id)))
-
-    // this.back()
+    await api.recipeApi.updateOrCreateRecipe({ recipe: this.currentRecipe })
+    this.back()
   }
 
   @WithLoading
   async deleteRecipe() {
-    await api.deleteRecipe(this.currentRecipe.id)
+    await api.recipeApi.deleteRecipe({ recipeId: this.currentRecipe.id })
     this.back()
   }
 

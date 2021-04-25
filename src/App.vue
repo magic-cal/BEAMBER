@@ -5,7 +5,7 @@
         <v-app-bar-nav-icon @click.stop="navigationDraw = !navigationDraw"></v-app-bar-nav-icon>
         <v-toolbar-title>
           <div @click="goHome">
-            Amber - Vessle Management
+            {{ $t("amber") + " - " + $t("vessel_management") }}
           </div>
         </v-toolbar-title>
         <!-- <v-icon @click="viewContainers">md-plus</v-icon> -->
@@ -15,7 +15,7 @@
         </v-btn>
       </v-app-bar>
     </div>
-    <navigation-menu @input="navigationDraw = $event" v-model="navigationDraw"> </navigation-menu>
+    <navigation-menu v-model="navigationDraw"> </navigation-menu>
     <transition name="fade" mode="out-in">
       <router-view id="scrolling-techniques" />
     </transition>

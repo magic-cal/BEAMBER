@@ -1,0 +1,32 @@
+{
+  "name": "IPA Import",
+  "breakdownSteps": [
+    { "name": "Mash grains", "description": "Mash grains at 153° F (67° C) for 60 minutes.", "duration": 60 },
+    {
+      "name": "Mash out",
+      "description": "Mash out at 168° F (76° C), with pre-boil wort volume of 7 gal. (26.5 L).",
+      "duration": 60
+    },
+    {
+      "name": "Add hops",
+      "description": "Bring to a rolling boil for 60 minutes, adding hops at specified intervals from end of boil.",
+      "duration": 60
+    },
+    { "name": "Chill wort", "description": "Chill wort to 65° F (18° C) and pitch yeast.", "duration": 2880 },
+    {
+      "name": "Ferment",
+      "description": "Ferment in primary at 65° F (18° C) until fermentation slows significantly (7–9 days).",
+      "duration": 12960
+    },
+    {
+      "name": "Rack to and Dry Hop",
+      "description": "Rack to secondary fermenter and dry hop for no more than 10 days at 68° F (20° C).",
+      "duration": 12960
+    },
+    {
+      "name": "Bottle",
+      "description": "Keg at 2.5 volumes (5 g/L) of CO₂ or bottle condition with 4 oz. (113 g) corn sugar.",
+      "duration": 180
+    }
+  ]
+}

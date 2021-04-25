@@ -30,7 +30,7 @@ pool.on("error", function(err: Error) {
  * @return result
  */
 export const sqlToDB = async (sql: string, data?: any[] | any[][]) => {
-  console.debug(`sqlToDB() sql: ${sql} | data: ${data}`)
+  console.debug(`sqlToDB() sql: ${sql} | data: ${data} \n`)
   let result: QueryResult
   try {
     result = await pool.query(sql, data)
@@ -61,18 +61,18 @@ export const getTransaction = async () => {
  * @param data: the data to be stored
  * @return result
  */
-export const sqlExecSingleRow = async (client: Client, sql: string, data: string[][]) => {
-  // logger.debug(`sqlExecSingleRow() sql: ${sql} | data: ${data}`);
-  let result: QueryResult
-  try {
-    result = await client.query(sql, data)
-    // logger.debug(`sqlExecSingleRow(): ${result.command} | ${result.rowCount}`);
-    return result
-  } catch (error) {
-    // logger.error(`sqlExecSingleRow() error: ${error.message} | sql: ${sql} | data: ${data}`);
-    throw new Error(error.message)
-  }
-}
+// export const sqlExecSingleRow = async (client: Client, sql: string, data: string[][]) => {
+//   // logger.debug(`sqlExecSingleRow() sql: ${sql} | data: ${data}`);
+//   let result: QueryResult
+//   try {
+//     result = await client.query(sql, data)
+//     // logger.debug(`sqlExecSingleRow(): ${result.command} | ${result.rowCount}`);
+//     return result
+//   } catch (error) {
+//     // logger.error(`sqlExecSingleRow() error: ${error.message} | sql: ${sql} | data: ${data}`);
+//     throw new Error(error.message)
+//   }
+// }
 
 /*
  * Execute a sql statement with multiple rows of parameter data.

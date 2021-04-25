@@ -32,13 +32,13 @@ export default class ListResources extends Vue {
 
   headers = [
     {
-      text: "Resource Name",
+      text: this.$t("resource_name"),
       align: "start",
       sortable: true,
       value: "name"
     },
     {
-      text: "Resource Tags",
+      text: this.$t("resource_tags"),
       align: "start",
       sortable: false,
       value: "readOnly.tagList"
@@ -60,10 +60,9 @@ export default class ListResources extends Vue {
 
   @WithLoading
   async created() {
-    this.resources = await api.getResources()
-    this.resources.forEach(resource => {
-      resource.readOnly = new ResourceReadonly()
-      resource.readOnly.fromTags(resource.tags)
+    this.resources = await api.resourceApi.getResourcesByFilter({})
+    this.resources.forEach((resource) => {
+      resource.readOnly = new ResourceReadonly(resource.tags)
     })
   }
 }

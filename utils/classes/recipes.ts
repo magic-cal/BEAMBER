@@ -1,5 +1,6 @@
 // import { QueryResultRow } from "pg"
 import Guid from "./common/guid"
+import { AmberApiFields } from "./amberApiFields"
 
 // export class RecipeReadonly {
 //   tagList: string
@@ -11,7 +12,7 @@ import Guid from "./common/guid"
 //   }
 // }
 
-export class Recipe {
+export class Recipe extends AmberApiFields {
   id: Guid
   name: string
   description: string
@@ -32,6 +33,7 @@ export class Recipe {
     requirementIds: Guid[] = [],
     readOnly = null
   ) {
+    super()
     this.id = id
     this.name = name
     this.description = description
@@ -49,48 +51,17 @@ export class Recipe {
   //   }
 }
 
-export class RecipeStep {
-  id: Guid
-  name: string
-  description: string // Simple instructions to do this step
-  recipeId: Guid // Recipe this step belongs to
-  tagId: Guid // Type of Resource Required (only one)
-  resourceId: Guid // Specific Required Resource
-  stepTime: number // Process time in Minutes
-  stepCapacity: number // Litres
-  startTime: number //DateTime
-
-  constructor(
-    id: Guid = Guid.createEmpty(),
-    name = "",
-    description = "",
-    recipeId: Guid = Guid.createEmpty(),
-    tagId: Guid = Guid.createEmpty(),
-    resourceId: Guid = Guid.createEmpty(),
-    stepTime = 0,
-    stepCapacity = 0,
-    startTime = 0
-  ) {
-    this.id = id
-    this.name = name
-    this.description = description
-    this.recipeId = recipeId
-    this.tagId = tagId
-    this.resourceId = resourceId
-    this.stepTime = stepTime
-    this.stepCapacity = stepCapacity
-    this.startTime = startTime
-  }
-}
-
-export class RecipeStepFilter {
-  RecipeIds: Guid[] = []
-  includeDeleted = false
-}
-
 export class RecipeFilter {
   RecipeStepIds: Guid[] = []
   includeDeleted = false
+}
+
+export class RecipeSchedule {
+  recipeIds: Guid[] = []
+  startTime?: Date
+  contstructor(recipeIds = []) {
+    this.recipeIds = recipeIds
+  }
 }
 
 // const i = recipe: {

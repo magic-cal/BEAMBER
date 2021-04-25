@@ -13,7 +13,7 @@
 <script lang="ts">
 import Vue from "vue"
 import Component from "vue-class-component"
-import api from "@/api/api.ts"
+import api from "@/api/api"
 import Guid from "utils/classes/common/guid"
 import { Resource } from "utils/classes/resources"
 
@@ -25,16 +25,15 @@ export default class About extends Vue {
 
   async created() {
     console.log("Created")
-    // this.event = await api.getEvents()
     this.getResources()
   }
 
   async getResource() {
-    await api.getResource(Guid.fromString("fc3692b0-30a0-46fe-847f-b277d54cd6fe"))
+    await api.resourceApi.getResource({ resourceId: Guid.fromString("fc3692b0-30a0-46fe-847f-b277d54cd6fe") })
   }
 
   async getResources() {
-    this.resources = await api.getResources()
+    this.resources = await api.resourceApi.getResourcesByFilter({})
   }
 }
 </script>

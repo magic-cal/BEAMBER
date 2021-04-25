@@ -9,11 +9,11 @@
         </v-row>
         <v-row>
           <v-col :cols="12" :sm="6">
-            <v-text-field label="Name" v-model="currentRecipe.name"></v-text-field>
+            <v-text-field :label="$t('name')" v-model="currentRecipe.name"></v-text-field>
           </v-col>
           <v-col :cols="12" :sm="6">
             <v-select
-              label="Resource Requirement Type"
+              :label="$t('Resource Requirement Type')"
               v-model="currentRecipe.resourceType"
               item-text="name"
               item-value="id.value"
@@ -24,7 +24,7 @@
           </v-col>
           <v-col :cols="12" :sm="6">
             <v-select
-              label="Specific Resource Requirement"
+              :label="$t('Specific Resource Requirement')"
               v-model="currentRecipe.resourceRequirement"
               item-text="name"
               item-value="id.value"
@@ -36,7 +36,9 @@
       </v-container>
       <v-footer
         ><v-row>
-          <v-col> <v-btn @click="deleteRecipe" v-if="recipeId"> Delete </v-btn></v-col>
+          <v-col>
+            <v-btn @click="deleteRecipe" v-if="recipeId">{{ $t("delete") }}</v-btn></v-col
+          >
           <v-col align="right"
             ><v-btn @click="update">{{ recipeId ? "Update" : "Create" }}</v-btn></v-col
           ></v-row
@@ -45,7 +47,9 @@
     </v-card>
     <v-footer fixed outlined
       ><v-row>
-        <v-col> <v-btn @click="back">Back</v-btn></v-col>
+        <v-col>
+          <v-btn @click="back">{{ $t("back") }}</v-btn></v-col
+        >
       </v-row></v-footer
     >
   </v-container>
@@ -57,7 +61,6 @@ import Vue from "vue"
 import { Component, Prop } from "vue-property-decorator"
 import { WithLoading } from "@/store/modules/appStore"
 import { Recipe } from "@/../utils/classes/recipes"
-import Guid from "@/../utils/classes/common/guid"
 import { Resource, Tag } from "utils/classes/resources"
 
 @Component
@@ -72,10 +75,10 @@ export default class EditRecipes extends Vue {
   @WithLoading
   async mounted() {
     console.log("mounted", this.recipeId)
-    this.allTags = await api.getTags()
-    this.allResources = await api.getResources()
+    this.allTags = await api.tagApi.getTagsByFilter({})
+    this.allResources = await api.resourceApi.getResourcesByFilter({})
     if (this.recipeId) {
-      // this.currentRecipe = await api.getRecipe(Guid.fromString(this.recipeId))
+      // this.currentRecipe = await api.RecipeService.getRecipe({recipeId: Guid.fromString(this.recipeId)})
       console.log(this.currentRecipe)
       // @TODO: Add The Tags
     }
