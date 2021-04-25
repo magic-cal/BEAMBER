@@ -238,6 +238,8 @@ const models: TsoaRoute.Models = {
         "properties": {
             "LeaseStepIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
             "includeDeleted": {"dataType":"boolean","default":false},
+            "startTime": {"dataType":"datetime"},
+            "endTime": {"dataType":"datetime"},
         },
         "additionalProperties": false,
     },

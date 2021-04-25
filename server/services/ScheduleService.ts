@@ -13,6 +13,8 @@ import { AssemblyStepController } from "./AssemblyStepService"
 import { RecipeSchedule } from "utils/classes/recipes"
 import { BusinessHour, EnumDay } from "../../utils/classes/businessHours"
 import { BusinessHourController } from "./BusinessHoursService"
+import { ResourceController } from "./ResourceService"
+import { Resource } from "utils/classes/resources"
 
 interface AssembliesAndSteps {
   assemblies: Assembly[]
@@ -30,6 +32,7 @@ export class ScheduleService extends Controller {
   allBusinessHours: BusinessHour[] = []
   holidayBusinessHours: BusinessHour[] = []
   dailyBusinessHours: BusinessHour[] = []
+  allResources: Resource[] = []
 
   leaseService: LeaseController
   recipeService: RecipeController
@@ -37,6 +40,7 @@ export class ScheduleService extends Controller {
   assemblyService: AssemblyController
   assemblyStepService: AssemblyStepController
   businessHourService: BusinessHourController
+  resourceService: ResourceController
   constructor() {
     super()
     this.leaseService = new LeaseController()
@@ -44,6 +48,7 @@ export class ScheduleService extends Controller {
     this.recipeStepService = new RecipeStepController()
     this.assemblyService = new AssemblyController()
     this.assemblyStepService = new AssemblyStepController()
+    this.resourceService = new ResourceController()
     this.businessHourService = new BusinessHourController()
   }
 
@@ -60,6 +65,7 @@ export class ScheduleService extends Controller {
 
     this.allBusinessHours = await this.businessHourService.getBusinessHoursByFilter({ dateStart: date })
     this.allLeases = await this.leaseService.getLeasesByFilter()
+    this.allResources = await this.resourceService.getResourcesByFilter()
 
     this.dailyBusinessHours = this.allBusinessHours.filter(
       (bh) => bh.day.key !== EnumDay.none.key && bh.startTime && bh.endTime
@@ -153,7 +159,62 @@ export class ScheduleService extends Controller {
   }
 
   async findResourceTimeSlot(resourceIds: Guid[], startTime: LocalDateTime, duration: number) {
-    const leases = this.allLeases.filter((lease) => resourceIds.some((rid) => lease.resourceId.equals(rid)))
+    const endTime = startTime.plusMinutes(duration)
+    // Finds the time slot for the soonest available and then by capacity
+    const resourceLeases = this.allLeases.filter((lease) =>
+      resourceIds.some(
+        (rid) => LocalDateTime.from(nativeJs(lease.endTime!)).isAfter(startTime) && lease.resourceId.equals(rid)
+      )
+    )
+    // const resources = this.allResources.filter((resource) => resourceIds.some((rid) => rid.equals(resource.id)))
+    const resourceAvailableNow = resourceIds.find((rid) =>
+      this.isResourceAvailable(rid, startTime, endTime, resourceLeases)
+    )
+
+    if (resourceAvailableNow) {
+      return resourceAvailableNow
+    }
+    // @TODO: Search for shortest time away
+
+    throw new Error("Resource Required reschedule")
+  }
+
+  isResourceAvailable(
+    resourceId: Guid,
+    startTime: LocalDateTime,
+    endTime: LocalDateTime,
+    leases: Lease[] = this.allLeases
+  ) {
+    // If there are no overlaps, resource is available
+    return !leases
+      .filter((lease) => lease.resourceId.equals(resourceId))
+      .some((lease) =>
+        this.timesOverlap(
+          startTime,
+          endTime,
+          this.localDateTimeFromDate(lease.startTime!),
+          this.localDateTimeFromDate(lease.endTime!)
+        )
+      )
+  }
+
+  timesOverlap(
+    startTime: LocalDateTime,
+    endTime: LocalDateTime,
+    queryStartTime: LocalDateTime,
+    queryEndTime: LocalDateTime
+  ) {
+    return (
+      // Either start time or end time is within the date time range
+      (!queryStartTime.isBefore(startTime) && !queryStartTime.isAfter(endTime)) ||
+      (!queryEndTime.isBefore(startTime) && !queryEndTime.isAfter(endTime)) ||
+      // Or doesn't start during the time, but is still elapsed
+      (queryStartTime.isBefore(startTime) && queryEndTime.isAfter(endTime))
+    )
+  }
+
+  localDateTimeFromDate(date: Date) {
+    return LocalDateTime.from(nativeJs(date))
   }
 
   getDayFromDate(date: Date) {
@@ -229,6 +290,13 @@ export class ScheduleService extends Controller {
       .withMinute(timeFormatted.minute())
       .withSecond(timeFormatted.second())
     return dateTime
+  }
+
+  getResourcesByTag(tagId: Guid) {
+    // @TODO: Make to support multiple
+    this.allResources
+      .filter((resource) => resource.tags.some((tag) => tag.id.equals(tagId)))
+      .sort((a, b) => a.capacity - b.capacity)
   }
 }
 

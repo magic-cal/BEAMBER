@@ -76,8 +76,10 @@ export class Lease extends AmberApiFields {
 }
 
 export class LeaseFilter {
-  LeaseStepIds: Guid[] = []
-  includeDeleted = false
+  LeaseStepIds?: Guid[] = []
+  includeDeleted? = false
+  startTime?: Date
+  endTime?: Date
 }
 
 export interface GantBarConfig {

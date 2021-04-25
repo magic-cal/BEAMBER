@@ -38,6 +38,18 @@ export interface LeaseFilter {
      * @memberof LeaseFilter
      */
     includeDeleted?: boolean;
+    /**
+     * 
+     * @type {Date}
+     * @memberof LeaseFilter
+     */
+    startTime?: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof LeaseFilter
+     */
+    endTime?: Date;
 }
 
 export function LeaseFilterFromJSON(json: any): LeaseFilter {
@@ -52,6 +64,8 @@ export function LeaseFilterFromJSONTyped(json: any, ignoreDiscriminator: boolean
         
         'leaseStepIds': !exists(json, 'LeaseStepIds') ? undefined : ((json['LeaseStepIds'] as Array<any>).map(GuidFromJSON)),
         'includeDeleted': !exists(json, 'includeDeleted') ? undefined : json['includeDeleted'],
+        'startTime': !exists(json, 'startTime') ? undefined : (new Date(json['startTime'])),
+        'endTime': !exists(json, 'endTime') ? undefined : (new Date(json['endTime'])),
     };
 }
 
@@ -66,6 +80,8 @@ export function LeaseFilterToJSON(value?: LeaseFilter | null): any {
         
         'LeaseStepIds': value.leaseStepIds === undefined ? undefined : ((value.leaseStepIds as Array<any>).map(GuidToJSON)),
         'includeDeleted': value.includeDeleted,
+        'startTime': value.startTime === undefined ? undefined : (value.startTime.toISOString()),
+        'endTime': value.endTime === undefined ? undefined : (value.endTime.toISOString()),
     };
 }
 

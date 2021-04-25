@@ -614,6 +614,14 @@
 				"includeDeleted": {
 					"type": "boolean",
 					"default": false
+				},
+				"startTime": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"endTime": {
+					"type": "string",
+					"format": "date-time"
 				}
 			},
 			"type": "object",

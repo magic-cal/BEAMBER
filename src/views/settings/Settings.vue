@@ -6,7 +6,7 @@
           <v-row>
             <v-col
               ><h1>
-                {{ $t("edit_business_hours") }}
+                {{ $t("settings") }}
               </h1>
             </v-col>
           </v-row>
