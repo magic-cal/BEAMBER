@@ -27,6 +27,7 @@ app.listen(app.get("port"), () => {
 app.use((err: unknown, req: Request, res: Response, next: NextFunction): Response | void => {
   if (err instanceof ValidateError) {
     console.warn(`Caught Validation Error for ${req.path}:`, err.fields)
+    res.statusMessage = `Caught Validation Error for ${req.path}: ${err.fields}`
     return res.status(422).json({
       message: "Validation Failed",
       details: err?.fields
@@ -34,6 +35,7 @@ app.use((err: unknown, req: Request, res: Response, next: NextFunction): Respons
   }
   if (err instanceof Error) {
     console.warn("Internal Server Error", err.message, err.stack)
+    res.statusMessage = "Error found: " + err.message
     return res.status(500).json({
       message: "Internal Server Error " + err.message,
       details: err.stack

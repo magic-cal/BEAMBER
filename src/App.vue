@@ -16,6 +16,12 @@
       </v-app-bar>
     </div>
     <navigation-menu v-model="navigationDraw"> </navigation-menu>
+    <v-snackbar v-if="error" vertical :timeout="-1" :value="!!error"
+      >{{ error }}
+      <v-btn text v-bind="attrs" @click="appstore.error = null">
+        Close
+      </v-btn></v-snackbar
+    >
     <transition name="fade" mode="out-in">
       <router-view id="scrolling-techniques" />
     </transition>
@@ -45,6 +51,10 @@ export default class App extends Vue {
 
   get loading(): boolean {
     return appStore.loading
+  }
+
+  get error() {
+    return appStore.error
   }
 }
 </script>

@@ -8,9 +8,11 @@ import {
   AssemblyApi,
   ScheduleApi,
   DataApi,
-  AssemblyStepApi
+  AssemblyStepApi,
+  Configuration
 } from "@/api/index"
 import { BusinessHourApi } from "./apis/BusinessHourApi"
+import { Middleware, ResponseContext } from "./runtime"
 
 class Api {
   assemblyApi: AssemblyApi
@@ -25,17 +27,26 @@ class Api {
   scheduleApi: ScheduleApi
   dataApi: DataApi
   constructor() {
-    this.assemblyApi = new AssemblyApi()
-    this.assemblyStepApi = new AssemblyStepApi()
-    this.leaseApi = new LeaseApi()
-    this.maintenanceLogApi = new MaintenanceLogApi()
-    this.recipeApi = new RecipeApi()
-    this.recipeStepApi = new RecipeStepApi()
-    this.resourceApi = new ResourceApi()
-    this.tagApi = new TagApi()
-    this.businessHourApi = new BusinessHourApi()
-    this.scheduleApi = new ScheduleApi()
-    this.dataApi = new DataApi()
+    const middleware = []
+    middleware.push({
+      post: async (context: ResponseContext) => {
+        console.log("Middleware", context)
+      }
+    })
+    const config = new Configuration({ middleware: middleware })
+    console.log("hiYA", config)
+
+    this.assemblyApi = new AssemblyApi(config)
+    this.assemblyStepApi = new AssemblyStepApi(config)
+    this.leaseApi = new LeaseApi(config)
+    this.maintenanceLogApi = new MaintenanceLogApi(config)
+    this.recipeApi = new RecipeApi(config)
+    this.recipeStepApi = new RecipeStepApi(config)
+    this.resourceApi = new ResourceApi(config)
+    this.tagApi = new TagApi(config)
+    this.businessHourApi = new BusinessHourApi(config)
+    this.scheduleApi = new ScheduleApi(config)
+    this.dataApi = new DataApi(config)
   }
 }
 
