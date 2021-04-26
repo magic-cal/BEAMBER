@@ -7,12 +7,14 @@ import {
   MaintenanceLogApi,
   AssemblyApi,
   ScheduleApi,
-  DataApi
+  DataApi,
+  AssemblyStepApi
 } from "@/api/index"
 import { BusinessHourApi } from "./apis/BusinessHourApi"
 
 class Api {
   assemblyApi: AssemblyApi
+  assemblyStepApi: AssemblyStepApi
   leaseApi: LeaseApi
   maintenanceLogApi: MaintenanceLogApi
   recipeApi: RecipeApi
@@ -24,6 +26,7 @@ class Api {
   dataApi: DataApi
   constructor() {
     this.assemblyApi = new AssemblyApi()
+    this.assemblyStepApi = new AssemblyStepApi()
     this.leaseApi = new LeaseApi()
     this.maintenanceLogApi = new MaintenanceLogApi()
     this.recipeApi = new RecipeApi()

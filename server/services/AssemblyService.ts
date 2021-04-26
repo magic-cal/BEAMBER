@@ -74,7 +74,7 @@ assembly_id ,assembly_name, assembly_description, assembly_complete, assembly_pa
     // LEFT JOIN resource_assemblies ON (assemblies.assembly_id = resource_assemblies.assembly_id)\
     const queryClauses: string[] = []
     if (filter?.assemblyIds?.length) {
-      queryClauses.push(`resource_assemblies.resource_id IN (${filter.resourceIds.map((ri) => `'${ri.value}'`)})`)
+      queryClauses.push(`assemblies.assembly_id IN (${filter.assemblyIds.map((ai) => `'${ai.value}'`)})`)
     }
     query += queryClauses.length ? " WHERE " + queryClauses.join(" AND ") : ";"
     const result = await sqlToDB(query)

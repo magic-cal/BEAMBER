@@ -50,8 +50,12 @@
       :position-x="contextMenu.contextmenuX"
       :position-y="contextMenu.contextmenuY"
     >
-      <v-list>
+      <v-list v-if="contextMenu.bar.lease">
         <v-list-item> {{ $t("lease_name") }}: {{ contextMenu.bar.label }} </v-list-item>
+        <v-list-item v-if="contextMenu.bar.lease.leaseType.key === EnumLeaseType.assemblyStep.key">
+          {{ $t("step") }}: {{ getAssemblyStep(contextMenu.bar.lease.assemblyStepId).sequence + 1 }} -
+          {{ getAssemblyStep(contextMenu.bar.lease.assemblyStepId).description }}
+        </v-list-item>
         <v-list-item> {{ $t("lease_start_time") }}: {{ formatDate(contextMenu.bar.startTime) }} </v-list-item>
         <v-list-item> {{ $t("lease_end_time") }}: {{ formatDate(contextMenu.bar.endTime) }} </v-list-item>
       </v-list>
@@ -69,7 +73,7 @@ import { GGanttChart, GGanttRow } from "vue-ganttastic"
 import Guid from "utils/classes/common/guid"
 import { EnumLeaseType, GantBarConfig, GanttBar, GanttContextMenu, Lease } from "./../../../utils/classes/leases"
 import { Resource } from "utils/classes/resources"
-import { Assembly } from "utils/classes/assemblies"
+import { AssemblyStep, AssemblyStepFilter } from "./../../../utils/classes/assemblySteps"
 
 export interface GanttRow {
   label: string
@@ -85,12 +89,14 @@ export interface GanttRow {
 export default class Schedule extends Vue {
   resources: Resource[] = []
   leases: Lease[] = []
-  assemblies: Assembly[] = []
+  assemblySteps: AssemblyStep[] = []
   myChartStart = new Date(new Date().setHours(0, 0, 0))
   myChartEnd = this.addDays(new Date(new Date().setHours(23, 59, 59)), this.isMobile ? 0 : 4)
   rows: GanttRow[] = []
   currentHour = new Date().getHours()
   contextMenu = new GanttContextMenu()
+
+  EnumLeaseType = EnumLeaseType
 
   @WithLoading
   async mounted() {
@@ -101,10 +107,8 @@ export default class Schedule extends Vue {
   async loadPrerequisites() {
     this.resources = await api.resourceApi.getResourcesByFilter({})
     this.leases = await api.leaseApi.getLeasesByFilter({})
+    this.assemblySteps = await api.assemblyStepApi.getAssemblyStepsByFilter({})
     this.createGanttRows()
-
-    const assemblyIds = [...new Set(this.leases.map((lease) => lease.assemblyStepId).filter(this.isNotNullOrUndefined))]
-    this.assemblies = api.assemblyApi.getAssembliesByFilter({})
   }
 
   createGanttRows() {
@@ -173,7 +177,7 @@ export default class Schedule extends Vue {
   }
 
   formatDate(date: Date | string | number) {
-    return new Date(date).toString()
+    return new Date(date).toLocaleString()
   }
 
   @WithLoading
@@ -189,6 +193,15 @@ export default class Schedule extends Vue {
 
   isNotNullOrUndefined<T>(t: T | undefined | null | void): t is T {
     return t !== undefined && t !== null
+  }
+
+  getAssemblyStep(assemblyStepId: Guid) {
+    console.log(assemblyStepId)
+    const assemblyStep = this.assemblySteps.find((a) => a.id.equals(assemblyStepId))
+    if (!assemblyStep) {
+      throw new Error("Assembly Step Not Found")
+    }
+    return assemblyStep
   }
 
   async back() {

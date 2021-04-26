@@ -34,6 +34,12 @@ export interface AssemblyFilter {
     assemblyStepIds?: Array<Guid>;
     /**
      * 
+     * @type {Array<Guid>}
+     * @memberof AssemblyFilter
+     */
+    assemblyIds?: Array<Guid>;
+    /**
+     * 
      * @type {boolean}
      * @memberof AssemblyFilter
      */
@@ -50,7 +56,8 @@ export function AssemblyFilterFromJSONTyped(json: any, ignoreDiscriminator: bool
     }
     return {
         
-        'assemblyStepIds': !exists(json, 'AssemblyStepIds') ? undefined : ((json['AssemblyStepIds'] as Array<any>).map(GuidFromJSON)),
+        'assemblyStepIds': !exists(json, 'assemblyStepIds') ? undefined : ((json['assemblyStepIds'] as Array<any>).map(GuidFromJSON)),
+        'assemblyIds': !exists(json, 'assemblyIds') ? undefined : ((json['assemblyIds'] as Array<any>).map(GuidFromJSON)),
         'includeDeleted': !exists(json, 'includeDeleted') ? undefined : json['includeDeleted'],
     };
 }
@@ -64,7 +71,8 @@ export function AssemblyFilterToJSON(value?: AssemblyFilter | null): any {
     }
     return {
         
-        'AssemblyStepIds': value.assemblyStepIds === undefined ? undefined : ((value.assemblyStepIds as Array<any>).map(GuidToJSON)),
+        'assemblyStepIds': value.assemblyStepIds === undefined ? undefined : ((value.assemblyStepIds as Array<any>).map(GuidToJSON)),
+        'assemblyIds': value.assemblyIds === undefined ? undefined : ((value.assemblyIds as Array<any>).map(GuidToJSON)),
         'includeDeleted': value.includeDeleted,
     };
 }

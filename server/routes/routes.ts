@@ -136,7 +136,8 @@ const models: TsoaRoute.Models = {
     "AssemblyFilter": {
         "dataType": "refObject",
         "properties": {
-            "AssemblyStepIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
+            "assemblyStepIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
+            "assemblyIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
             "includeDeleted": {"dataType":"boolean","default":false},
         },
         "additionalProperties": false,

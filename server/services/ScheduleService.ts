@@ -108,6 +108,7 @@ export class ScheduleService extends Controller {
       new Date(currentTime.plusMinutes(assemblyStep.duration).toString()),
       resourceId
     )
+    lease.assemblyStepId = assemblyStep.id
     await this.leaseService.updateOrCreateLease(lease)
     this.allLeases.push(lease)
   }

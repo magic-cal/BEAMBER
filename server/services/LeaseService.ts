@@ -22,10 +22,12 @@ export class LeaseController extends Controller {
     lease.startTime = new Date(leaseRow.lease_start_time)
     lease.endTime = new Date(leaseRow.lease_end_time)
     lease.resourceId = Guid.fromString(leaseRow.lease_resource_id)
-    lease.maintenanceId = leaseRow.lease_maintenance_id
+    lease.maintenanceId = leaseRow.lease_maintenance_id ? Guid.fromString(leaseRow.lease_maintenance_id) : undefined
     lease.assemblyStepId = leaseRow.lease_assembly_step_id
-    lease.packagingId = leaseRow.lease_packaging_id
-    lease.productId = leaseRow.lease_product_id
+      ? Guid.fromString(leaseRow.lease_assembly_step_id)
+      : undefined
+    lease.packagingId = leaseRow.lease_packaging_id ? Guid.fromString(leaseRow.lease_packaging_id) : undefined
+    lease.productId = leaseRow.lease_product_id ? Guid.fromString(leaseRow.lease_product_id) : undefined
     lease.leaseType = EnumLeaseType.none
     if (lease.packagingId) {
       lease.leaseType = EnumLeaseType.packaging
@@ -51,10 +53,10 @@ lease_id, lease_name, lease_resource_id, lease_end_time, lease_start_time, lease
         lease.resourceId?.value,
         lease.endTime.toISOString(),
         lease.startTime.toISOString(),
-        undefined, //lease.maintenanceId?.value,
-        undefined, //lease.assemblyStepId?.value,
-        undefined, //lease.packagingId?.value,
-        undefined, //lease.productId?.value,
+        lease.maintenanceId?.value,
+        lease.assemblyStepId?.value,
+        lease.packagingId?.value,
+        lease.productId?.value,
         ...extractBaseFields(lease)
       ]
     )
@@ -109,10 +111,10 @@ lease_id, lease_name, lease_resource_id, lease_end_time, lease_start_time, lease
         lease.resourceId?.value,
         lease.endTime.toISOString(),
         lease.startTime.toISOString(),
-        undefined, //lease.maintenanceId?.value,
-        undefined, //lease.assemblyStepId?.value,
-        undefined, //lease.packagingId?.value,
-        undefined, //lease.productId?.value,
+        lease.maintenanceId?.value,
+        lease.assemblyStepId?.value,
+        lease.packagingId?.value,
+        lease.productId?.value,
         ...extractBaseFields(lease)
       ]
     )
