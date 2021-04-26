@@ -73,7 +73,7 @@ import { GGanttChart, GGanttRow } from "vue-ganttastic"
 import Guid from "utils/classes/common/guid"
 import { EnumLeaseType, GantBarConfig, GanttBar, GanttContextMenu, Lease } from "./../../../utils/classes/leases"
 import { Resource } from "utils/classes/resources"
-import { AssemblyStep, AssemblyStepFilter } from "./../../../utils/classes/assemblySteps"
+import { AssemblyStep } from "./../../../utils/classes/assemblySteps"
 
 export interface GanttRow {
   label: string
@@ -97,6 +97,28 @@ export default class Schedule extends Vue {
   contextMenu = new GanttContextMenu()
 
   EnumLeaseType = EnumLeaseType
+  leaseAssemblyIds: Guid[] = []
+
+  colorArray = [
+    "#2fad3e",
+    "#FF0000",
+    "#0000FF",
+    "#6666FF",
+    "#00B3E6",
+    "#3366E6",
+    "#6680B3",
+    "#33FFCC",
+    "#66664D",
+    "#4DB3FF",
+    "#1AB399",
+    "#33991A",
+    "#00E680",
+    "#4D8066",
+    "#1AFF33",
+    "#4D80CC",
+    "#4DB380",
+    "#6666FF"
+  ]
 
   @WithLoading
   async mounted() {
@@ -146,6 +168,16 @@ export default class Schedule extends Vue {
   leaseToGanttConfig(lease: Lease) {
     const config: GantBarConfig = {}
     let colour = "#2fad3e"
+
+    if (lease.assemblyStepId) {
+      const assemblyId = this.getAssemblyStep(lease.assemblyStepId).assemblyId
+      let assemblyIndex = this.leaseAssemblyIds.findIndex((lai) => lai.equals(assemblyId))
+      if (assemblyIndex == -1) {
+        this.leaseAssemblyIds.push(assemblyId)
+        assemblyIndex = this.leaseAssemblyIds.length - 1
+      }
+      colour = this.colorArray[assemblyIndex]
+    }
     console.log("NONE", lease.leaseType)
 
     switch (lease.leaseType) {

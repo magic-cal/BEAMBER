@@ -7,9 +7,6 @@ import { QueryResultRow } from "pg"
 import { extractBaseFields } from "../util/baseDataUtil"
 
 export async function updateTagRelation(tags: Tag[], resourceId: Guid) {
-  // const insertionValues = tags.map(tag => (tag.id.value, resourceId.value))
-  const insertionValues: string[] = []
-
   await sqlToDB("DELETE FROM resource_tags WHERE resource_id = $1", [resourceId.value])
   //@TODO: Update Inserts into Tags
   await tags.forEach(

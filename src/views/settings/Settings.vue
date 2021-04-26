@@ -81,16 +81,18 @@
                             :label="$t('start_time')"
                             v-model="wbh.startTime"
                             :disabled="wbh.id !== editingId"
-                            :rules="[$ruleSet.required(), $ruleSet.dateBeforeOrEqual(wbh.endTime, $t('end_time'))]"
+                            :rules="[$ruleSet.required()]"
                           />
+                          <!--  $ruleSet.dateBeforeOrEqual(wbh.endTime, $t('end_time')) -->
                         </v-col>
                         <v-col :cols="12" :sm="4">
                           <a-timestamp
                             :label="$t('end_time')"
                             v-model="wbh.endTime"
                             :disabled="wbh.id !== editingId"
-                            :rules="[$ruleSet.required(), $ruleSet.dateAfterOrEqual(wbh.startTime, $t('start_time'))]"
+                            :rules="[$ruleSet.required()]"
                           />
+                          <!-- , $ruleSet.dateAfterOrEqual(wbh.startTime, $t('start_time')) -->
                         </v-col>
                         <v-col :cols="12" :sm="2">
                           <v-switch

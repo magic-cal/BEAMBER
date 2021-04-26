@@ -93,15 +93,13 @@ export class ScheduleService extends Controller {
   }
 
   async addLeaseForAsseblyStep(assemblyStep: AssemblyStep, currentTime = LocalDateTime.now()) {
-    // @TODO: Temp Function
     const leaseId = Guid.create()
-    // @TODO: Remove string - Get from Tags
     let resourceId: Guid
     if (assemblyStep.resourceId?.equals(Guid.createEmpty()) || !assemblyStep.resourceId) {
       const resourceIds = this.getResourcesByTag(assemblyStep.tagId)
       resourceId = await this.findResourceTimeSlot(resourceIds, currentTime, assemblyStep.duration)
     } else {
-      resourceId = assemblyStep.resourceId
+      resourceId = await this.findResourceTimeSlot([assemblyStep.resourceId], currentTime, assemblyStep.duration)
     }
 
     const lease = new Lease(
@@ -178,8 +176,19 @@ export class ScheduleService extends Controller {
 
     if (resourceAvailableNow) {
       return resourceAvailableNow
+    } else {
+      // @TODO: Inneficent -- Find a better way without duplication
+      const resourcesNextAvailable = resourceIds.sort((a, b) =>
+        // Sort the next available resource points into order
+        this.getResourceNextAvailable(a, startTime, duration, resourceLeases).compareTo(
+          this.getResourceNextAvailable(b, startTime, duration, resourceLeases)
+        )
+      )
+
+      if (resourcesNextAvailable.length) {
+        return resourcesNextAvailable[0]
+      }
     }
-    // @TODO: Search for shortest time away
 
     throw new Error("Resource Required reschedule")
   }
@@ -201,6 +210,37 @@ export class ScheduleService extends Controller {
           this.localDateTimeFromDate(lease.endTime!)
         )
       )
+  }
+
+  getResourceNextAvailable(
+    resourceId: Guid,
+    startTime: LocalDateTime,
+    duration: number,
+    leases: Lease[] = this.allLeases
+  ) {
+    const nextAvailableTime: LocalDateTime | null = null
+
+    leases = leases.filter(
+      // Get all the leases for the current resource and after the alloted start time
+      (lease) => lease.resourceId.equals(resourceId) && !this.localDateTimeFromDate(lease.endTime!).isBefore(startTime)
+    )
+
+    const firstLeaseTime = leases
+      // Find the first (soonest) time that the resource is available for
+      .sort((a, b) => a.endTime!.getTime() - b.endTime!.getTime())
+      .find((lease) =>
+        this.isResourceAvailable(
+          resourceId,
+          this.localDateTimeFromDate(lease.endTime!),
+          this.localDateTimeFromDate(lease.endTime!).plusMinutes(duration + this.BUFFER_TIME),
+          leases
+        )
+      )
+    // @TODO: Possible Issue with working hours
+    if (!firstLeaseTime) {
+      throw new Error("Could not find a suitable time the resource is available")
+    }
+    return this.localDateTimeFromDate(firstLeaseTime.endTime!)
   }
 
   timesOverlap(
