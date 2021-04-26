@@ -170,6 +170,7 @@ export default class Schedule extends Vue {
     let colour = "#2fad3e"
 
     if (lease.assemblyStepId) {
+      // Assign a different colour to each of the assemblies
       const assemblyId = this.getAssemblyStep(lease.assemblyStepId).assemblyId
       let assemblyIndex = this.leaseAssemblyIds.findIndex((lai) => lai.equals(assemblyId))
       if (assemblyIndex == -1) {
@@ -180,15 +181,15 @@ export default class Schedule extends Vue {
     }
     console.log("NONE", lease.leaseType)
 
-    switch (lease.leaseType) {
-      case EnumLeaseType.none:
-        colour = "#FF0000"
-        console.log("NONE")
-        break
-      case EnumLeaseType.assemblyStep:
-        colour = "#0000FF"
-        break
-    }
+    // switch (lease.leaseType) {
+    //   case EnumLeaseType.none:
+    //     colour = "#FF0000"
+    //     console.log("NONE")
+    //     break
+    //   case EnumLeaseType.assemblyStep:
+    //     colour = "#0000FF"
+    //     break
+    // }
     config.background = colour
     config.color = "#ffff"
     config.opacity = 0.9
@@ -218,7 +219,6 @@ export default class Schedule extends Vue {
       row.bars.map((bar) => api.leaseApi.updateOrCreateLease({ lease: bar.toLease() }))
     )
 
-    console.log(leases, "leases")
     await Promise.all(leases)
     await this.loadPrerequisites()
   }

@@ -21,12 +21,17 @@ interface AssembliesAndSteps {
   steps: AssemblyStep[]
 }
 
+interface ResourceAvailability {
+  resourceId: Guid
+  startTime: LocalDateTime
+}
+
 @Tags("Schedule")
 @Route("Schedule")
 export class ScheduleService extends Controller {
   // Class Variables
-  MAX_DEPTH = 20
-  BUFFER_TIME = 5
+  MAX_DEPTH = 20 // Max Levels of Recursion to use for the
+  BUFFER_TIME = 5 // Number of minutes to wait between processes
   MAX_BUSINESS_HOURS_DAYS = 7 // Number of days that the search will look for the next open day
   allLeases: Lease[] = []
   allBusinessHours: BusinessHour[] = []
@@ -67,12 +72,12 @@ export class ScheduleService extends Controller {
     this.allLeases = await this.leaseService.getLeasesByFilter()
     this.allResources = await this.resourceService.getResourcesByFilter()
 
-    this.dailyBusinessHours = this.allBusinessHours.filter(
-      (bh) => bh.day.key !== EnumDay.none.key && bh.startTime && bh.endTime
-    ) // Filter out null dates
-    this.holidayBusinessHours = this.allBusinessHours.filter(
-      (bh) => bh.day.key === EnumDay.none.key && bh.startTime && bh.endTime
-    ) // Filter out null dates
+    // Filter out null dates
+    this.dailyBusinessHours = this.allBusinessHours.filter((bh) => bh.startTime && bh.endTime)
+
+    // Filter either holiday or business hours
+    this.dailyBusinessHours = this.allBusinessHours.filter((bh) => bh.day.key !== EnumDay.none.key)
+    this.holidayBusinessHours = this.allBusinessHours.filter((bh) => bh.day.key === EnumDay.none.key)
 
     let assembliesAndSteps = { assemblies: [], steps: [] } as AssembliesAndSteps
 
@@ -92,15 +97,21 @@ export class ScheduleService extends Controller {
     )
   }
 
-  async addLeaseForAsseblyStep(assemblyStep: AssemblyStep, currentTime = LocalDateTime.now()) {
+  async addLeaseForAsseblyStep(assemblyStep: AssemblyStep, currentTime: LocalDateTime) {
     const leaseId = Guid.create()
-    let resourceId: Guid
+    let resourceAvailability: ResourceAvailability
     if (assemblyStep.resourceId?.equals(Guid.createEmpty()) || !assemblyStep.resourceId) {
       const resourceIds = this.getResourcesByTag(assemblyStep.tagId)
-      resourceId = await this.findResourceTimeSlot(resourceIds, currentTime, assemblyStep.duration)
+      resourceAvailability = await this.findResourceTimeSlot(resourceIds, currentTime, assemblyStep.duration)
     } else {
-      resourceId = await this.findResourceTimeSlot([assemblyStep.resourceId], currentTime, assemblyStep.duration)
+      resourceAvailability = await this.findResourceTimeSlot(
+        [assemblyStep.resourceId],
+        currentTime,
+        assemblyStep.duration
+      )
     }
+
+    currentTime = resourceAvailability.startTime
 
     const lease = new Lease(
       leaseId,
@@ -108,7 +119,7 @@ export class ScheduleService extends Controller {
       EnumLeaseType.assemblyStep,
       new Date(currentTime.toString()),
       new Date(currentTime.plusMinutes(assemblyStep.duration).toString()),
-      resourceId
+      resourceAvailability.resourceId
     )
     lease.assemblyStepId = assemblyStep.id
     await this.leaseService.updateOrCreateLease(lease)
@@ -126,7 +137,7 @@ export class ScheduleService extends Controller {
     parentId = parentId ? parentId : assembly.id
 
     assembliesAndSteps.assemblies.push(assembly)
-    assembliesAndSteps = await this.createAssemblySteps(assembly, assembliesAndSteps, parentId)
+    assembliesAndSteps = await this.createAssemblySteps(assembly, assembliesAndSteps, parentId, recursiondepth)
 
     return assembliesAndSteps
   }
@@ -161,7 +172,7 @@ export class ScheduleService extends Controller {
     return assembliesAndSteps
   }
 
-  async findResourceTimeSlot(resourceIds: Guid[], startTime: LocalDateTime, duration: number) {
+  findResourceTimeSlot(resourceIds: Guid[], startTime: LocalDateTime, duration: number): ResourceAvailability {
     const endTime = startTime.plusMinutes(duration)
     // Finds the time slot for the soonest available and then by capacity
     const resourceLeases = this.allLeases.filter((lease) =>
@@ -175,15 +186,18 @@ export class ScheduleService extends Controller {
     )
 
     if (resourceAvailableNow) {
-      return resourceAvailableNow
+      return { resourceId: resourceAvailableNow, startTime: startTime }
     } else {
       // @TODO: Inneficent -- Find a better way without duplication
-      const resourcesNextAvailable = resourceIds.sort((a, b) =>
-        // Sort the next available resource points into order
-        this.getResourceNextAvailable(a, startTime, duration, resourceLeases).compareTo(
-          this.getResourceNextAvailable(b, startTime, duration, resourceLeases)
+      const resourcesNextAvailable = resourceIds
+        .map((rid) => ({
+          resourceId: rid,
+          startTime: this.getResourceNextAvailable(rid, startTime, duration, resourceLeases)
+        }))
+        .sort((a, b) =>
+          // Sort the next available resource points into order
+          a.startTime.compareTo(b.startTime)
         )
-      )
 
       if (resourcesNextAvailable.length) {
         return resourcesNextAvailable[0]
@@ -218,8 +232,6 @@ export class ScheduleService extends Controller {
     duration: number,
     leases: Lease[] = this.allLeases
   ) {
-    const nextAvailableTime: LocalDateTime | null = null
-
     leases = leases.filter(
       // Get all the leases for the current resource and after the alloted start time
       (lease) => lease.resourceId.equals(resourceId) && !this.localDateTimeFromDate(lease.endTime!).isBefore(startTime)
@@ -231,7 +243,7 @@ export class ScheduleService extends Controller {
       .find((lease) =>
         this.isResourceAvailable(
           resourceId,
-          this.localDateTimeFromDate(lease.endTime!),
+          this.localDateTimeFromDate(lease.endTime!).plusMinutes(this.BUFFER_TIME),
           this.localDateTimeFromDate(lease.endTime!).plusMinutes(duration + this.BUFFER_TIME),
           leases
         )
@@ -240,7 +252,7 @@ export class ScheduleService extends Controller {
     if (!firstLeaseTime) {
       throw new Error("Could not find a suitable time the resource is available")
     }
-    return this.localDateTimeFromDate(firstLeaseTime.endTime!)
+    return this.localDateTimeFromDate(firstLeaseTime.endTime!).plusMinutes(this.BUFFER_TIME)
   }
 
   timesOverlap(
@@ -249,13 +261,13 @@ export class ScheduleService extends Controller {
     queryStartTime: LocalDateTime,
     queryEndTime: LocalDateTime
   ) {
-    return (
+    const isOverlapping =
       // Either start time or end time is within the date time range
       (!queryStartTime.isBefore(startTime) && !queryStartTime.isAfter(endTime)) ||
       (!queryEndTime.isBefore(startTime) && !queryEndTime.isAfter(endTime)) ||
       // Or doesn't start during the time, but is still elapsed
       (queryStartTime.isBefore(startTime) && queryEndTime.isAfter(endTime))
-    )
+    return isOverlapping
   }
 
   localDateTimeFromDate(date: Date) {
