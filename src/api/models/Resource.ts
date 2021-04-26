@@ -75,7 +75,7 @@ export interface Resource {
      * @type {Guid}
      * @memberof Resource
      */
-    currentStep: Guid;
+    currentLease?: Guid;
     /**
      * 
      * @type {boolean}
@@ -106,7 +106,7 @@ export function ResourceFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
         'readOnly': ResourceReadonlyFromJSON(json['readOnly']),
         'capacity': json['capacity'],
-        'currentStep': GuidFromJSON(json['currentStep']),
+        'currentLease': !exists(json, 'currentLease') ? undefined : GuidFromJSON(json['currentLease']),
         'maintananceRequired': json['maintananceRequired'],
         'active': json['active'],
     };
@@ -127,7 +127,7 @@ export function ResourceToJSON(value?: Resource | null): any {
         'tags': ((value.tags as Array<any>).map(TagToJSON)),
         'readOnly': ResourceReadonlyToJSON(value.readOnly),
         'capacity': value.capacity,
-        'currentStep': GuidToJSON(value.currentStep),
+        'currentLease': GuidToJSON(value.currentLease),
         'maintananceRequired': value.maintananceRequired,
         'active': value.active,
     };

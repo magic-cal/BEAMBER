@@ -325,7 +325,7 @@ const models: TsoaRoute.Models = {
             "tags": {"dataType":"array","array":{"ref":"Tag"},"required":true},
             "readOnly": {"ref":"ResourceReadonly","required":true},
             "capacity": {"dataType":"double","required":true},
-            "currentStep": {"ref":"Guid","required":true},
+            "currentLease": {"ref":"Guid"},
             "maintananceRequired": {"dataType":"boolean","required":true},
             "active": {"dataType":"boolean","required":true},
         },

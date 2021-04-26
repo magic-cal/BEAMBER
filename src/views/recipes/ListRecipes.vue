@@ -41,12 +41,7 @@
                     ></v-select>
                   </v-col>
                   <v-col :cols="12">
-                    <a-timestamp
-                      :label="$t('start_time')"
-                      v-model="recipeSchedule.startTime"
-                      clearable
-                      :rules="[$ruleSet.dateAfterOrEqual(new Date())]"
-                    />
+                    <a-timestamp :label="$t('start_time')" v-model="recipeSchedule.startTime" clearable />
                   </v-col>
                 </v-row>
               </v-card-text>
