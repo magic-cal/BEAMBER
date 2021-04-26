@@ -96,10 +96,14 @@ export class ScheduleService extends Controller {
     // @TODO: Temp Function
     const leaseId = Guid.create()
     // @TODO: Remove string - Get from Tags
-    const resourceId =
-      assemblyStep.resourceId?.equals(Guid.createEmpty()) || !assemblyStep.resourceId
-        ? Guid.fromString("cb5e6f94-2249-47e5-a398-263b80e32307")
-        : assemblyStep.resourceId
+    let resourceId: Guid
+    if (assemblyStep.resourceId?.equals(Guid.createEmpty()) || !assemblyStep.resourceId) {
+      const resourceIds = this.getResourcesByTag(assemblyStep.tagId)
+      resourceId = await this.findResourceTimeSlot(resourceIds, currentTime, assemblyStep.duration)
+    } else {
+      resourceId = assemblyStep.resourceId
+    }
+
     const lease = new Lease(
       leaseId,
       assemblyStep.name,
@@ -293,11 +297,15 @@ export class ScheduleService extends Controller {
     return dateTime
   }
 
-  getResourcesByTag(tagId: Guid) {
+  getResourcesByTag(tagId?: Guid) {
     // @TODO: Make to support multiple
-    this.allResources
+    if (!tagId || tagId.equals(Guid.createEmpty())) {
+      return []
+    }
+    return this.allResources
       .filter((resource) => resource.tags.some((tag) => tag.id.equals(tagId)))
       .sort((a, b) => a.capacity - b.capacity)
+      .map((resource) => resource.id)
   }
 }
 
