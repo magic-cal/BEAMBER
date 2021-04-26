@@ -39,6 +39,7 @@ export class Assembly extends AmberApiFields {
 }
 
 export class AssemblyFilter {
-  AssemblyStepIds: Guid[] = []
+  assemblyStepIds: Guid[] = []
+  assemblyIds: Guid[] = []
   includeDeleted = false
 }

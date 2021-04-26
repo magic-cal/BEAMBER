@@ -69,6 +69,7 @@ import { GGanttChart, GGanttRow } from "vue-ganttastic"
 import Guid from "utils/classes/common/guid"
 import { EnumLeaseType, GantBarConfig, GanttBar, GanttContextMenu, Lease } from "./../../../utils/classes/leases"
 import { Resource } from "utils/classes/resources"
+import { Assembly } from "utils/classes/assemblies"
 
 export interface GanttRow {
   label: string
@@ -84,6 +85,7 @@ export interface GanttRow {
 export default class Schedule extends Vue {
   resources: Resource[] = []
   leases: Lease[] = []
+  assemblies: Assembly[] = []
   myChartStart = new Date(new Date().setHours(0, 0, 0))
   myChartEnd = this.addDays(new Date(new Date().setHours(23, 59, 59)), this.isMobile ? 0 : 4)
   rows: GanttRow[] = []
@@ -100,6 +102,9 @@ export default class Schedule extends Vue {
     this.resources = await api.resourceApi.getResourcesByFilter({})
     this.leases = await api.leaseApi.getLeasesByFilter({})
     this.createGanttRows()
+
+    const assemblyIds = [...new Set(this.leases.map((lease) => lease.assemblyStepId).filter(this.isNotNullOrUndefined))]
+    this.assemblies = api.assemblyApi.getAssembliesByFilter({})
   }
 
   createGanttRows() {
@@ -180,6 +185,10 @@ export default class Schedule extends Vue {
     console.log(leases, "leases")
     await Promise.all(leases)
     await this.loadPrerequisites()
+  }
+
+  isNotNullOrUndefined<T>(t: T | undefined | null | void): t is T {
+    return t !== undefined && t !== null
   }
 
   async back() {

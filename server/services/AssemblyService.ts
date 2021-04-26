@@ -73,9 +73,9 @@ assembly_id ,assembly_name, assembly_description, assembly_complete, assembly_pa
     "
     // LEFT JOIN resource_assemblies ON (assemblies.assembly_id = resource_assemblies.assembly_id)\
     const queryClauses: string[] = []
-    // if (filter.resourceIds?.length) {
-    //   queryClauses.push(`resource_assemblies.resource_id IN (${filter.resourceIds.map(ri => `'${ri.value}'`)})`)
-    // }
+    if (filter?.assemblyIds?.length) {
+      queryClauses.push(`resource_assemblies.resource_id IN (${filter.resourceIds.map((ri) => `'${ri.value}'`)})`)
+    }
     query += queryClauses.length ? " WHERE " + queryClauses.join(" AND ") : ";"
     const result = await sqlToDB(query)
     return result.rows.map((assemblyResult) => this.dbToAssembly(assemblyResult))

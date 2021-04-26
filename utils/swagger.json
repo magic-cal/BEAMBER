@@ -330,7 +330,14 @@
 		},
 		"AssemblyFilter": {
 			"properties": {
-				"AssemblyStepIds": {
+				"assemblyStepIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"assemblyIds": {
 					"items": {
 						"$ref": "#/definitions/Guid"
 					},
