@@ -14,7 +14,7 @@ A resource scheduling system for breweries and distilleries
 
 - Generation of types requires JAVA installed. Latest versions stored in Source Control
 
-## Tecnical
+## Technical
 
 Built with :
 
