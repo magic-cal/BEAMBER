@@ -2,7 +2,7 @@ import { sqlToDB } from "../util/PgDatabase"
 import { Assembly, AssemblyFilter } from "../../utils/classes/assemblies"
 import Guid from "../../utils/classes/common/guid"
 import { QueryResultRow } from "pg"
-import { Body, Controller, Delete, Post, Put, Route, Tags } from "tsoa"
+import { Body, Controller, Delete, Post, Put, Route, Tags, Response } from "tsoa"
 import { extractBaseFields, genBaseFields, updateBaseFields, validateBaseFields } from "../util/baseDataUtil"
 import { RecipeController } from "./RecipeService"
 import { RecipeStepController } from "./RecipeStepService"
@@ -86,7 +86,7 @@ assembly_id ,assembly_name, assembly_description, assembly_complete, assembly_pa
     const result = await sqlToDB("DELETE FROM assemblies WHERE assembly_id = $1", [assemblyId.value])
     return !!result.rowCount
   }
-
+  @Response(412, "Update failed, data has been changed by another process")
   @Put("update")
   async updateOrCreateAssembly(@Body() assembly: Assembly) {
     if (assembly.id.value === Guid.createEmpty().value || !(await this.getAssembly(assembly.id))) {

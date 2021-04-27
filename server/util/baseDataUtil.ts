@@ -11,7 +11,7 @@ export async function validateBaseFields<T extends AmberApiFields>(data: T, quer
   const result = await sqlToDB(query, queryParams)
   // Check that the version number is the most up to date version
   if (data.versionNo !== result.rows[0]?.version_no) {
-    return false
+    throw new Error("Update failed, data has been changed by another process")
   } else {
     return true
   }

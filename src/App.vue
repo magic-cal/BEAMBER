@@ -16,12 +16,14 @@
       </v-app-bar>
     </div>
     <navigation-menu v-model="navigationDraw"> </navigation-menu>
-    <v-snackbar v-if="error" vertical :timeout="-1" :value="!!error"
-      >{{ error }}
-      <v-btn text v-bind="attrs" @click="appstore.error = null">
-        Close
-      </v-btn></v-snackbar
-    >
+    <v-snackbar v-if="error" :timeout="-1" :value="!!error">
+      {{ error }}
+      <template #action>
+        <v-btn text v-bind="attrs" @click="appstore.error = null">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
     <transition name="fade" mode="out-in">
       <router-view id="scrolling-techniques" />
     </transition>

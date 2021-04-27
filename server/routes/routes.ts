@@ -344,7 +344,7 @@ const models: TsoaRoute.Models = {
     "RecipeSchedule": {
         "dataType": "refObject",
         "properties": {
-            "recipeIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
+            "recipeIds": {"dataType":"array","array":{"ref":"Guid"},"default":[],"validators":{"minItems":{"errorMsg":"At least one recipe is required","value":1}}},
             "startTime": {"dataType":"datetime"},
         },
         "additionalProperties": false,

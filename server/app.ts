@@ -25,6 +25,8 @@ app.listen(app.get("port"), () => {
 })
 
 app.use((err: unknown, req: Request, res: Response, next: NextFunction): Response | void => {
+  console.log({ err })
+  console.log({ res })
   if (err instanceof ValidateError) {
     console.warn(`Caught Validation Error for ${req.path}:`, err.fields)
     res.statusMessage = `Caught Validation Error for ${req.path}: ${err.fields}`

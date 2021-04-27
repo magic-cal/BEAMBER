@@ -57,6 +57,7 @@ export class RecipeFilter {
 }
 
 export class RecipeSchedule {
+  /** @minItems 1 At least one recipe is required */
   recipeIds: Guid[] = []
   startTime?: Date
   contstructor(recipeIds = []) {

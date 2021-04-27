@@ -1,7 +1,7 @@
 import { sqlToDB } from "../util/PgDatabase"
 import Guid from "../../utils/classes/common/guid"
 import { QueryResultRow } from "pg"
-import { Body, Controller, Delete, Post, Put, Route, Tags } from "tsoa"
+import { Body, Controller, Delete, Post, Put, Route, Tags, Response } from "tsoa"
 import { extractBaseFields, genBaseFields, updateBaseFields, validateBaseFields } from "../util/baseDataUtil"
 import { BusinessHour, BusinessHourFilter, EnumDay } from "../../utils/classes/businessHours"
 
@@ -71,7 +71,7 @@ business_hour_id, business_hour_tag_id, business_hour_day, business_hour_start_t
     const result = await sqlToDB("DELETE FROM business_hours WHERE business_hour_id = $1", [businessHourId.value])
     return !!result.rowCount
   }
-
+  @Response(412, "Update failed, data has been changed by another process")
   @Put("update")
   async updateOrCreateBusinessHour(@Body() businessHour: BusinessHour) {
     if (businessHour.id.value === Guid.createEmpty().value || !(await this.getBusinessHour(businessHour.id))) {

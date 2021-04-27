@@ -2,7 +2,7 @@ import { sqlToDB } from "../util/PgDatabase"
 import { EnumLeaseType, Lease, LeaseFilter } from "../../utils/classes/leases"
 import Guid from "../../utils/classes/common/guid"
 import { QueryResultRow } from "pg"
-import { Body, Controller, Delete, Post, Put, Route, Tags } from "tsoa"
+import { Body, Controller, Delete, Post, Put, Route, Tags, Response } from "tsoa"
 import { extractBaseFields, genBaseFields, updateBaseFields, validateBaseFields } from "../util/baseDataUtil"
 import { RecipeController } from "./RecipeService"
 
@@ -93,6 +93,7 @@ lease_id, lease_name, lease_resource_id, lease_end_time, lease_start_time, lease
     return !!result.rowCount
   }
 
+  @Response(412, "Update failed, data has been changed by another process")
   @Put("update")
   async updateOrCreateLease(@Body() lease: Lease) {
     if (lease.id.value === Guid.createEmpty().value || !(await this.getLease(lease.id))) {
