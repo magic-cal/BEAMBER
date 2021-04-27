@@ -4,11 +4,9 @@ import Guid from "../../utils/classes/common/guid"
 import { TagController } from "./TagService"
 import { Body, Controller, Delete, Post, Put, Route, Tags } from "tsoa"
 import { QueryResultRow } from "pg"
+import { extractBaseFields } from "../util/baseDataUtil"
 
 export async function updateTagRelation(tags: Tag[], resourceId: Guid) {
-  // const insertionValues = tags.map(tag => (tag.id.value, resourceId.value))
-  const insertionValues: string[] = []
-
   await sqlToDB("DELETE FROM resource_tags WHERE resource_id = $1", [resourceId.value])
   //@TODO: Update Inserts into Tags
   await tags.forEach(
@@ -32,18 +30,30 @@ export class ResourceController extends Controller {
     resource.name = resourceResultRow.resource_name
     resource.tags = []
     resource.readOnly = new ResourceReadonly()
-    resource.capacity = 0
-    resource.currentStep = Guid.createEmpty()
-    resource.maintananceRequired = false
-    resource.active = true
-    // console.log("resourceResultRow", resourceResultRow)
-    // console.log("Res", resource)
+    resource.capacity = resourceResultRow.resource_capacity
+    resource.currentLease = resourceResultRow.resource_current_lease
+    resource.maintananceRequired = resourceResultRow.resource_maintanance_required
+    resource.active = resourceResultRow.resource_is_active
 
     return resource
   }
 
   public async addResource(resource: Resource) {
-    return await sqlToDB("INSERT INTO resources (resource_name) VALUES ($1)", [resource.name])
+    if (resource.id.value === Guid.createEmpty().value) {
+      resource.id = Guid.create()
+    }
+    return await sqlToDB(
+      "INSERT INTO resources (resource_id, resource_name, resource_capacity, resource_current_lease, resource_maintanance_required, resource_is_active, version_no) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+      [
+        resource.id.value,
+        resource.name,
+        resource.capacity,
+        resource.currentLease,
+        resource.maintananceRequired,
+        resource.active,
+        ...extractBaseFields(resource)
+      ]
+    )
   }
 
   @Post("get")
@@ -57,15 +67,9 @@ export class ResourceController extends Controller {
       return newResource
     })[0]
   }
+
   @Post("get-by")
   public async getResourcesByFilter(@Body() filter?: ResourceFilter) {
-    // const result = await sqlToDB("SELECT * FROM resources")
-    // const resources = result.rows.map(resourceResult => {
-    //   const newResource = new Resource()
-    //   newResource.fromQueryResultRow(resourceResult)
-    //   return newResource
-    // })
-    //
     let query =
       "SELECT DISTINCT ON (resources.resource_id) resources.* FROM resources LEFT JOIN resource_tags ON (resources.resource_id = resource_tags.resource_id)"
     const queryClauses: string[] = []
@@ -102,10 +106,18 @@ export class ResourceController extends Controller {
   public async updateOrCreateResource(@Body() resource: Resource) {
     let result = null
     if (resource.id.value !== Guid.createEmpty().value || (await this.getResource(resource.id))) {
-      result = await sqlToDB("UPDATE resources SET resource_name = $1 WHERE resource_id = $2;", [
-        resource.name,
-        resource.id.value
-      ])
+      result = await sqlToDB(
+        "UPDATE resources SET resource_name = $2, resource_capacity = $3, resource_current_lease = $4, resource_maintanance_required = $5, resource_is_active = $6, version_no = $7 WHERE resource_id = $1;",
+        [
+          resource.id.value,
+          resource.name,
+          resource.capacity,
+          resource.currentLease,
+          resource.maintananceRequired,
+          resource.active,
+          ...extractBaseFields(resource)
+        ]
+      )
     } else {
       result = await this.addResource(resource)
     }
@@ -114,9 +126,10 @@ export class ResourceController extends Controller {
   }
 }
 
-// public async Update(Id, Resource){
-
-// }
-// public async Delete(Id){
-
-// }
+// resource_id = $1,
+// resource_name = $2,
+// resource_capacity = $3,
+// resource_current_lease = $4,
+// resource_maintanance_required = $5,
+// resource_is_active = $6,
+// version_no = $7

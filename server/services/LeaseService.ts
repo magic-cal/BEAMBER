@@ -2,7 +2,7 @@ import { sqlToDB } from "../util/PgDatabase"
 import { EnumLeaseType, Lease, LeaseFilter } from "../../utils/classes/leases"
 import Guid from "../../utils/classes/common/guid"
 import { QueryResultRow } from "pg"
-import { Body, Controller, Delete, Post, Put, Route, Tags } from "tsoa"
+import { Body, Controller, Delete, Post, Put, Route, Tags, Response } from "tsoa"
 import { extractBaseFields, genBaseFields, updateBaseFields, validateBaseFields } from "../util/baseDataUtil"
 import { RecipeController } from "./RecipeService"
 
@@ -22,10 +22,12 @@ export class LeaseController extends Controller {
     lease.startTime = new Date(leaseRow.lease_start_time)
     lease.endTime = new Date(leaseRow.lease_end_time)
     lease.resourceId = Guid.fromString(leaseRow.lease_resource_id)
-    lease.maintenanceId = leaseRow.lease_maintenance_id
+    lease.maintenanceId = leaseRow.lease_maintenance_id ? Guid.fromString(leaseRow.lease_maintenance_id) : undefined
     lease.assemblyStepId = leaseRow.lease_assembly_step_id
-    lease.packagingId = leaseRow.lease_packaging_id
-    lease.productId = leaseRow.lease_product_id
+      ? Guid.fromString(leaseRow.lease_assembly_step_id)
+      : undefined
+    lease.packagingId = leaseRow.lease_packaging_id ? Guid.fromString(leaseRow.lease_packaging_id) : undefined
+    lease.productId = leaseRow.lease_product_id ? Guid.fromString(leaseRow.lease_product_id) : undefined
     lease.leaseType = EnumLeaseType.none
     if (lease.packagingId) {
       lease.leaseType = EnumLeaseType.packaging
@@ -51,10 +53,10 @@ lease_id, lease_name, lease_resource_id, lease_end_time, lease_start_time, lease
         lease.resourceId?.value,
         lease.endTime.toISOString(),
         lease.startTime.toISOString(),
-        undefined, //lease.maintenanceId?.value,
-        undefined, //lease.assemblyStepId?.value,
-        undefined, //lease.packagingId?.value,
-        undefined, //lease.productId?.value,
+        lease.maintenanceId?.value,
+        lease.assemblyStepId?.value,
+        lease.packagingId?.value,
+        lease.productId?.value,
         ...extractBaseFields(lease)
       ]
     )
@@ -91,6 +93,7 @@ lease_id, lease_name, lease_resource_id, lease_end_time, lease_start_time, lease
     return !!result.rowCount
   }
 
+  @Response(412, "Update failed, data has been changed by another process")
   @Put("update")
   async updateOrCreateLease(@Body() lease: Lease) {
     if (lease.id.value === Guid.createEmpty().value || !(await this.getLease(lease.id))) {
@@ -109,10 +112,10 @@ lease_id, lease_name, lease_resource_id, lease_end_time, lease_start_time, lease
         lease.resourceId?.value,
         lease.endTime.toISOString(),
         lease.startTime.toISOString(),
-        undefined, //lease.maintenanceId?.value,
-        undefined, //lease.assemblyStepId?.value,
-        undefined, //lease.packagingId?.value,
-        undefined, //lease.productId?.value,
+        lease.maintenanceId?.value,
+        lease.assemblyStepId?.value,
+        lease.packagingId?.value,
+        lease.productId?.value,
         ...extractBaseFields(lease)
       ]
     )

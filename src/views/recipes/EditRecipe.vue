@@ -114,8 +114,12 @@ export default class EditRecipes extends Vue {
     })
   }
 
-  addStep() {
-    this.$router.push({
+  async addStep() {
+    if (this.currentRecipe.id.equals(Guid.createEmpty())) {
+      this.currentRecipe.id = Guid.create()
+    }
+    await this.update(false)
+    await this.$router.push({
       name: "AddRecipeStep",
       params: { recipeId: this.currentRecipe.id.value }
     })
@@ -129,10 +133,11 @@ export default class EditRecipes extends Vue {
   }
 
   @WithLoading
-  async update() {
-    console.log("this.currentRecipe", this.currentRecipe)
+  async update(redirect = true) {
     await api.recipeApi.updateOrCreateRecipe({ recipe: this.currentRecipe })
-    this.back()
+    if (redirect) {
+      this.back()
+    }
   }
 
   @WithLoading

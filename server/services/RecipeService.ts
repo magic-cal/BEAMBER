@@ -2,7 +2,7 @@ import { sqlToDB } from "../util/PgDatabase"
 import { Recipe, RecipeFilter } from "../../utils/classes/recipes"
 import Guid from "../../utils/classes/common/guid"
 import { QueryResultRow } from "pg"
-import { Body, Controller, Delete, Post, Put, Route, Tags } from "tsoa"
+import { Body, Controller, Delete, Post, Put, Route, Tags, Response } from "tsoa"
 import { genBaseFields, updateBaseFields, validateBaseFields } from "../util/baseDataUtil"
 import { RecipeStepController } from "./RecipeStepService"
 import { RecipeStepFilter } from "../../utils/classes/recipeSteps"
@@ -88,6 +88,7 @@ recipe_is_assembly
     return !!result.rowCount
   }
 
+  @Response(412, "Update failed, data has been changed by another process")
   @Put("update")
   async updateOrCreateRecipe(@Body() recipe: Recipe) {
     if (recipe.id.value !== Guid.createEmpty().value && (await this.getRecipe(recipe.id))) {

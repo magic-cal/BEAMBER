@@ -23,6 +23,15 @@
               clearable
             ></v-select>
           </v-col>
+          <v-col :cols="12" :sm="6">
+            <v-text-field
+              :label="$t('capacity')"
+              v-model="currentResource.capacity"
+              type="number"
+              :rules="[$ruleSet.notNegativeNumber()]"
+              :suffix="$t('liters')"
+            />
+          </v-col>
         </v-row>
       </v-container>
       <v-footer

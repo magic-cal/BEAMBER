@@ -50,8 +50,12 @@
       :position-x="contextMenu.contextmenuX"
       :position-y="contextMenu.contextmenuY"
     >
-      <v-list>
+      <v-list v-if="contextMenu.bar.lease">
         <v-list-item> {{ $t("lease_name") }}: {{ contextMenu.bar.label }} </v-list-item>
+        <v-list-item v-if="contextMenu.bar.lease.leaseType.key === EnumLeaseType.assemblyStep.key">
+          {{ $t("step") }}: {{ getAssemblyStep(contextMenu.bar.lease.assemblyStepId).sequence + 1 }} -
+          {{ getAssemblyStep(contextMenu.bar.lease.assemblyStepId).description }}
+        </v-list-item>
         <v-list-item> {{ $t("lease_start_time") }}: {{ formatDate(contextMenu.bar.startTime) }} </v-list-item>
         <v-list-item> {{ $t("lease_end_time") }}: {{ formatDate(contextMenu.bar.endTime) }} </v-list-item>
       </v-list>
@@ -69,6 +73,7 @@ import { GGanttChart, GGanttRow } from "vue-ganttastic"
 import Guid from "utils/classes/common/guid"
 import { EnumLeaseType, GantBarConfig, GanttBar, GanttContextMenu, Lease } from "./../../../utils/classes/leases"
 import { Resource } from "utils/classes/resources"
+import { AssemblyStep } from "./../../../utils/classes/assemblySteps"
 
 export interface GanttRow {
   label: string
@@ -84,11 +89,36 @@ export interface GanttRow {
 export default class Schedule extends Vue {
   resources: Resource[] = []
   leases: Lease[] = []
+  assemblySteps: AssemblyStep[] = []
   myChartStart = new Date(new Date().setHours(0, 0, 0))
   myChartEnd = this.addDays(new Date(new Date().setHours(23, 59, 59)), this.isMobile ? 0 : 4)
   rows: GanttRow[] = []
   currentHour = new Date().getHours()
   contextMenu = new GanttContextMenu()
+
+  EnumLeaseType = EnumLeaseType
+  leaseAssemblyIds: Guid[] = []
+
+  colorArray = [
+    "#2fad3e",
+    "#FF0000",
+    "#0000FF",
+    "#6666FF",
+    "#00B3E6",
+    "#3366E6",
+    "#6680B3",
+    "#33FFCC",
+    "#66664D",
+    "#4DB3FF",
+    "#1AB399",
+    "#33991A",
+    "#00E680",
+    "#4D8066",
+    "#1AFF33",
+    "#4D80CC",
+    "#4DB380",
+    "#6666FF"
+  ]
 
   @WithLoading
   async mounted() {
@@ -99,6 +129,7 @@ export default class Schedule extends Vue {
   async loadPrerequisites() {
     this.resources = await api.resourceApi.getResourcesByFilter({})
     this.leases = await api.leaseApi.getLeasesByFilter({})
+    this.assemblySteps = await api.assemblyStepApi.getAssemblyStepsByFilter({})
     this.createGanttRows()
   }
 
@@ -137,17 +168,28 @@ export default class Schedule extends Vue {
   leaseToGanttConfig(lease: Lease) {
     const config: GantBarConfig = {}
     let colour = "#2fad3e"
+
+    if (lease.assemblyStepId) {
+      // Assign a different colour to each of the assemblies
+      const assemblyId = this.getAssemblyStep(lease.assemblyStepId).assemblyId
+      let assemblyIndex = this.leaseAssemblyIds.findIndex((lai) => lai.equals(assemblyId))
+      if (assemblyIndex == -1) {
+        this.leaseAssemblyIds.push(assemblyId)
+        assemblyIndex = this.leaseAssemblyIds.length - 1
+      }
+      colour = this.colorArray[assemblyIndex]
+    }
     console.log("NONE", lease.leaseType)
 
-    switch (lease.leaseType) {
-      case EnumLeaseType.none:
-        colour = "#FF0000"
-        console.log("NONE")
-        break
-      case EnumLeaseType.assemblyStep:
-        colour = "#0000FF"
-        break
-    }
+    // switch (lease.leaseType) {
+    //   case EnumLeaseType.none:
+    //     colour = "#FF0000"
+    //     console.log("NONE")
+    //     break
+    //   case EnumLeaseType.assemblyStep:
+    //     colour = "#0000FF"
+    //     break
+    // }
     config.background = colour
     config.color = "#ffff"
     config.opacity = 0.9
@@ -168,7 +210,7 @@ export default class Schedule extends Vue {
   }
 
   formatDate(date: Date | string | number) {
-    return new Date(date).toString()
+    return new Date(date).toLocaleString()
   }
 
   @WithLoading
@@ -177,9 +219,21 @@ export default class Schedule extends Vue {
       row.bars.map((bar) => api.leaseApi.updateOrCreateLease({ lease: bar.toLease() }))
     )
 
-    console.log(leases, "leases")
     await Promise.all(leases)
     await this.loadPrerequisites()
+  }
+
+  isNotNullOrUndefined<T>(t: T | undefined | null | void): t is T {
+    return t !== undefined && t !== null
+  }
+
+  getAssemblyStep(assemblyStepId: Guid) {
+    console.log(assemblyStepId)
+    const assemblyStep = this.assemblySteps.find((a) => a.id.equals(assemblyStepId))
+    if (!assemblyStep) {
+      throw new Error("Assembly Step Not Found")
+    }
+    return assemblyStep
   }
 
   async back() {

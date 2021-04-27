@@ -18,7 +18,7 @@ export class Resource extends AmberApiFields {
   tags: Tag[]
   readOnly: ResourceReadonly
   capacity: number
-  currentStep: Guid
+  currentLease?: Guid
   maintananceRequired: boolean
   active: boolean
 
@@ -27,7 +27,6 @@ export class Resource extends AmberApiFields {
     name = "",
     tags: Tag[] = [],
     capacity = 100,
-    currentStep = Guid.createEmpty(),
     maintananceRequired = false,
     active = false
   ) {
@@ -36,20 +35,10 @@ export class Resource extends AmberApiFields {
     this.name = name
     this.tags = tags
     this.capacity = capacity
-    this.currentStep = currentStep
     this.maintananceRequired = maintananceRequired
     this.active = active
     this.readOnly = new ResourceReadonly()
   }
-
-  // fromQueryResultRow(qr: QueryResultRow) {
-  //   console.log("qr.resource_name", qr.resource_name)
-  //   console.log("Guid.fromString(qr.resource_id)", Guid.fromString(qr.resource_id))
-  //   this.id = Guid.fromString(qr.resource_id)
-
-  //   this.name = qr.resource_name
-  //   this.tags = []
-  // }
 }
 /**
   @example {

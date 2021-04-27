@@ -136,7 +136,8 @@ const models: TsoaRoute.Models = {
     "AssemblyFilter": {
         "dataType": "refObject",
         "properties": {
-            "AssemblyStepIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
+            "assemblyStepIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
+            "assemblyIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
             "includeDeleted": {"dataType":"boolean","default":false},
         },
         "additionalProperties": false,
@@ -238,6 +239,8 @@ const models: TsoaRoute.Models = {
         "properties": {
             "LeaseStepIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
             "includeDeleted": {"dataType":"boolean","default":false},
+            "startTime": {"dataType":"datetime"},
+            "endTime": {"dataType":"datetime"},
         },
         "additionalProperties": false,
     },
@@ -322,7 +325,7 @@ const models: TsoaRoute.Models = {
             "tags": {"dataType":"array","array":{"ref":"Tag"},"required":true},
             "readOnly": {"ref":"ResourceReadonly","required":true},
             "capacity": {"dataType":"double","required":true},
-            "currentStep": {"ref":"Guid","required":true},
+            "currentLease": {"ref":"Guid"},
             "maintananceRequired": {"dataType":"boolean","required":true},
             "active": {"dataType":"boolean","required":true},
         },
@@ -341,7 +344,7 @@ const models: TsoaRoute.Models = {
     "RecipeSchedule": {
         "dataType": "refObject",
         "properties": {
-            "recipeIds": {"dataType":"array","array":{"ref":"Guid"},"default":[]},
+            "recipeIds": {"dataType":"array","array":{"ref":"Guid"},"default":[],"validators":{"minItems":{"errorMsg":"At least one recipe is required","value":1}}},
             "startTime": {"dataType":"datetime"},
         },
         "additionalProperties": false,

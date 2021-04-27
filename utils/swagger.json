@@ -330,7 +330,14 @@
 		},
 		"AssemblyFilter": {
 			"properties": {
-				"AssemblyStepIds": {
+				"assemblyStepIds": {
+					"items": {
+						"$ref": "#/definitions/Guid"
+					},
+					"type": "array",
+					"default": []
+				},
+				"assemblyIds": {
 					"items": {
 						"$ref": "#/definitions/Guid"
 					},
@@ -614,6 +621,14 @@
 				"includeDeleted": {
 					"type": "boolean",
 					"default": false
+				},
+				"startTime": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"endTime": {
+					"type": "string",
+					"format": "date-time"
 				}
 			},
 			"type": "object",
@@ -817,7 +832,7 @@
 					"type": "number",
 					"format": "double"
 				},
-				"currentStep": {
+				"currentLease": {
 					"$ref": "#/definitions/Guid"
 				},
 				"maintananceRequired": {
@@ -834,7 +849,6 @@
 				"tags",
 				"readOnly",
 				"capacity",
-				"currentStep",
 				"maintananceRequired",
 				"active"
 			],
@@ -869,7 +883,8 @@
 						"$ref": "#/definitions/Guid"
 					},
 					"type": "array",
-					"default": []
+					"default": [],
+					"minItems": 1
 				},
 				"startTime": {
 					"type": "string",
@@ -1114,6 +1129,9 @@
 						"schema": {
 							"$ref": "#/definitions/QueryResult_any_"
 						}
+					},
+					"412": {
+						"description": "Update failed, data has been changed by another process"
 					}
 				},
 				"tags": [
@@ -1237,6 +1255,9 @@
 						"schema": {
 							"$ref": "#/definitions/QueryResult_any_"
 						}
+					},
+					"412": {
+						"description": "Update failed, data has been changed by another process"
 					}
 				},
 				"tags": [
@@ -1483,6 +1504,9 @@
 						"schema": {
 							"$ref": "#/definitions/QueryResult_any_"
 						}
+					},
+					"412": {
+						"description": "Update failed, data has been changed by another process"
 					}
 				},
 				"tags": [
@@ -1606,6 +1630,9 @@
 						"schema": {
 							"$ref": "#/definitions/QueryResult_any_"
 						}
+					},
+					"412": {
+						"description": "Update failed, data has been changed by another process"
 					}
 				},
 				"tags": [

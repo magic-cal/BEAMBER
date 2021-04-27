@@ -57,7 +57,7 @@ LEFT JOIN assemblies ON (assembly_steps.assembly_step_assembly_id = assemblies.a
 "
     const queryClauses: string[] = []
     if (filter?.assemblyIds?.length) {
-      queryClauses.push(`assemblies.assembly_id IN (${filter.assemblyIds.map((ri) => `'${ri.value}'`)})`)
+      queryClauses.push(`assemblies.assembly_id IN (${filter.assemblyIds.map((ai) => `'${ai.value}'`)})`)
     }
     query += queryClauses.length ? " WHERE " + queryClauses.join(" AND ") : ";"
     const result = await sqlToDB(query)

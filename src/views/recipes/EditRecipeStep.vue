@@ -149,7 +149,6 @@ export default class EditRecipeSteps extends Vue {
             return p > v.sequence ? p : v.sequence
           }, -1) + 1
       }
-      console.log("currentStep", this.currentRecipeStep)
     }
     // Remove Current Recipe
     this.allRecipes = this.allRecipes.filter((r) => !r.id.equals(this.currentRecipeStep.recipeId))
