@@ -43,4 +43,5 @@ Built with :
 - Utils (Shared utils)
   _ Classes (All Types for the data)  
    _ Swagger.json (Swagger Doc -generated )
-  ![alt text](https://github.com/magic-cal/BEAMBER/blob/main/src/assets/planning-screen.png)
+
+  ![Planning Screen Example](https://github.com/magic-cal/BEAMBER/blob/main/src/assets/planning-screen.png)
