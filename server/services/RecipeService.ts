@@ -45,7 +45,6 @@ export class RecipeController extends Controller {
   }
 
   async addRecipe(recipe: Recipe) {
-    // const fieldParams = recipeToDb(recipe)
     if (recipe.id.value === Guid.createEmpty().value) {
       recipe.id = Guid.create()
     }
@@ -69,13 +68,9 @@ recipe_is_assembly
   @Post("get-by")
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async getRecipesByFilter(@Body() filter?: RecipeFilter) {
-    let query = "SELECT DISTINCT ON (recipes.recipe_id) recipes.* FROM recipes \
-    "
-    // LEFT JOIN resource_recipes ON (recipes.recipe_id = resource_recipes.recipe_id)\
+    let query = "SELECT DISTINCT ON (recipes.recipe_id) recipes.* FROM recipes"
     const queryClauses: string[] = []
-    // if (filter.resourceIds?.length) {
-    //   queryClauses.push(`resource_recipes.resource_id IN (${filter.resourceIds.map(ri => `'${ri.value}'`)})`)
-    // }
+
     query += queryClauses.length ? " WHERE " + queryClauses.join(" AND ") : ";"
     const result = await sqlToDB(query)
     return result.rows.map((recipeResult) => this.dbToRecipe(recipeResult))
@@ -96,7 +91,6 @@ recipe_is_assembly
         this.setStatus(412)
       }
       recipe = updateBaseFields(recipe)
-      // @TODO: Look at validation Updates
       return await sqlToDB(
         "UPDATE recipes SET recipe_name = $1, recipe_description = $2, recipe_requirement_id = $3, recipe_is_assembly = $4, version_no = $6 WHERE recipe_id = $5;",
         [recipe.name, recipe.description, null, recipe.readOnly?.isAssembly, recipe.id.value, recipe.versionNo]

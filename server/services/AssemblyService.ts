@@ -58,10 +58,6 @@ assembly_id ,assembly_name, assembly_description, assembly_complete, assembly_pa
   @Post("get")
   async getAssembly(@Body() assemblyId: Guid) {
     const result = await sqlToDB("SELECT * FROM assemblies WHERE assembly_id = $1", [assemblyId.value])
-    console.log(
-      "result.rows.map(assemblyResult => dbToAssembly(assemblyResult))[0]",
-      result.rows.map((assemblyResult) => this.dbToAssembly(assemblyResult))[0]
-    )
     const assembly = result.rows.map((assemblyResult) => this.dbToAssembly(assemblyResult))[0]
     return assembly
   }
@@ -96,7 +92,6 @@ assembly_id ,assembly_name, assembly_description, assembly_complete, assembly_pa
       this.setStatus(412)
     }
     assembly = updateBaseFields(assembly)
-    // @TODO: Look at validation Updates
     return await sqlToDB(
       "UPDATE assemblies SET assembly_name = $2, assembly_description = $3, assembly_complete = $4, assembly_parent_id = $5, assembly_recipe_id = $6, assembly_recipe_product_id = $7, version_no = $8  WHERE assembly_id = $1;",
       [

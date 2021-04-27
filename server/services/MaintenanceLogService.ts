@@ -26,11 +26,6 @@ export class MaintenanceLogController extends Controller {
     const result = await sqlToDB("SELECT * FROM maintenance_logs WHERE maintenance_log_id = $1", [
       maintenanceLogId.value
     ])
-    // @TODO: Remove duplication
-    console.log(
-      "result.rows.map(maintenanceLogResult => dbToMaintenanceLog(maintenanceLogResult))[0]",
-      result.rows.map((maintenanceLogResult) => this.dbToMaintenanceLog(maintenanceLogResult))[0]
-    )
     return result.rows.map((maintenanceLogResult) => this.dbToMaintenanceLog(maintenanceLogResult))[0]
   }
 
@@ -40,8 +35,8 @@ export class MaintenanceLogController extends Controller {
       "\
 SELECT DISTINCT ON (maintenance_logs.maintenance_log_id) maintenance_logs.*\
 FROM maintenance_logs \
-LEFT JOIN resources ON (maintenance_logs.maintenance_log_resource_id = resources.resource_id)\
-"
+LEFT JOIN resources ON (maintenance_logs.maintenance_log_resource_id = resources.resource_id)"
+
     const queryClauses: string[] = []
     if (filter?.resourceIds?.length) {
       queryClauses.push(`resources.resource_id IN (${filter.resourceIds.map((ri) => `'${ri.value}'`)})`)
@@ -53,7 +48,6 @@ LEFT JOIN resources ON (maintenance_logs.maintenance_log_resource_id = resources
 
   @Delete("delete")
   async deleteMaintenanceLog(@Body() maintenanceLogId: Guid) {
-    // await updateResourceRelation([], maintenanceLogId)
     const result = await sqlToDB("DELETE FROM maintenance_logs WHERE maintenance_log_id = $1", [maintenanceLogId.value])
     return !!result.rowCount
   }
@@ -99,13 +93,3 @@ maintenance_log_timestamp
     )
   }
 }
-// ;(maintenance_log_id = $1),
-// (maintenance_log_resource_id = $2),
-// (maintenance_log_details = $3),
-// (maintenance_log_type = $4)
-//
-
-// maintenance_log_id,
-// maintenance_log_resource_id,
-// maintenance_log_details,
-// maintenance_log_type,

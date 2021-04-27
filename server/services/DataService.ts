@@ -1,7 +1,6 @@
 import Guid from "../../utils/classes/common/guid"
 import { Lease } from "../../utils/classes/leases"
-import { Body, Controller, Delete, Post, Put, Route, Tags } from "tsoa"
-import { locales } from "moment"
+import { Body, Controller, Post, Route, Tags } from "tsoa"
 import { Recipe } from "../../utils/classes/recipes"
 import { RecipeStep } from "../../utils/classes/recipeSteps"
 import { AssemblyStepController } from "./AssemblyStepService"
@@ -49,13 +48,6 @@ export class DataService extends Controller {
     const leaseData = await this.leaseService.getLeasesByFilter()
     const assemblyData = await this.assemblyService.getAssembliesByFilter()
     const assemblyStepData = await this.assemblyStepService.getAssemblyStepsByFilter()
-
-    // Keep these ones
-    leaseData.filter(
-      (ld) =>
-        !ld.id.equals(Guid.fromString("0642dca2-61f0-4e56-78ae-6c2fe5a677a7")) &&
-        !ld.id.equals(Guid.fromString("2d029617-ac69-4409-8191-8452f9cc9883"))
-    )
 
     await Promise.all(leaseData.map((lease) => this.leaseService.deleteLease(lease.id)))
     await Promise.all(assemblyData.map((assembly) => this.assemblyService.deleteAssembly(assembly.id)))

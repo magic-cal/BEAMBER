@@ -7,8 +7,8 @@ CREATE TABLE public.versioning
 )
 
 
-COMMENT ON TABLE public.versioning
-    IS 'Table for all to inherit from ';
+-- COMMENT ON TABLE public.versioning
+--     IS 'Table for all to inherit from ';
 
 
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Tags~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

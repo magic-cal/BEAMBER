@@ -125,11 +125,3 @@ export class ResourceController extends Controller {
     return result
   }
 }
-
-// resource_id = $1,
-// resource_name = $2,
-// resource_capacity = $3,
-// resource_current_lease = $4,
-// resource_maintanance_required = $5,
-// resource_is_active = $6,
-// version_no = $7

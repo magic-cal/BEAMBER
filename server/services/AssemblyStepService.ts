@@ -2,7 +2,7 @@ import { sqlToDB } from "../util/PgDatabase"
 import { AssemblyStep, AssemblyStepFilter } from "../../utils/classes/assemblySteps"
 import Guid from "../../utils/classes/common/guid"
 import { QueryResultRow } from "pg"
-import { Body, Controller, Delete, Hidden, Post, Put, Route, Tags } from "tsoa"
+import { Body, Controller, Delete, Post, Put, Route, Tags } from "tsoa"
 import { RecipeStep } from "utils/classes/recipeSteps"
 import { RecipeController } from "./RecipeService"
 import { RecipeStepController } from "./RecipeStepService"
@@ -40,10 +40,6 @@ export class AssemblyStepController extends Controller {
   @Post("get")
   async getAssemblyStep(@Body() assemblyStepId: Guid) {
     const result = await sqlToDB("SELECT * FROM assembly_steps WHERE assembly_step_id = $1", [assemblyStepId.value])
-    console.log(
-      "result.rows.map(assemblyStepResult => dbToAssemblyStep(assemblyStepResult))[0]",
-      result.rows.map((assemblyStepResult) => this.dbToAssemblyStep(assemblyStepResult))[0]
-    )
     return result.rows.map((assemblyStepResult) => this.dbToAssemblyStep(assemblyStepResult))[0]
   }
 
@@ -66,7 +62,6 @@ LEFT JOIN assemblies ON (assembly_steps.assembly_step_assembly_id = assemblies.a
 
   @Delete("delete")
   async deleteAssemblyStep(@Body() assemblyStepId: Guid) {
-    // await updateResourceRelation([], assemblyStepId)
     const result = await sqlToDB("DELETE FROM assembly_steps WHERE assembly_step_id = $1", [assemblyStepId.value])
     return !!result.rowCount
   }
@@ -99,7 +94,6 @@ LEFT JOIN assemblies ON (assembly_steps.assembly_step_assembly_id = assemblies.a
   }
 
   async addAssemblyStep(assemblyStep: AssemblyStep) {
-    // const fieldParams = assemblyStepToDb(assemblyStep)
     if (assemblyStep.id.value === Guid.createEmpty().value) {
       assemblyStep.id = Guid.create()
     }

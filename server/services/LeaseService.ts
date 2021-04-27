@@ -33,14 +33,13 @@ export class LeaseController extends Controller {
       lease.leaseType = EnumLeaseType.packaging
     } else if (lease.assemblyStepId) {
       lease.leaseType = EnumLeaseType.assemblyStep
-    } //@TODO: Implement all lease types
-    console.log("leaseRow", leaseRow)
-    console.log("LEASEGG", lease)
+    }
+    // console.log("leaseRow", leaseRow)
+    // console.log("LEASEGG", lease)
     return lease
   }
 
   async addLease(lease: Lease) {
-    // const fieldParams = leaseToDb(lease)
     if (lease.id.value === Guid.createEmpty().value) {
       lease.id = Guid.create()
     }
@@ -75,13 +74,9 @@ lease_id, lease_name, lease_resource_id, lease_end_time, lease_start_time, lease
   @Post("get-by")
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async getLeasesByFilter(@Body() filter?: LeaseFilter) {
-    let query = "SELECT DISTINCT ON (leases.lease_id) leases.* FROM leases \
-    "
-    // LEFT JOIN resource_leases ON (leases.lease_id = resource_leases.lease_id)\
+    let query = "SELECT DISTINCT ON (leases.lease_id) leases.* FROM leases"
     const queryClauses: string[] = []
-    // if (filter.resourceIds?.length) {
-    //   queryClauses.push(`resource_leases.resource_id IN (${filter.resourceIds.map(ri => `'${ri.value}'`)})`)
-    // }
+
     query += queryClauses.length ? " WHERE " + queryClauses.join(" AND ") : ";"
     const result = await sqlToDB(query)
     return result.rows.map((leaseResult) => this.dbToLease(leaseResult))
@@ -103,7 +98,6 @@ lease_id, lease_name, lease_resource_id, lease_end_time, lease_start_time, lease
       this.setStatus(412)
     }
     lease = updateBaseFields(lease)
-    // @TODO: Look at validation Updates
     return await sqlToDB(
       "UPDATE leases SET lease_name = $2, lease_resource_id = $3, lease_end_time = $4, lease_start_time = $5, lease_maintenance_id = $6, lease_assembly_step_id = $7, lease_packaging_id = $8, lease_product_id = $9, version_no = $10 WHERE lease_id = $1;",
       [
@@ -121,4 +115,3 @@ lease_id, lease_name, lease_resource_id, lease_end_time, lease_start_time, lease
     )
   }
 }
-//  lease_id = $1, lease_name = $2, lease_resource_id = $3, lease_end_time = $4, lease_start_time = $5, lease_maintenance_id = $6, lease_assembly_step_id = $7, lease_packaging_id = $8, lease_product_id = $9, version_no = $10

@@ -54,13 +54,8 @@ business_hour_id, business_hour_tag_id, business_hour_day, business_hour_start_t
   @Post("get-by")
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async getBusinessHoursByFilter(@Body() filter?: BusinessHourFilter) {
-    let query = "SELECT DISTINCT ON (business_hours.business_hour_id) business_hours.* FROM business_hours \
-    "
-    // LEFT JOIN resource_business_hours ON (business_hours.business_hour_id = resource_business_hours.business_hour_id)\
+    let query = "SELECT DISTINCT ON (business_hours.business_hour_id) business_hours.* FROM business_hours"
     const queryClauses: string[] = []
-    // if (filter.resourceIds?.length) {
-    //   queryClauses.push(`resource_business_hours.resource_id IN (${filter.resourceIds.map(ri => `'${ri.value}'`)})`)
-    // }
     query += queryClauses.length ? " WHERE " + queryClauses.join(" AND ") : ";"
     const result = await sqlToDB(query)
     return result.rows.map((businessHourResult) => this.dbToBusinessHour(businessHourResult))
@@ -103,12 +98,3 @@ business_hour_id, business_hour_tag_id, business_hour_day, business_hour_start_t
     throw new Error("Not Implemented")
   }
 }
-
-// business_hour_id = $1, business_hour_tag_id = $2, business_hour_day = $3, business_hour_start_time = $4, business_hour_end_time = $5, business_hour_is_open = $6, version_no = $7
-
-// id
-// tagId
-// day
-// startTime
-// endTime
-// isOpen

@@ -34,8 +34,6 @@ export class TagController extends Controller {
 
   public async updateResourceRelation(resources: Resource[], tagId: Guid) {
     // SIMILAR IMPL IN RESOURCE SERVICE
-    // const insertionValues = resources.map(resource => (resource.id.value, tagId.value))
-    // const insertionValues: string[] = []
 
     await sqlToDB("DELETE FROM resource_tags WHERE tag_id = $1", [tagId.value])
     //@TODO: Update Inserts into resources NOT PRETTY
@@ -49,7 +47,6 @@ export class TagController extends Controller {
   }
 
   public async addTag(tag: Tag) {
-    // const fieldParams = tagToDb(tag)
     return await sqlToDB(`INSERT INTO tags (tag_name ,tag_description) VALUES ($1, $2)`, [tag.name, tag.description])
   }
 
@@ -103,18 +100,3 @@ export class TagController extends Controller {
     return await this.addTag(tag)
   }
 }
-
-// export async function Update(Id, Tag){
-
-// }
-// export async function Delete(Id){
-
-// }
-
-// CREATE TABLE public.tags
-// (
-//     tag_id uuid NOT NULL DEFAULT gen_random_uuid(),
-//     tag_name character varying COLLATE pg_catalog."default",
-//     tag_description character varying COLLATE pg_catalog."default",
-//     CONSTRAINT tags_pkey PRIMARY KEY (tag_id)
-// )
