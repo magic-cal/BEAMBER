@@ -49,8 +49,6 @@ export default class ManageMaintenanceLog extends Vue {
 
   @WithLoading
   async mounted() {
-    console.log("mounted", this.resourceId)
-
     this.allResources = await api.resourceApi.getResourcesByFilter({})
     if (this.resourceId) {
       this.maintenenceLogs = await api.maintenanceLogApi.getMaintenanceLogsByFilter({

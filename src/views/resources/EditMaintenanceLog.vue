@@ -65,13 +65,10 @@ export default class EditMaintenanceLog extends Vue {
 
   @WithLoading
   async mounted() {
-    console.log("mounted", this.maintenanceLogId)
-
     if (this.maintenanceLogId) {
       this.currentMaintenanceLog = await api.maintenanceLogApi.getMaintenanceLog({
         maintenanceLogId: Guid.fromString(this.maintenanceLogId)
       })
-      console.log(this.currentMaintenanceLog)
     } else if (this.resourceId) {
       this.currentMaintenanceLog.id = Guid.create()
       this.currentMaintenanceLog.resourceId = Guid.fromString(this.resourceId)
@@ -80,7 +77,6 @@ export default class EditMaintenanceLog extends Vue {
 
   @WithLoading
   async update() {
-    console.log("this.currentMaintenanceLog", this.currentMaintenanceLog)
     await api.maintenanceLogApi.updateOrCreateMaintenanceLog({ maintenanceLog: this.currentMaintenanceLog })
     this.back()
   }

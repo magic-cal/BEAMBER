@@ -46,7 +46,6 @@ export class BaseAPI {
     const { url, init } = this.createFetchParams(context)
     const response = await this.fetchApi(url, init)
     if (response.status >= 200 && response.status < 300) {
-      console.log("ress", response)
       return response
     }
     throw response

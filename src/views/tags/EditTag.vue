@@ -54,17 +54,13 @@ export default class EditTags extends Vue {
 
   @WithLoading
   async mounted() {
-    console.log("mounted", this.tagId)
-
     if (this.tagId) {
       this.currentTag = await api.tagApi.getTag({ tagId: Guid.fromString(this.tagId) })
-      console.log(this.currentTag)
     }
   }
 
   @WithLoading
   async update() {
-    console.log("this.currentTag", this.currentTag)
     await api.tagApi.updateOrCreateTag({ tag: this.currentTag })
     this.back()
   }

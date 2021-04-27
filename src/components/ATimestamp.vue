@@ -70,7 +70,6 @@ export default class ATimestamp extends Vue {
   }
 
   get formattedDateTime() {
-    console.log(this.dateTime)
     return this.dateTime?.toLocaleString() ?? null
   }
 

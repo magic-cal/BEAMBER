@@ -24,7 +24,6 @@ export default class About extends Vue {
   resources: Resource[] = []
 
   async created() {
-    console.log("Created")
     this.getResources()
   }
 

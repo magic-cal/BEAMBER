@@ -1,16 +1,5 @@
-// import { QueryResultRow } from "pg"
 import Guid from "./common/guid"
 import { AmberApiFields } from "./amberApiFields"
-
-// export class RecipeReadonly {
-//   tagList: string
-//   constructor() {
-//     this.tagList = ""
-//   }
-//   fromTags(tagList: Tag[]) {
-//     this.tagList = tagList.map(tag => tag.name).join(", ")
-//   }
-// }
 
 export class Recipe extends AmberApiFields {
   id: Guid
@@ -40,15 +29,6 @@ export class Recipe extends AmberApiFields {
     this.requirementIds = requirementIds
     this.readOnly = readOnly
   }
-
-  //   fromQueryResultRow(qr: QueryResultRow) {
-  //     console.log("qr.Recipe_name", qr.Recipe_name)
-  //     console.log("Guid.fromString(qr.Recipe_id)", Guid.fromString(qr.Recipe_id))
-  //     this.id = Guid.fromString(qr.Recipe_id)
-
-  //     this.name = qr.Recipe_name
-  //     this.tags = []
-  //   }
 }
 
 export class RecipeFilter {
@@ -64,17 +44,3 @@ export class RecipeSchedule {
     this.recipeIds = recipeIds
   }
 }
-
-// const i = recipe: {
-//   id: { value: "91fb0e54-a48a-4d14-84d8-f0e171740406" },
-//   name: "string",
-//   description: "string",
-//   requirementIds: [],
-//   readOnly: {
-//     startTime: 0,
-//     endTime: 0,
-//     isAssembly: false,
-//     isScheduled: false,
-//     isComplete: false
-//   }
-// }

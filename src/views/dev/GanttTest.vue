@@ -55,10 +55,8 @@ export default class Schedule extends Vue {
     this.rows = this.resources.map((res) => {
       const dateTime: Date = new Date()
       // const dateTimeAfter: Date = this.addDays(new Date(new Date().setHours(23, 59, 59)), this.isMobile ? 0 : 4)
-      console.log("dateTime ", dateTime)
       timeSkew *= 1.5
       const filteredLeases = this.leases.filter((l) => l.resourceId.equals(res.id))
-      console.log("fi", filteredLeases)
       return {
         label: res.name,
         bars: filteredLeases

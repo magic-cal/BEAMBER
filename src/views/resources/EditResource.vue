@@ -74,18 +74,16 @@ export default class EditResources extends Vue {
 
   @WithLoading
   async mounted() {
-    console.log("mounted", this.resourceId)
     this.allTags = await api.tagApi.getTagsByFilter({})
     if (this.resourceId) {
       this.currentResource = await api.resourceApi.getResource({ resourceId: Guid.fromString(this.resourceId) })
-      console.log(this.currentResource)
+
       // @TODO: Add The Tags
     }
   }
 
   @WithLoading
   async update() {
-    console.log("this.currentResource", this.currentResource)
     await api.resourceApi.updateOrCreateResource({ resource: this.currentResource })
     this.back()
   }

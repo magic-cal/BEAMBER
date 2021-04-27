@@ -74,19 +74,16 @@ export default class EditRecipes extends Vue {
 
   @WithLoading
   async mounted() {
-    console.log("mounted", this.recipeId)
     this.allTags = await api.tagApi.getTagsByFilter({})
     this.allResources = await api.resourceApi.getResourcesByFilter({})
     if (this.recipeId) {
       // this.currentRecipe = await api.RecipeService.getRecipe({recipeId: Guid.fromString(this.recipeId)})
-      console.log(this.currentRecipe)
       // @TODO: Add The Tags
     }
   }
 
   @WithLoading
   async update() {
-    console.log("this.currentRecipe", this.currentRecipe)
     // await api.updateOrCreateRecipe(this.currentRecipe)
     this.back()
   }

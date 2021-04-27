@@ -201,7 +201,6 @@ export default class Settings extends Vue {
 
   @WithLoading
   async updateBusinessHour(businessHour: BusinessHour) {
-    console.log("businessHour", businessHour)
     await api.businessHourApi.updateOrCreateBusinessHour({ businessHour: businessHour })
     await this.loadPrerequisites()
   }

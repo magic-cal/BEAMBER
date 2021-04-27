@@ -91,23 +91,19 @@ export default class EditRecipes extends Vue {
 
   @WithLoading
   async mounted() {
-    console.log("mounted", this.recipeId)
     this.allTags = await api.tagApi.getTagsByFilter({})
     this.allResources = await api.resourceApi.getResourcesByFilter({})
     if (this.recipeId) {
       this.currentRecipe = await api.recipeApi.getRecipe({ recipeId: Guid.fromString(this.recipeId) })
-      console.log(this.currentRecipe)
       // @TODO: Add The Tags
     }
     this.recipeSteps = await api.recipeStepApi.getRecipeStepsByFilter({
       filter: { recipeIds: [this.currentRecipe.id] }
     })
     this.recipeSteps.sort((a, b) => a.sequence - b.sequence)
-    console.log("this.recipeSteps", this.recipeSteps)
   }
 
   editStep(stepId: Guid) {
-    console.log("stepId", stepId)
     this.$router.push({
       name: "EditRecipeStep",
       params: { recipeStepId: stepId.value }

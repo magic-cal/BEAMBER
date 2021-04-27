@@ -123,7 +123,6 @@ export default class Schedule extends Vue {
   @WithLoading
   async mounted() {
     await this.loadPrerequisites()
-    console.log(this.currentHour)
   }
 
   async loadPrerequisites() {
@@ -179,12 +178,11 @@ export default class Schedule extends Vue {
       }
       colour = this.colorArray[assemblyIndex]
     }
-    console.log("NONE", lease.leaseType)
 
     // switch (lease.leaseType) {
     //   case EnumLeaseType.none:
     //     colour = "#FF0000"
-    //     console.log("NONE")
+    //
     //     break
     //   case EnumLeaseType.assemblyStep:
     //     colour = "#0000FF"
@@ -197,7 +195,6 @@ export default class Schedule extends Vue {
   }
 
   onContextmenuBar(e: any) {
-    console.log({ e })
     e.event.preventDefault()
     this.contextMenu.contextmenuY = e.event.clientY
     this.contextMenu.contextmenuX = e.event.clientX
@@ -228,7 +225,6 @@ export default class Schedule extends Vue {
   }
 
   getAssemblyStep(assemblyStepId: Guid) {
-    console.log(assemblyStepId)
     const assemblyStep = this.assemblySteps.find((a) => a.id.equals(assemblyStepId))
     if (!assemblyStep) {
       throw new Error("Assembly Step Not Found")

@@ -125,7 +125,6 @@ export default class EditRecipeSteps extends Vue {
 
   @WithLoading
   async mounted() {
-    console.log("mounted", this.recipeStepId)
     this.allTags = await api.tagApi.getTagsByFilter({})
     this.allResources = await api.resourceApi.getResourcesByFilter({})
     this.allRecipes = await api.recipeApi.getRecipesByFilter({})
@@ -156,7 +155,6 @@ export default class EditRecipeSteps extends Vue {
 
   @WithLoading
   async update() {
-    console.log("this.currentRecipeStep", this.currentRecipeStep)
     await api.recipeStepApi.updateOrCreateRecipeStep({ recipeStep: this.currentRecipeStep })
     this.back()
   }

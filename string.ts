@@ -12,6 +12,4 @@ String.prototype.padZero = function(length: number) {
   return d
 }
 
-console.log("hi".padZero(5))
-
 export {}
