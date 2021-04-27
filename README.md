@@ -32,16 +32,17 @@ Built with :
   - routes (express routes - generated)
   - util (BE Utils)
 - Src (FE)
-  _ Api - generated
-  _ Componenets (Vue components that are reused)
-  _ locales - Internationalisation
-  _ Plugins
-  _ Router
-  _ Store
-  _ Views (All pages here)
-  _ App.vue (Entry Point)
+  - Api - generated
+  - Componenets (Vue components that are reused)
+  - locales - Internationalisation
+  - Plugins
+  - Router
+  - Store
+  - Views (All pages here)
+  - App.vue (Entry Point)
 - Utils (Shared utils)
-  _ Classes (All Types for the data)  
-   _ Swagger.json (Swagger Doc -generated )
+
+  - Classes (All Types for the data)
+  - Swagger.json (Swagger Doc -generated )
 
   ![Planning Screen Example](https://github.com/magic-cal/BEAMBER/blob/main/src/assets/planning-screen.png)
