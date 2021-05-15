@@ -1,7 +1,9 @@
 <template>
   <div>
     <v-row class="ml-4">
-      <v-col :cols="12" sm="6"> <h1>Schedule</h1> </v-col>
+      <v-col :cols="12" sm="6">
+        <h1>{{ $t("Schedule") }}</h1>
+      </v-col>
       <v-col :cols="12" sm="6">
         <v-btn icon @click="zoom(false)"><v-icon>mdi-magnify-plus-outline</v-icon></v-btn>
         <v-btn icon @click="changeDate(true)"><v-icon>mdi-plus</v-icon></v-btn>
@@ -18,6 +20,7 @@
       :chart-end="myChartEnd.toISOString()"
       theme="flare"
       :highlighted-hours="[currentHour]"
+      :row-label-width="`${rowLabelWidth}%`"
       @contextmenu-bar="onContextmenuBar($event)"
     >
       <g-gantt-row
@@ -66,7 +69,6 @@
 <script lang="ts">
 import api from "@/api/api"
 import { WithLoading } from "@/store/modules/appStore"
-import { LocalDateTime } from "@js-joda/core/dist/js-joda"
 import Vue from "vue"
 import Component from "vue-class-component"
 import { GGanttChart, GGanttRow } from "vue-ganttastic"
@@ -179,15 +181,6 @@ export default class Schedule extends Vue {
       colour = this.colorArray[assemblyIndex]
     }
 
-    // switch (lease.leaseType) {
-    //   case EnumLeaseType.none:
-    //     colour = "#FF0000"
-    //
-    //     break
-    //   case EnumLeaseType.assemblyStep:
-    //     colour = "#0000FF"
-    //     break
-    // }
     config.background = colour
     config.color = "#ffff"
     config.opacity = 0.9
@@ -208,6 +201,9 @@ export default class Schedule extends Vue {
 
   formatDate(date: Date | string | number) {
     return new Date(date).toLocaleString()
+  }
+  get rowLabelWidth() {
+    return this.isMobile ? 25 : 10
   }
 
   @WithLoading

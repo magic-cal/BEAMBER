@@ -5,7 +5,7 @@
         <v-app-bar-nav-icon @click.stop="navigationDraw = !navigationDraw"></v-app-bar-nav-icon>
         <v-toolbar-title>
           <div @click="goHome">
-            {{ $t("amber") + " - " + $t("vessel_management") }}
+            {{ $t("amber") }}
           </div>
         </v-toolbar-title>
         <!-- <v-icon @click="viewContainers">md-plus</v-icon> -->
