@@ -64,6 +64,7 @@ import { Recipe } from "@/../utils/classes/recipes"
 import { Resource, Tag } from "utils/classes/resources"
 
 @Component
+// ####### NOT USED AS A COMPONENT #######
 export default class EditRecipes extends Vue {
   @Prop({ type: String, required: false, default: () => null })
   private recipeId!: string | null

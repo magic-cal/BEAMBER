@@ -37,10 +37,9 @@
 
 <script lang="ts">
 import api from "@/api/api"
-import { Resource, ResourceFilter } from "@/../utils/classes/resources"
+import { Resource } from "@/../utils/classes/resources"
 import Vue from "vue"
 import Component from "vue-class-component"
-import Guid from "@/../utils/classes/common/guid"
 import Container from "@/components/Container.vue"
 import { WithLoading } from "@/store/modules/appStore"
 
@@ -50,9 +49,6 @@ export default class Home extends Vue {
 
   @WithLoading
   async created() {
-    const filter = new ResourceFilter()
-    // @TODO: Make this All Vessels but better
-    filter.tagIds = [Guid.fromString("10ed5a49-1668-402a-b0b5-b54818a3dec2")]
     this.resourceList = (await api.resourceApi.getResourcesByFilter({})).filter((resource) =>
       resource.tags.some((tag) => tag.name === "Vessel")
     )

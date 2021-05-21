@@ -32,7 +32,6 @@
         bar-end="endTime"
       >
         <template #bar-label="{bar}">
-          <!-- <img v-if="bar.image" :src="require(`@/assets/${bar.image}`)" height="20" width="20" class="mr-1" /> -->
           <span>{{ bar.label }}</span>
         </template>
       </g-gantt-row>
@@ -135,6 +134,7 @@ export default class Schedule extends Vue {
   }
 
   createGanttRows() {
+    // Convert resources into Gantt Rows
     this.rows = this.resources.map((res) => {
       const filteredLeases = this.leases
         .filter((l) => l.resourceId.equals(res.id))
@@ -188,6 +188,7 @@ export default class Schedule extends Vue {
   }
 
   onContextmenuBar(e: any) {
+    // Open context menu
     e.event.preventDefault()
     this.contextMenu.contextmenuY = e.event.clientY
     this.contextMenu.contextmenuX = e.event.clientX
