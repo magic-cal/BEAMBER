@@ -42,7 +42,7 @@
     "tsoa": "^3.6.1",
     "vue": "^2.6.12",
     "vue-class-component": "^7.2.6",
-    "vue-cli-plugin-vuetify": "^2.1.0",
+    "vue-cli-plugin-vuetify": "^2.3.1",
     "vue-easy-dnd": "^1.10.2",
     "vue-ganttastic": "^0.9.32",
     "vue-i18n": "^8.23.0",
